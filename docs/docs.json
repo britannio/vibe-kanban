@@ -33,6 +33,7 @@
           "user-guide/creating-projects",
           "user-guide/creating-tasks",
           "user-guide/creating-task-attempts",
+          "user-guide/reviewing-code-changes",
           "user-guide/creating-task-templates",
           "user-guide/agent-configurations",
           "user-guide/vibe-kanban-mcp-server"
