@@ -24,15 +24,7 @@
       {
         "group": "Supported Coding Agents",
         "pages": [
-          "supported-coding-agents",
-          "supported-coding-agents/amp",
-          "supported-coding-agents/claude-code",
-          "supported-coding-agents/cursor-cli",
-          "supported-coding-agents/ccr",
-          "supported-coding-agents/codex",
-          "supported-coding-agents/gemini-cli",
-          "supported-coding-agents/sst-opencode",
-          "supported-coding-agents/qwen-code"
+          "supported-coding-agents"
         ]
       },
       {
