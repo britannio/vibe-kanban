@@ -41,6 +41,7 @@
           "user-guide/creating-task-templates",
           "user-guide/agent-configurations",
           "user-guide/vscode-extension",
+          "user-guide/mcp-server-configuration",
           "user-guide/vibe-kanban-mcp-server"
         ]
       }
