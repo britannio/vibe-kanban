@@ -1,8 +1,14 @@
-# Global Settings
+---
+title: "Global Settings"
+description: "Configure application-wide settings including themes, agents, GitHub integration, and more"
+sidebarTitle: "Settings"
+---
 
 You can configure application-wide settings via the **Settings** page. To access it, click the ⚙️ icon in the sidebar or select "Settings" from the top-right menu.
 
-![Settings Page](/images/screenshot-global-settings.png)
+<Frame>
+<img src="/images/screenshot-global-settings.png" alt="Vibe Kanban global settings page showing theme options, agent configuration, and GitHub integration settings" />
+</Frame>
 
 ## Themes
 
@@ -10,11 +16,14 @@ Switch between light and dark themes to suit your preference.
 
 ## Default Agent Configuration
 
-Choose the default agent and, if available, a variant. This profile is pre-selected when creating new task attempts and follow-ups.
+Choose the default agent and variant for new task attempts. This profile is pre-selected when creating new task attempts and follow-ups.
 
-- Pick an agent (e.g., CLAUDE_CODE, GEMINI, CODEX)
-- If that agent has variants, pick one (e.g., DEFAULT, PLAN, ROUTER)
-- You can change this per attempt in the create attempt dialog
+1. **Select an agent** (e.g., CLAUDE_CODE, GEMINI, CODEX)
+2. **Choose a variant** if available (e.g., DEFAULT, PLAN, ROUTER)
+
+<Tip>
+You can override the default agent configuration per attempt in the create attempt dialog.
+</Tip>
 
 ## Editor Integration
 
@@ -22,7 +31,11 @@ Configure integration with your preferred code editor (e.g., VS Code) for a seam
 
 ## GitHub Integration
 
-Link your GitHub account by providing a Personal Access Token (PAT) and authenticating. This enables branch management, pull request creation, and status tracking directly from Vibe Kanban.
+Link your GitHub account by providing a Personal Access Token (PAT) to enable:
+
+- Automatic branch management
+- Pull request creation and tracking  
+- Status synchronisation directly from Vibe Kanban
 
 ## Notifications
 
@@ -34,13 +47,19 @@ Enable or disable telemetry data collection to help improve Vibe Kanban.
 
 ## Task Templates
 
-Manage global task templates to accelerate task creation across all projects. Templates allow you to define a default title and description that can be reused when adding new tasks.
+Manage global task templates to accelerate task creation across all projects. Templates allow you to define reusable titles and descriptions for common tasks.
 
-You can learn more about task templates on the [Task Templates](/user-guide/creating-task-templates) page.
+<Card title="Learn more about task templates" icon="template" href="/user-guide/creating-task-templates">
+  Complete guide to creating and managing task templates
+</Card>
 
 ## Agent Settings (Profiles & Variants)
 
-Define and customize agent variants under Settings → Agents. Variants let you maintain multiple configurations for the same agent (for example a CLAUDE_CODE "PLAN" variant). See the [Agent Profiles & Variants](/user-guide/agent-configurations) guide for details and examples.
+Define and customise agent variants under **Settings → Agents**. Variants let you maintain multiple configurations for the same agent (for example, a CLAUDE_CODE "PLAN" variant).
+
+<Card title="Agent Profiles & Variants" icon="user-cog" href="/user-guide/agent-configurations">
+  Detailed guide with examples for configuring agent variants
+</Card>
 
 ## Safety & Disclaimers
 
