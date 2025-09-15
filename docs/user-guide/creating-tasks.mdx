@@ -1,33 +1,70 @@
-# Creating Tasks
+---
+title: "Creating Tasks"
+description: "Learn how to create and manage tasks on your kanban board, including using templates, starting coding agents, and understanding task states"
+---
 
-![Creating a task](/images/screenshot-create-task.png)
+<Frame>
+<img src="/images/screenshot-create-task.png" alt="Task creation interface showing Add Task button and form fields" />
+</Frame>
 
-Once you've created a project, you can add tasks by clicking the `Add Task` button in the navigation section of the project kanban page. Creating a task adds it to the project's kanban board, but doesn't automatically start trying to work on the task with a coding agent.
+After creating a project, add tasks by clicking the **Add Task** button in the navigation section of your project kanban page. Creating a task adds it to your kanban board without automatically starting a coding agent.
 
 ## Using Templates
 
-![Create Task with Template](/images/screenshot-create-task-template-dropdown.png)
+<Frame>
+<img src="/images/screenshot-create-task-template-dropdown.png" alt="Template dropdown menu showing available global and project-specific templates" />
+</Frame>
 
-When adding a new task, you can choose from your global or project templates via the **Use a template** dropdown. Selecting a template will prefill the task title and description based on your chosen template. See [Task Templates](/user-guide/creating-task-templates) for details.
+When adding a task, you can select from your saved templates:
 
-## Task Attempts
+1. Click the **Use a template** dropdown
+2. Choose from available global or project templates
+3. The template automatically populates the task title and description
 
-![Create task attempt](/images/screenshot-create-task-attempt.png)
+<Note>
+Templates save time by reusing common task structures. Learn more about creating templates in the [Task Templates](/user-guide/creating-task-templates) guide.
+</Note>
 
-To start a coding agent working on a task you'll need to create a task attempt. You can specify the base branch, the agent to use, and (if available) a variant. By default your currently checked out branch and your default agent configuration (from Settings) are selected.
+## Starting Task Attempts
 
-- Select Profile: pick the agent (e.g., CLAUDE_CODE, GEMINI, CODEX)
-- Select Variant: if the chosen agent has variants, pick one (e.g., DEFAULT, PLAN)
+<Frame>
+<img src="/images/screenshot-create-task-attempt.png" alt="Task attempt creation dialog showing agent profile and variant selection options" />
+</Frame>
 
-_Tip: "Create & Start" adds the task to the board and immediately creates a task attempt using your default agent configuration._
+To activate a coding agent on your task, create a task attempt:
 
-You can learn more about task attempts on the [Task Attempts](./creating-task-attempts) page.
+<Steps>
+<Step title="Select your agent profile">
+  Choose from available agents (e.g., CLAUDE_CODE, GEMINI, CODEX). Your default configuration from Settings is pre-selected.
+</Step>
 
-## Columns
+<Step title="Choose a variant">
+  If your selected agent has variants, pick the appropriate one (e.g., DEFAULT, PLAN).
+</Step>
 
-Tasks are added to the "To do" column, and can be freely dragged into any column. Dragging a task into a particular column won't trigger any functionality, but the task may move into a different column based on actions that are taken like starting coding agents. These are documented below:
+<Step title="Set the base branch">
+  Specify which branch the agent should work from. Your current branch is selected by default.
+</Step>
+</Steps>
 
-- Task attempt created: task moves to `In Progress`
-- Task attempt finished (success or failure): task moves to `In Review`
-- Task attempt merged: task moves to `Done`
-- Task attempt PR merged on GitHub: task moves to `Done` (polls GitHub every 60s)
+<Tip>
+Use **Create & Start** to add the task and immediately create a task attempt with your default settings in one action.
+</Tip>
+
+Learn more about managing task attempts in the [Task Attempts](./creating-task-attempts) guide.
+
+## Understanding Task Columns
+
+Tasks begin in the "To do" column and move automatically based on their progress:
+
+| Action | Column |
+|--------|---------|
+| Task created | To do |
+| Task attempt started | In Progress |
+| Task attempt completed (success or failure) | In Review |
+| Task attempt merged | Done |
+| PR merged on GitHub | Done |
+
+<Info>
+You can manually drag tasks between columns, but this won't trigger any functionality. Task movement is primarily driven by coding agent actions and GitHub integration (which polls every 60 seconds).
+</Info>
