@@ -1,35 +1,45 @@
-# Agent Profiles & Variants
+---
+title: "Agent Profiles & Configuration"
+description: "Configure and customise coding agent variants with different settings for planning, models, and sandbox permissions"
+---
 
-Agent profiles let you define multiple named variants for each supported coding agent. Variants capture small configuration differences (e.g., planning vs. coding, model choice, sandbox/approval levels) you can quickly select when creating an attempt or sending a follow‑up.
+Agent profiles let you define multiple named variants for each supported coding agent. Variants capture configuration differences like planning mode, model choice, and sandbox permissions that you can quickly select when creating attempts.
 
-Profiles are used anywhere an agent runs:
+<Info>
+Agent profiles are used throughout Vibe Kanban wherever agents run: onboarding, default settings, attempt creation, and follow-ups.
+</Info>
 
-- Onboarding: pick your default agent and optional variant
-- Settings → General: set the default agent configuration
-- Create Attempt dialog: choose agent and variant per attempt
-- Follow‑ups: continue using the attempt's selected profile/variant
+## Configuration Access
 
-## Where To Configure
+You can configure agent profiles in two ways through Settings → Agents:
 
-Open Settings → Agents. You can edit agent configurations in two ways:
+<Tabs>
+<Tab title="Form Editor">
+  Use the guided interface with form fields for each agent setting.
 
-- Form editor: guided fields per agent
+  <Frame>
+  <img src="/images/coding-agent-configurations.png" alt="Agent configuration form editor interface" />
+  </Frame>
+</Tab>
 
-![coding Agent Configurations](/images/coding-agent-configurations.png)
+<Tab title="JSON Editor">
+  Edit the underlying `profiles.json` file directly for advanced configurations.
 
-- JSON editor: edit the underlying `profiles.json` directly
+  <Frame>
+  <img src="/images/coding-agent-configurations-json.png" alt="JSON editor for agent configurations" />
+  </Frame>
+</Tab>
+</Tabs>
 
-![coding Agent Configurations JSON Editor](/images/coding-agent-configurations-json.png)
+<Note>
+The configuration page displays the exact file path where your settings are stored. Vibe Kanban saves only your overrides whilst preserving built-in defaults.
+</Note>
 
-The page shows the exact file path where your config is stored (profiles.json). The app saves only your overrides; built‑in defaults remain available and cannot be deleted.
+## Configuration Structure
 
-## JSON Structure
+The profiles configuration uses a JSON structure with an `executors` object containing agent variants:
 
-The configuration file is a JSON object with an `executors` map. Each executor (agent) contains one or more variants. Every variant holds a single object for that agent with its options.
-
-Example (abridged):
-
-```json
+```json profiles.json
 {
   "executors": {
     "CLAUDE_CODE": {
@@ -49,56 +59,157 @@ Example (abridged):
 }
 ```
 
-Notes:
+<AccordionGroup>
+<Accordion title="Structure Rules">
+  - **Variant names**: Case-insensitive and normalised to SCREAMING_SNAKE_CASE
+  - **DEFAULT variant**: Reserved and always present for each agent
+  - **Custom variants**: Add new variants like `PLAN`, `FLASH`, `HIGH` as needed
+  - **Built-in protection**: Cannot remove built-in executors, but can override values
+</Accordion>
 
-- Variant names are case‑insensitive and normalized to SCREAMING_SNAKE_CASE.
-- `DEFAULT` is reserved and always present; you can add more variants (e.g., `PLAN`, `FLASH`).
-- You can't remove built‑in executors or their built‑in variants, but you can override their values or add new variants.
+<Accordion title="Configuration Inheritance">
+  - Your custom settings override built-in defaults
+  - Built-in configurations remain available as fallbacks
+  - Each variant contains a complete configuration object for its agent
+</Accordion>
+</AccordionGroup>
 
-## Per‑Agent Options (quick reference)
+## Agent Configuration Options
 
-- CLAUDE_CODE
-  - `plan: boolean` – enable planning mode
-  - `claude_code_router: boolean` – route across multiple Claude Code instances
-  - `dangerously_skip_permissions: boolean` – skip permission prompts (unsafe)
-  - Docs: https://docs.anthropic.com/en/docs/claude-code/cli-reference#cli-flags
-- GEMINI
-  - `model: "default" | "flash"`
-  - `yolo: boolean` – run without confirmations
-  - Docs: https://google-gemini.github.io/gemini-cli/
-- AMP
-  - `dangerously_allow_all: boolean` – allow all actions (unsafe)
-  - Docs: https://ampcode.com/manual#cli
-- CODEX
-  - `sandbox: "read-only" | "workspace-write" | "danger-full-access"`
-  - `approval: "untrusted" | "on-failure" | "on-request" | "never"`
-  - `oss: boolean`, `model: string`, `model_reasoning_effort: "low" | "medium" | "high"`, `model_reasoning_summary: "auto" | "concise" | "detailed" | "none"`
-  - Docs: https://github.com/openai/codex
-- CURSOR
-  - `force: boolean`, `model: string`
-  - Docs: https://docs.cursor.com/en/cli/reference/parameters
-- OPENCODE
-  - `model: string`, `agent: string`
-  - Docs: https://opencode.ai/docs/cli/#flags-1
-- QWEN_CODE
-  - `yolo: boolean`
-  - Docs: https://qwenlm.github.io/qwen-code-docs/en/cli/index
+<Tabs>
+<Tab title="CLAUDE_CODE">
+  <ParamField path="plan" type="boolean">
+  Enable planning mode for complex tasks
+  </ParamField>
 
-Common options supported by several agents:
+  <ParamField path="claude_code_router" type="boolean">
+  Route requests across multiple Claude Code instances
+  </ParamField>
 
-- `append_prompt: string | null` – text appended to the system/prompt
-- `base_command_override: string | null` – override the underlying CLI command
-- `additional_params: string[] | null` – extra CLI args
+  <ParamField path="dangerously_skip_permissions" type="boolean">
+  Skip permission prompts (use with caution)
+  </ParamField>
 
-Use these carefully; "dangerously_…" flags bypass confirmations and can perform destructive actions.
+  [View full CLI reference →](https://docs.anthropic.com/en/docs/claude-code/cli-reference#cli-flags)
+</Tab>
 
-## Selecting Defaults vs. Per‑Attempt
+<Tab title="GEMINI">
+  <ParamField path="model" type="string">
+  Choose model variant: `"default"` or `"flash"`
+  </ParamField>
 
-- Default: Set under Settings → General → "Default Agent Configuration."
-- Per Attempt: Use the create attempt dialog to pick a different agent/variant for that run.
+  <ParamField path="yolo" type="boolean">
+  Run without confirmations
+  </ParamField>
 
-## MCP Servers
+  [View full CLI reference →](https://google-gemini.github.io/gemini-cli/)
+</Tab>
 
-MCP (Model Context Protocol) servers are configured per agent under Settings → MCP Servers. This is separate from profiles but complements them. 
+<Tab title="AMP">
+  <ParamField path="dangerously_allow_all" type="boolean">
+  Allow all actions without restrictions (unsafe)
+  </ParamField>
 
-For configuring MCP servers within Vibe Kanban for your coding agents, see the [MCP Server Configuration](/user-guide/mcp-server-configuration) guide. If you want to connect external MCP clients to Vibe Kanban's own MCP server, see the [Vibe Kanban MCP Server](/user-guide/vibe-kanban-mcp-server) guide.
+  [View full documentation →](https://ampcode.com/manual#cli)
+</Tab>
+
+<Tab title="CODEX">
+  <ParamField path="sandbox" type="string">
+  Execution environment: `"read-only"`, `"workspace-write"`, or `"danger-full-access"`
+  </ParamField>
+
+  <ParamField path="approval" type="string">
+  Approval level: `"untrusted"`, `"on-failure"`, `"on-request"`, or `"never"`
+  </ParamField>
+
+  <ParamField path="model_reasoning_effort" type="string">
+  Reasoning depth: `"low"`, `"medium"`, or `"high"`
+  </ParamField>
+
+  <ParamField path="model_reasoning_summary" type="string">
+  Summary style: `"auto"`, `"concise"`, `"detailed"`, or `"none"`
+  </ParamField>
+
+  [View full documentation →](https://github.com/openai/codex)
+</Tab>
+
+<Tab title="CURSOR">
+  <ParamField path="force" type="boolean">
+  Force execution without confirmation
+  </ParamField>
+
+  <ParamField path="model" type="string">
+  Specify model to use
+  </ParamField>
+
+  [View full CLI reference →](https://docs.cursor.com/en/cli/reference/parameters)
+</Tab>
+
+<Tab title="OPENCODE">
+  <ParamField path="model" type="string">
+  Specify model to use
+  </ParamField>
+
+  <ParamField path="agent" type="string">
+  Choose agent type
+  </ParamField>
+
+  [View full documentation →](https://opencode.ai/docs/cli/#flags-1)
+</Tab>
+
+<Tab title="QWEN_CODE">
+  <ParamField path="yolo" type="boolean">
+  Run without confirmations
+  </ParamField>
+
+  [View full documentation →](https://qwenlm.github.io/qwen-code-docs/en/cli/index)
+</Tab>
+</Tabs>
+
+### Universal Options
+
+These options work across multiple agent types:
+
+<ParamField path="append_prompt" type="string | null">
+Text appended to the system prompt
+</ParamField>
+
+<ParamField path="base_command_override" type="string | null">
+Override the underlying CLI command
+</ParamField>
+
+<ParamField path="additional_params" type="string[] | null">
+Additional CLI arguments to pass
+</ParamField>
+
+<Warning>
+Options prefixed with "dangerously_" bypass safety confirmations and can perform destructive actions. Use with extreme caution.
+</Warning>
+
+## Using Agent Configurations
+
+<CardGroup cols={2}>
+<Card title="Default Configuration" icon="gear">
+  Set your default agent and variant in **Settings → General → Default Agent Configuration** for consistent behaviour across all attempts.
+</Card>
+
+<Card title="Per-Attempt Selection" icon="rocket">
+  Override defaults when creating attempts by selecting different agent/variant combinations in the attempt dialogue.
+</Card>
+</CardGroup>
+
+## Related Configuration
+
+<Note>
+MCP (Model Context Protocol) servers are configured separately under **Settings → MCP Servers** but work alongside agent profiles to extend functionality.
+</Note>
+
+<CardGroup cols={2}>
+<Card title="MCP Server Configuration" icon="server" href="/user-guide/mcp-server-configuration">
+  Configure MCP servers within Vibe Kanban for your coding agents
+</Card>
+
+<Card title="Vibe Kanban MCP Server" icon="plug" href="/user-guide/vibe-kanban-mcp-server">
+  Connect external MCP clients to Vibe Kanban's MCP server
+</Card>
+</CardGroup>
