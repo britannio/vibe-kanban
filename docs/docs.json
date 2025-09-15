@@ -36,6 +36,7 @@
           "user-guide/reviewing-code-changes",
           "user-guide/creating-task-templates",
           "user-guide/agent-configurations",
+          "user-guide/vscode-extension",
           "user-guide/vibe-kanban-mcp-server"
         ]
       }
