@@ -1,40 +1,97 @@
-# Task Attempts
+---
+title: "Creating Task Attempts"
+description: "Learn how to create and manage task attempts, execute coding agents, and use task-specific features in Vibe Kanban."
+sidebarTitle: "Task Attempts"
+---
 
-Task attempts represent one run of a coding agent against a task. Any follow up questions in the same coding agent session will be attached to the same task attempt.
+A task attempt represents a single execution of a coding agent against a task. Any follow-up questions within the same session attach to the same task attempt.
 
-## Running Setup Scripts
+## Setup Script Execution
 
-![Setup script running](/images/screenshot-setup-script-running.png)
+<Frame>
+<img src="/images/screenshot-setup-script-running.png" alt="Setup script running in the task attempt interface" />
+</Frame>
 
-When you start a task attempt, if specified in the project settings, the setup script is run automatically.
+When you start a task attempt, any setup script defined in your project settings runs automatically before agent execution begins.
 
-## Running Coding Agents
+<Note>
+Setup scripts help prepare your environment with dependencies, configuration, or initialization steps before the agent starts working.
+</Note>
 
-![Coding agent running](/images/screenshot-agent-running.png)
+## Agent Execution
 
-After any setup scripts have run, the coding agent is executed with your task title and description in the prompt. The agent's logs are streamed back to the UI in real time.
+<Frame>
+<img src="/images/screenshot-agent-running.png" alt="Coding agent executing with real-time log output" />
+</Frame>
 
-### Profiles & Variants
+After setup scripts complete, the coding agent executes using your task title and description. You can monitor progress through real-time log streaming in the interface.
 
-Before starting, select an agent profile (agent) and, if available, a variant. Profiles and variants let you quickly switch between different configurations for the same agent (for example a planning-focused variant). You can manage these under Settings → Agents. See [Agent Profiles & Variants](/user-guide/agent-configurations) for details.
+### Selecting Profiles and Variants
 
-## Follow Up questions
+<Steps>
+<Step title="Choose an agent profile">
+  Select your desired agent from the available profiles configured in your project.
+</Step>
 
-When the execution has finished, you can ask a follow up question using the box at the bottom of the task attempt dialog.
+<Step title="Select a variant (if available)">
+  Choose a specific variant for specialized behavior, such as planning-focused or debugging-focused configurations.
+</Step>
 
-## Task Attempt Toolbar
+<Step title="Manage configurations">
+  Configure profiles and variants under **Settings → Agents**. See [Agent Profiles & Variants](/user-guide/agent-configurations) for detailed configuration options.
+</Step>
+</Steps>
 
-![Task attempt toolbar](/images/screenshot-task-attempt-toolbar.png)
+## Follow-Up Questions
 
-You can use the task attempt toolbar to perform useful actions:
+After agent execution completes, you can continue the conversation by asking follow-up questions in the input box at the bottom of the task attempt dialog.
 
-- `Dev Server` - Start a dev server (this will kill any existing dev servers running in this project)
-- `History` - View any previous attempts at this task
-- `Rebase` - If enabled, communicates that the task branch is behind its base branch, if clicked will attempt to rebase (will fail on conflict)
-- `Create PR` - Opens a dialog to create a PR in GitHub
-- `Merge` - Merges the branch into its base branch
-- `New Attempt` - Opens the create attempt dialog so you can start over
+<Tip>
+Follow-up questions help refine results or request additional changes without starting a new task attempt.
+</Tip>
 
-## Worktrees
+## Task Attempt Toolbar Actions
 
-Under the hood, Vibe Kanban relies on Git worktrees to create isolated environments for each task attempt. These should be considered ephemeral and are automatically cleaned up after each run.
+<Frame>
+<img src="/images/screenshot-task-attempt-toolbar.png" alt="Task attempt toolbar showing available actions" />
+</Frame>
+
+Use the toolbar to access these key actions:
+
+<AccordionGroup>
+<Accordion title="Dev Server">
+  Starts a development server for your project. This terminates any existing dev servers running for the same project.
+</Accordion>
+
+<Accordion title="History">
+  View all previous attempts for this task, including their status and outcomes.
+</Accordion>
+
+<Accordion title="Rebase">
+  Updates your task branch with changes from the base branch. Only appears when your branch is behind. Rebase fails if conflicts exist.
+
+  <Warning>
+  Resolve any merge conflicts manually before attempting to rebase.
+  </Warning>
+</Accordion>
+
+<Accordion title="Create PR">
+  Opens a dialog to create a pull request in GitHub directly from your task attempt.
+</Accordion>
+
+<Accordion title="Merge">
+  Merges the task branch into its base branch once you're satisfied with the results.
+</Accordion>
+
+<Accordion title="New Attempt">
+  Starts a fresh task attempt, useful for trying different approaches or agent configurations.
+</Accordion>
+</AccordionGroup>
+
+## Git Worktrees
+
+Vibe Kanban uses Git worktrees to create isolated environments for each task attempt. These environments are ephemeral and automatically cleaned up after execution completes.
+
+<Info>
+Worktrees ensure task attempts don't interfere with each other or your main working directory.
+</Info>
