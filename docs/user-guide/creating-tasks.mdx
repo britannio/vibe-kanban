@@ -25,7 +25,7 @@ When adding a task, you can select from your saved templates:
 Templates save time by reusing common task structures. Learn more about creating templates in the [Task Templates](/user-guide/creating-task-templates) guide.
 </Note>
 
-## Starting Task Attempts
+## Starting Your First Task Attempt
 
 <Frame>
 <img src="/images/screenshot-create-task-attempt.png" alt="Task attempt creation dialog showing agent profile and variant selection options" />
@@ -51,7 +51,18 @@ To activate a coding agent on your task, create a task attempt:
 Use **Create & Start** to add the task and immediately create a task attempt with your default settings in one action.
 </Tip>
 
-Learn more about managing task attempts in the [Task Attempts](./creating-task-attempts) guide.
+### What Happens During Execution
+
+1. **Setup Scripts Run**: Any setup script defined in your project settings runs automatically
+2. **Agent Execution**: The coding agent processes your task using the title and description  
+3. **Real-time Monitoring**: Watch progress through streaming logs in the task interface
+4. **Follow-up Questions**: Continue the conversation after execution to refine results
+
+Most tasks only need a single attempt. You'll only need additional attempts if you want to restart from scratch with different settings.
+
+<Note>
+For detailed task management after execution, see [Task Details Full Screen Mode](/user-guide/task-details-full-screen). To understand when you might need multiple attempts, see [Creating Task Attempts](/user-guide/creating-task-attempts).
+</Note>
 
 ## Creating Tasks via MCP Clients
 

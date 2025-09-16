@@ -1,92 +1,73 @@
 ---
 title: "Creating Task Attempts"
-description: "Learn how to create and manage task attempts, execute coding agents, and use task-specific features in Vibe Kanban."
+description: "Understand when and why to create multiple task attempts for fresh restarts with different configurations."
 sidebarTitle: "Creating Task Attempts"
 ---
 
-A task attempt represents a single execution of a coding agent against a task. Any follow-up questions within the same session attach to the same task attempt.
+A task attempt represents a single execution of a coding agent against a task. Most tasks only need one attempt, but you may need additional attempts for fresh restarts.
 
-## Setup Script Execution
+## When to Create New Task Attempts
 
-<Frame>
-<img src="/images/screenshot-setup-script-running.png" alt="Setup script running in the task attempt interface" />
-</Frame>
+Create a new task attempt when you want to:
 
-When you start a task attempt, any setup script defined in your project settings runs automatically before agent execution begins.
+- **Start from scratch** with a different approach after an unsuccessful attempt
+- **Try a different coding agent** (e.g., switching from Claude to Codex)
+- **Use a different agent profile or variant** for specialised behaviour
+- **Work from a different base branch** to incorporate recent changes
+- **Reset the conversation context** for a completely fresh start
 
-<Note>
-Setup scripts help prepare your environment with dependencies, configuration, or initialization steps before the agent starts working.
-</Note>
+<Tip>
+Most users will only need one attempt per task. Only create additional attempts if the first approach didn't work as expected.
+</Tip>
 
-## Agent Execution
+## Creating Additional Attempts
 
-<Frame>
-<img src="/images/screenshot-agent-running.png" alt="Coding agent executing with real-time log output" />
-</Frame>
-
-After setup scripts complete, the coding agent executes using your task title and description. You can monitor progress through real-time log streaming in the interface.
-
-### Selecting Profiles and Variants
+To create a new task attempt for an existing task:
 
 <Steps>
-<Step title="Choose an agent profile">
-  Select your desired agent from the available profiles configured in your project.
+<Step title="Navigate to the task">
+  Open the task that needs a fresh attempt.
 </Step>
 
-<Step title="Select a variant (if available)">
-  Choose a specific variant for specialised behaviour, such as planning-focused or debugging-focused configurations.
+<Step title="Click New Attempt">
+  In the task interface, click the **New Attempt** button.
 </Step>
 
-<Step title="Manage configurations">
-  Configure profiles and variants under **Settings → Agents**. See [Agent Profiles & Variants](/user-guide/agent-configurations) for detailed configuration options.
+<Step title="Configure the attempt">
+  Choose your agent profile, variant, and base branch. These can be different from previous attempts.
+</Step>
+
+<Step title="Start execution">
+  Click **Create Attempt** to begin a fresh execution with the new configuration.
 </Step>
 </Steps>
 
-## Follow-Up Questions
+## Impact on Subtasks
 
-After agent execution completes, you can continue the conversation by asking follow-up questions in the input box at the bottom of the task attempt dialog.
+<Warning>
+Creating new task attempts affects subtasks. Subtasks are linked to specific task attempts, not tasks themselves.
+</Warning>
 
-<Tip>
-Follow-up questions help refine results or request additional changes without starting a new task attempt.
-</Tip>
+When you create a new task attempt:
 
-## Task Attempt Toolbar Actions
+- **Existing subtasks** remain linked to their original parent attempt
+- **New subtasks** created from the new attempt will use the new attempt's branch as their base
+- This allows you to maintain different subtask workflows for different approaches
 
-<Frame>
-<img src="/images/screenshot-task-attempt-toolbar.png" alt="Task attempt toolbar showing available actions" />
-</Frame>
+<Info>
+For more details about how subtasks work with task attempts, see [Creating Subtasks](/user-guide/subtasks).
+</Info>
 
-Use the toolbar to access these key actions:
+## What Happens Next
 
-<AccordionGroup>
-<Accordion title="Dev Server">
-  Starts a development server for your project. This terminates any existing dev servers running for the same project.
-</Accordion>
+After creating a task attempt:
 
-<Accordion title="History">
-  View all previous attempts for this task, including their status and outcomes.
-</Accordion>
+1. **Setup scripts run** automatically (if configured in project settings)
+2. **Agent executes** using your task title and description
+3. **Real-time monitoring** shows progress through streaming logs
+4. **Follow-up questions** can be asked to refine results
 
-<Accordion title="Rebase">
-  Updates your task branch with changes from the base branch. Only appears when your branch is behind. Rebase fails if conflicts exist.
-
-  <Warning>
-  Resolve any merge conflicts manually before attempting to rebase.
-  </Warning>
-</Accordion>
-
-<Accordion title="Create PR">
-  Opens a dialog to create a pull request in GitHub directly from your task attempt.
-</Accordion>
-
-<Accordion title="Merge">
-  Merges the task branch into its base branch once you're satisfied with the results.
-</Accordion>
-
-<Accordion title="New Attempt">
-  Starts a fresh task attempt, useful for trying different approaches or agent configurations.
-</Accordion>
-</AccordionGroup>
+For detailed task management after execution, including development server controls, git operations, and monitoring features, see [Task Details Full Screen Mode](/user-guide/task-details-full-screen).
 
 ## Git Worktrees
 
