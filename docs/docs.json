@@ -36,6 +36,7 @@
         "pages": [
           "user-guide/creating-projects",
           "user-guide/creating-tasks",
+          "user-guide/subtasks",
           "user-guide/creating-task-attempts",
           "user-guide/task-details-full-screen",
           "user-guide/reviewing-code-changes",
