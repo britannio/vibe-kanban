@@ -23,27 +23,32 @@
     "groups": [
       {
         "group": "Getting started",
-        "pages": ["index", "getting-started", "global-settings"]
+        "pages": ["index", "getting-started", "supported-coding-agents"]
       },
       {
-        "group": "Supported Coding Agents",
-        "pages": [
-          "supported-coding-agents"
-        ]
-      },
-      {
-        "group": "User Guide",
+        "group": "Core Features",
         "pages": [
           "user-guide/creating-projects",
           "user-guide/creating-tasks",
           "user-guide/subtasks",
           "user-guide/creating-task-attempts",
-          "user-guide/task-details-full-screen",
           "user-guide/reviewing-code-changes",
-          "user-guide/github-integration",
-          "user-guide/creating-task-templates",
-          "user-guide/keyboard-shortcuts",
+          "user-guide/task-details-full-screen"
+        ]
+      },
+      {
+        "group": "Configuration & Customisation",
+        "pages": [
+          "global-settings",
           "user-guide/agent-configurations",
+          "user-guide/creating-task-templates",
+          "user-guide/keyboard-shortcuts"
+        ]
+      },
+      {
+        "group": "Integrations",
+        "pages": [
+          "user-guide/github-integration",
           "user-guide/vscode-extension",
           "user-guide/mcp-server-configuration",
           "user-guide/vibe-kanban-mcp-server"
