@@ -28,30 +28,30 @@
       {
         "group": "Core Features",
         "pages": [
-          "user-guide/creating-projects",
-          "user-guide/creating-tasks",
-          "user-guide/subtasks",
-          "user-guide/creating-task-attempts",
-          "user-guide/reviewing-code-changes",
-          "user-guide/task-details-full-screen"
+          "core-features/creating-projects",
+          "core-features/creating-tasks",
+          "core-features/subtasks",
+          "core-features/creating-task-attempts",
+          "core-features/reviewing-code-changes",
+          "core-features/task-details-full-screen"
         ]
       },
       {
         "group": "Configuration & Customisation",
         "pages": [
           "global-settings",
-          "user-guide/agent-configurations",
-          "user-guide/creating-task-templates",
-          "user-guide/keyboard-shortcuts"
+          "configuration-customisation/agent-configurations",
+          "configuration-customisation/creating-task-templates",
+          "configuration-customisation/keyboard-shortcuts"
         ]
       },
       {
         "group": "Integrations",
         "pages": [
-          "user-guide/github-integration",
-          "user-guide/vscode-extension",
-          "user-guide/mcp-server-configuration",
-          "user-guide/vibe-kanban-mcp-server"
+          "integrations/github-integration",
+          "integrations/vscode-extension",
+          "integrations/mcp-server-configuration",
+          "integrations/vibe-kanban-mcp-server"
         ]
       }
     ]
