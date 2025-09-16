@@ -39,7 +39,7 @@
       {
         "group": "Configuration & Customisation",
         "pages": [
-          "global-settings",
+          "configuration-customisation/global-settings",
           "configuration-customisation/agent-configurations",
           "configuration-customisation/creating-task-templates",
           "configuration-customisation/keyboard-shortcuts"
