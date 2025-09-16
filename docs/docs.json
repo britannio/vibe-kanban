@@ -23,7 +23,7 @@
     "groups": [
       {
         "group": "Getting started",
-        "pages": ["index", "getting-started", "onboarding", "global-settings"]
+        "pages": ["index", "getting-started", "global-settings"]
       },
       {
         "group": "Supported Coding Agents",
