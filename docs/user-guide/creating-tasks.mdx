@@ -53,6 +53,39 @@ Use **Create & Start** to add the task and immediately create a task attempt wit
 
 Learn more about managing task attempts in the [Task Attempts](./creating-task-attempts) guide.
 
+## Creating Tasks via MCP Clients
+
+<Warning>
+This is not the typical method for creating tasks but can be valuable for bulk task creation or migrating from other systems.
+</Warning>
+
+Tasks can also be created programmatically using coding agents or MCP (Model Context Protocol) clients such as Claude Desktop or Raycast. This approach is particularly useful for:
+
+- **Bulk task creation** based on existing data or project specifications
+- **Migration from other systems** like Linear, GitHub Issues, or Jira
+- **Automated task generation** from project plans or requirements documents
+
+<Tip>
+For detailed setup instructions and examples, see the [Vibe Kanban MCP Server](/user-guide/vibe-kanban-mcp-server) documentation.
+</Tip>
+
+### Example MCP Task Creation
+
+Once configured with an MCP client, you can create multiple tasks from a project description:
+
+```
+I need to implement user authentication with:
+- Email/password registration
+- Login with session management  
+- Password reset functionality
+- Email verification
+- Protected route middleware
+
+Please create individual tasks for each component.
+```
+
+The MCP client will automatically generate structured tasks in your Vibe Kanban project based on this description.
+
 ## Understanding Task Columns
 
 Tasks begin in the "To do" column and move automatically based on their progress:
