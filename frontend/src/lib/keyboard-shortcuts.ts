@@ -148,14 +148,9 @@ export function useDialogKeyboardShortcuts(onClose: () => void) {
       if (event.key === 'Escape') {
         // Ensure dialog consumes Esc and prevents global handlers
         event.preventDefault();
-        event.stopPropagation();
-        // Stop other listeners on the same target (document) as well
-        // to avoid global shortcut handlers running after this.
-        // @ts-expect-error stopImmediatePropagation exists on Event
-        if (typeof (event as any).stopImmediatePropagation === 'function') {
-          (event as any).stopImmediatePropagation();
-        }
         onClose();
+        // Stop propagation after closing so bubble-phase shortcuts don’t fire
+        event.stopPropagation();
       }
     };
 
