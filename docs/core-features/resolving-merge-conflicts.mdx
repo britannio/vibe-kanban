@@ -12,95 +12,38 @@ Understanding the different states your task can be in helps you know exactly wh
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Todo: Create task
+    [*] --> Mergeable: Task completed
+    Mergeable --> Behind: Base branch advances
+    Behind --> Mergeable: Rebase succeeds
+    Behind --> RebaseConflicts: Rebase conflicts
     
-    Todo --> InProgress: Start task attempt
-    
-    state InProgress {
-        [*] --> SetupRunning
-        SetupRunning --> SetupComplete: Setup succeeds
-        SetupRunning --> SetupFailed: Setup fails
-        SetupComplete --> ExecutorRunning: Begin coding
-        ExecutorRunning --> ExecutorComplete: Agent completes
-        ExecutorRunning --> ExecutorFailed: Agent fails
-        ExecutorComplete --> CheckBranch: Check branch status
-        ExecutorFailed --> CheckBranch: Check branch status
-        
-        state CheckBranch <<choice>>
-        CheckBranch --> ReadyToMerge: Branch up-to-date
-        CheckBranch --> RebaseNeeded: Branch behind
-        CheckBranch --> HasConflicts: Conflicts exist
+    state RebaseConflicts {
+        [*] --> ConflictDetected
+        ConflictDetected --> ManualEdit: Open in Editor
+        ConflictDetected --> AutoResolve: Insert Instructions
+        ConflictDetected --> AbortRebase: Abort
+        ManualEdit --> Resolved: git rebase --continue
+        AutoResolve --> Resolved: Agent resolves
+        AbortRebase --> Behind: Return to previous state
+        Resolved --> [*]
     }
     
-    InProgress --> InReview: Task attempt completes
+    RebaseConflicts --> Mergeable: All conflicts resolved
+    Mergeable --> [*]: Merge task
     
-    state InReview {
-        [*] --> ReviewPending: Awaiting review
-        ReviewPending --> RebaseNeeded: Base branch advanced
-        ReviewPending --> ReadyToMerge: Ready to merge
-        ReviewPending --> HasConflicts: Rebase conflicts
-        
-        RebaseNeeded --> Rebasing: Click rebase button
-        Rebasing --> ReadyToMerge: Rebase succeeds
-        Rebasing --> HasConflicts: Rebase conflicts
-        
-        state HasConflicts {
-            [*] --> ConflictDetected: conflicts found
-            ConflictDetected --> ManualResolution: Open in editor
-            ConflictDetected --> AutoResolution: Insert instructions
-            ConflictDetected --> AbortRebase: Abort rebase
-            ManualResolution --> RebaseComplete: git rebase --continue
-            AutoResolution --> RebaseComplete: Agent resolves
-            AbortRebase --> RebaseNeeded: Return to previous state
-            RebaseComplete --> ReadyToMerge: All conflicts resolved
-        }
-        
-        ReadyToMerge --> Merged: Click merge button
-        ReviewPending --> InProgress: Send feedback
-    }
+    classDef ready fill:#d4edda,stroke:#28a745,color:#000
+    classDef behind fill:#fff3cd,stroke:#ffc107,color:#000
+    classDef conflict fill:#f8d7da,stroke:#dc3545,color:#000
     
-    InReview --> Done: Successfully merged
-    InReview --> InProgress: Request changes
-    
-    Todo --> Cancelled: Cancel task
-    InProgress --> Cancelled: Cancel task  
-    InReview --> Cancelled: Cancel task
-    
-    Done --> [*]: Task complete
-    Cancelled --> [*]: Task cancelled
-    
-    classDef startState fill:#d4edda,stroke:#28a745,color:#000
-    classDef activeState fill:#fff3cd,stroke:#ffc107,color:#000
-    classDef conflictState fill:#f8d7da,stroke:#dc3545,color:#000
-    classDef successState fill:#cce5ff,stroke:#007bff,color:#000
-    classDef endState fill:#e2e3e5,stroke:#6c757d,color:#000
-    
-    class Todo startState
-    class InProgress,SetupRunning,ExecutorRunning,Rebasing activeState
-    class HasConflicts,ConflictDetected,ManualResolution,AutoResolution conflictState
-    class ReadyToMerge,Merged,RebaseComplete successState
-    class Done,Cancelled endState
+    class Mergeable ready
+    class Behind behind
+    class RebaseConflicts,ConflictDetected,ManualEdit,AutoResolve conflict
 ```
 
-### Key States Explained
-
-**Primary Task States:**
-- **Todo** - Task created but not started
-- **In Progress** - Task attempt is actively running or ready to run
-- **In Review** - Task completed, awaiting review/merge
-- **Done** - Successfully merged and complete
-- **Cancelled** - Task cancelled at any stage
-
-**Branch Status Indicators:**
-- **Ready to Merge** - Branch is up-to-date and can be merged
-- **Rebase Needed** - Base branch has advanced, rebase required
-- **Has Conflicts** - Merge conflicts need resolution
-
-**Conflict Resolution States:**
-- **Conflict Detected** - System identified conflicted files
-- **Manual Resolution** - User editing files manually
-- **Auto Resolution** - Coding agent resolving conflicts
-- **Rebase Complete** - All conflicts resolved, ready to merge
+**Three Core States:**
+- **Mergeable** - Ready to merge, no conflicts
+- **Behind** - Base branch advanced, rebase needed  
+- **Rebase Conflicts** - Conflicts detected during rebase
 
 ## Understanding Git Worktrees and Branching
 

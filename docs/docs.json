@@ -38,7 +38,6 @@
           "core-features/creating-task-attempts",
           "core-features/reviewing-code-changes",
           "core-features/resolving-merge-conflicts",
-          "core-features/conflict-resolution-quick-guide",
           "core-features/task-details-full-screen"
         ]
       },
