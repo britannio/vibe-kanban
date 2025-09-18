@@ -1,0 +1,98 @@
+---
+title: "Merge Conflicts - Quick Guide"
+description: "Essential steps to resolve rebase conflicts in Vibe Kanban"
+sidebarTitle: "Conflicts Quick Guide"
+---
+
+## When You See "Rebase Conflicts"
+
+Your task status changed from "Rebase needed" to "Rebase conflicts" because the base branch advanced and your changes conflict with the new changes.
+
+## Conflict Resolution States
+
+```mermaid
+stateDiagram-v2
+    RebaseNeeded --> Rebasing: Click rebase button
+    Rebasing --> ReadyToMerge: Clean rebase
+    Rebasing --> RebaseConflicts: Conflicts detected
+    
+    state RebaseConflicts {
+        [*] --> ConflictBanner: Banner appears
+        ConflictBanner --> Manual: Open in Editor
+        ConflictBanner --> Auto: Insert Instructions  
+        ConflictBanner --> Abort: Abort Rebase
+        Manual --> Complete: git rebase --continue
+        Auto --> Complete: Agent resolves
+        Abort --> RebaseNeeded: Start over
+        Complete --> ReadyToMerge: Success
+    }
+    
+    classDef conflict fill:#f8d7da,stroke:#dc3545,color:#000
+    classDef success fill:#d4edda,stroke:#28a745,color:#000
+    
+    class RebaseConflicts,ConflictBanner,Manual,Auto conflict
+    class ReadyToMerge,Complete success
+```
+
+## Resolution Options
+
+### Option 1: Manual Resolution
+
+<Steps>
+<Step title="Open in Editor">
+  Click **Open in Editor** from the conflict banner.
+</Step>
+
+<Step title="Edit conflicted files">
+  Resolve merge markers in each file:
+  ```diff
+  <<<<<<< HEAD (your changes)
+  your code
+  =======
+  base branch code  
+  >>>>>>> main
+  ```
+</Step>
+
+<Step title="Continue rebase">
+  ```bash
+  git add resolved-file.js
+  git rebase --continue
+  ```
+</Step>
+</Steps>
+
+### Option 2: Automatic Resolution
+
+<Steps>
+<Step title="Insert instructions">
+  Click **Insert Resolve-Conflicts Instructions** from the conflict banner.
+</Step>
+
+<Step title="Send to agent">
+  Review the generated instructions and click **Send**.
+</Step>
+</Steps>
+
+<Frame>
+<img src="/images/vk-rebase-conflicts-prompt-zoom.png" alt="Conflict resolution banner with auto-generated instructions" />
+</Frame>
+
+The agent will:
+1. Analyze conflicted files
+2. Make resolution decisions
+3. Run `git rebase --continue` automatically
+
+## Quick Actions
+
+- **Abort Rebase** - Returns to "Rebase needed" state
+- **Open in Editor** - Manual resolution in your IDE
+- **Insert Instructions** - Let the coding agent resolve
+
+## What Happens Next
+
+Once conflicts are resolved, your task status returns to **Ready to Merge** and the merge button becomes available.
+
+<Note>
+The conflict banner shows above the follow-up text field and provides three resolution options.
+</Note>
