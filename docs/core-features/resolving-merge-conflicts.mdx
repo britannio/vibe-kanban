@@ -6,45 +6,6 @@ sidebarTitle: "Resolving Merge Conflicts"
 
 When your task is running on a branch that becomes outdated, you'll need to rebase onto the latest version of your base branch. Sometimes this process results in merge conflicts that need to be resolved before you can continue.
 
-## Task Status State Machine
-
-Understanding the different states your task can be in helps you know exactly what actions are available and how to proceed toward a successful merge.
-
-```mermaid
-stateDiagram-v2
-    [*] --> Mergeable: Task completed
-    Mergeable --> Behind: Base branch advances
-    Behind --> Mergeable: Rebase succeeds
-    Behind --> RebaseConflicts: Rebase conflicts
-    
-    state RebaseConflicts {
-        [*] --> ConflictDetected
-        ConflictDetected --> ManualEdit: Open in Editor
-        ConflictDetected --> AutoResolve: Insert Instructions
-        ConflictDetected --> AbortRebase: Abort
-        ManualEdit --> Resolved: git rebase --continue
-        AutoResolve --> Resolved: Agent resolves
-        AbortRebase --> Behind: Return to previous state
-        Resolved --> [*]
-    }
-    
-    RebaseConflicts --> Mergeable: All conflicts resolved
-    Mergeable --> [*]: Merge task
-    
-    classDef ready fill:#d4edda,stroke:#28a745,color:#000
-    classDef behind fill:#fff3cd,stroke:#ffc107,color:#000
-    classDef conflict fill:#f8d7da,stroke:#dc3545,color:#000
-    
-    class Mergeable ready
-    class Behind behind
-    class RebaseConflicts,ConflictDetected,ManualEdit,AutoResolve conflict
-```
-
-**Three Core States:**
-- **Mergeable** - Ready to merge, no conflicts
-- **Behind** - Base branch advanced, rebase needed  
-- **Rebase Conflicts** - Conflicts detected during rebase
-
 ## Understanding Git Worktrees and Branching
 
 Vibe Kanban uses Git worktrees to create isolated environments for each task attempt. This ensures that multiple tasks can run simultaneously without interfering with each other.
