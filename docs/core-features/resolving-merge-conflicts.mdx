@@ -1,0 +1,301 @@
+---
+title: "Resolving Merge Conflicts"
+description: "Learn how to handle rebase conflicts when your base branch has advanced, using either manual resolution or automatic conflict resolution with coding agents."
+sidebarTitle: "Resolving Merge Conflicts"
+---
+
+When your task is running on a branch that becomes outdated, you'll need to rebase onto the latest version of your base branch. Sometimes this process results in merge conflicts that need to be resolved before you can continue.
+
+## Understanding Git Worktrees and Branching
+
+Vibe Kanban uses Git worktrees to create isolated environments for each task attempt. This ensures that multiple tasks can run simultaneously without interfering with each other.
+
+<mermaid>
+graph TD
+    A[Main Repository] --> B[Worktree 1: Task A]
+    A --> C[Worktree 2: Task B]  
+    A --> D[Worktree 3: Task C]
+    
+    E[Base Branch: main] --> F[Task Branch A]
+    E --> G[Task Branch B]
+    E --> H[Task Branch C]
+    
+    style A fill:#333,stroke:#fff,color:#fff
+    style E fill:#333,stroke:#fff,color:#fff
+</mermaid>
+
+Each task attempt:
+1. Creates a new branch from your chosen base branch (e.g., `main`)
+2. Creates an isolated worktree environment
+3. Allows the coding agent to work without affecting other tasks
+
+## When Conflicts Occur
+
+Conflicts arise when your base branch advances while your task is in progress. This commonly happens when:
+
+- Team members merge other pull requests
+- You merge other completed tasks
+- Automated processes update the base branch
+
+<mermaid>
+sequenceDiagram
+    participant Main as Main Branch
+    participant Task as Task Branch
+    participant Agent as Coding Agent
+    
+    Main->>Task: Create branch (commit A)
+    Agent->>Task: Make changes (commits B, C)
+    Note over Main: Other changes merged
+    Main->>Main: Advance to commit D
+    Task->>Main: Attempt merge
+    Note over Task,Main: Conflict detected!
+</mermaid>
+
+## The Rebase Process
+
+When conflicts occur, Vibe Kanban provides tools to resolve them through a structured rebase process.
+
+### Step 1: Detecting Outdated Branches
+
+The interface automatically detects when your task branch is behind the base branch and displays a **Rebase** button.
+
+<Frame>
+<img src="/images/rebase-button-screenshot.png" alt="Rebase button displayed when branch is behind" />
+</Frame>
+
+### Step 2: Initiating the Rebase
+
+<Steps>
+<Step title="Click the Rebase button">
+  The rebase dialog will open, allowing you to select which branch to rebase onto.
+</Step>
+
+<Step title="Select your base branch">
+  Choose the target branch (typically `main` or your feature branch).
+  
+  <Frame>
+  <img src="/images/rebase-dialog-screenshot.png" alt="Rebase dialog with branch selection" />
+  </Frame>
+</Step>
+
+<Step title="Confirm the rebase">
+  Click **Rebase** to start the process.
+</Step>
+</Steps>
+
+### Step 3: Handling the Results
+
+After initiating the rebase, one of three outcomes occurs:
+
+<Tabs>
+<Tab title="Clean Rebase">
+  If there are no conflicts, the rebase completes automatically and the **Merge** button reappears.
+  
+  <Check>
+  Your task branch is now up-to-date with the base branch and ready to merge.
+  </Check>
+</Tab>
+
+<Tab title="Merge Conflicts">
+  If conflicts exist, you'll see a conflict banner with resolution options.
+  
+  <Warning>
+  The rebase process is paused until conflicts are resolved.
+  </Warning>
+</Tab>
+
+<Tab title="Rebase Error">
+  If the rebase fails for other reasons (e.g., uncommitted changes), you'll receive an error message with next steps.
+</Tab>
+</Tabs>
+
+## Resolving Conflicts
+
+When conflicts occur, you have two resolution options:
+
+### Option 1: Manual Resolution
+
+For developers comfortable with Git, you can resolve conflicts manually:
+
+<Steps>
+<Step title="Open in editor">
+  Click **Open in Editor** from the conflict banner to access the worktree files directly.
+  
+  <Frame>
+  <img src="/images/conflict-banner-screenshot.png" alt="Conflict banner with resolution options" />
+  </Frame>
+</Step>
+
+<Step title="Edit conflicted files">
+  Open each conflicted file and resolve the merge markers:
+  
+  ```diff
+  <<<<<<< HEAD (your changes)
+  function newFeature() {
+    return "new implementation";
+  }
+  =======
+  function oldFeature() {
+    return "existing implementation";
+  }
+  >>>>>>> main (base branch changes)
+  ```
+</Step>
+
+<Step title="Stage resolved files">
+  After editing, stage the resolved files:
+  
+  ```bash
+  git add resolved-file.js
+  ```
+</Step>
+
+<Step title="Continue the rebase">
+  Complete the rebase process:
+  
+  ```bash
+  git rebase --continue
+  ```
+</Step>
+</Steps>
+
+### Option 2: Automatic Resolution with Coding Agents
+
+For a more automated approach, let the coding agent resolve conflicts:
+
+<Steps>
+<Step title="Insert conflict resolution instructions">
+  Click **Insert Resolve-Conflicts Instructions** from the conflict banner.
+  
+  <Note>
+  This generates specific instructions tailored to your conflict situation and inserts them into the follow-up message area.
+  </Note>
+</Step>
+
+<Step title="Review generated instructions">
+  The system automatically generates instructions that include:
+  - List of conflicted files
+  - Context about the rebase operation
+  - Specific commands to run after resolution
+  
+  <Frame>
+  <img src="/images/generated-instructions-screenshot.png" alt="Auto-generated conflict resolution instructions" />
+  </Frame>
+</Step>
+
+<Step title="Send to coding agent">
+  Click **Send** to have the coding agent attempt automatic resolution.
+</Step>
+
+<Step title="Monitor progress">
+  The agent will:
+  1. Analyze the conflicted files
+  2. Make intelligent decisions about conflict resolution
+  3. Stage the resolved files
+  4. Continue the rebase process automatically
+</Step>
+</Steps>
+
+<Tip>
+Automatic resolution works best for straightforward conflicts. For complex merge conflicts involving significant architectural changes, manual resolution may be more appropriate.
+</Tip>
+
+## Understanding Conflict Types
+
+Different types of conflicts require different approaches:
+
+<AccordionGroup>
+<Accordion title="Content conflicts">
+  Both branches modified the same lines of code. These require careful review to ensure the correct logic is preserved.
+  
+  **Best resolved by**: Manual review or coding agent with specific context
+</Accordion>
+
+<Accordion title="Rename conflicts">
+  One branch renamed a file while another modified it. These typically have clear resolution paths.
+  
+  **Best resolved by**: Coding agent with automatic instructions
+</Accordion>
+
+<Accordion title="Delete/modify conflicts">
+  One branch deleted a file while another modified it. Requires decision about whether to keep or remove the file.
+  
+  **Best resolved by**: Manual review to make the business decision
+</Accordion>
+</AccordionGroup>
+
+## Aborting a Rebase
+
+If you need to cancel the rebase process entirely:
+
+<Steps>
+<Step title="Click Abort Rebase">
+  From the conflict banner, click **Abort Rebase** to return to the state before the rebase started.
+</Step>
+
+<Step title="Consider alternatives">
+  After aborting, you can:
+  - Try rebasing onto a different branch
+  - Create a new task attempt from the updated base branch
+  - Continue with the current branch and resolve conflicts later during merge
+</Step>
+</Steps>
+
+<Warning>
+Aborting a rebase discards any partial conflict resolutions. You'll need to start the resolution process again if you retry the rebase.
+</Warning>
+
+## Best Practices
+
+### Before Starting Tasks
+
+- **Create tasks from recent base branches** to minimise the likelihood of conflicts
+- **Keep task scopes focused** to reduce the surface area for potential conflicts
+- **Communicate with your team** about significant base branch changes
+
+### During Development
+
+- **Monitor base branch changes** through your project's notification systems
+- **Rebase early and often** rather than waiting until task completion
+- **Review conflicts carefully** even when using automatic resolution
+
+### When Conflicts Arise
+
+- **Start with automatic resolution** for simple conflicts to save time
+- **Use manual resolution** for complex architectural changes
+- **Test thoroughly** after conflict resolution to ensure functionality is preserved
+
+<Check>
+Following these practices will help you handle merge conflicts efficiently and maintain code quality throughout the development process.
+</Check>
+
+## Troubleshooting
+
+<AccordionGroup>
+<Accordion title="Rebase button not appearing">
+  **Possible causes:**
+  - Your branch is already up-to-date
+  - A rebase is already in progress
+  - The task is not in a rebaseable state
+  
+  **Solution:** Check the task status and ensure no other git operations are running.
+</Accordion>
+
+<Accordion title="Automatic resolution fails">
+  **Possible causes:**
+  - Conflicts are too complex for automatic resolution
+  - Binary files are conflicted
+  - The coding agent lacks sufficient context
+  
+  **Solution:** Switch to manual resolution or provide additional context in your instructions.
+</Accordion>
+
+<Accordion title="Worktree becomes corrupted">
+  **Possible causes:**
+  - Interrupted git operations
+  - File system issues
+  - Manual changes outside Vibe Kanban
+  
+  **Solution:** Create a new task attempt to start with a clean worktree environment.
+</Accordion>
+</AccordionGroup>
