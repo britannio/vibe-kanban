@@ -10,7 +10,7 @@ When your task is running on a branch that becomes outdated, you'll need to reba
 
 Vibe Kanban uses Git worktrees to create isolated environments for each task attempt. This ensures that multiple tasks can run simultaneously without interfering with each other.
 
-<mermaid>
+```mermaid
 graph TD
     A[Main Repository] --> B[Worktree 1: Task A]
     A --> C[Worktree 2: Task B]  
@@ -22,7 +22,7 @@ graph TD
     
     style A fill:#333,stroke:#fff,color:#fff
     style E fill:#333,stroke:#fff,color:#fff
-</mermaid>
+```
 
 Each task attempt:
 1. Creates a new branch from your chosen base branch (e.g., `main`)
@@ -37,7 +37,7 @@ Conflicts arise when your base branch advances while your task is in progress. T
 - You merge other completed tasks
 - Automated processes update the base branch
 
-<mermaid>
+```mermaid
 sequenceDiagram
     participant Main as Main Branch
     participant Task as Task Branch
@@ -49,7 +49,7 @@ sequenceDiagram
     Main->>Main: Advance to commit D
     Task->>Main: Attempt merge
     Note over Task,Main: Conflict detected!
-</mermaid>
+```
 
 ## The Rebase Process
 
@@ -60,7 +60,7 @@ When conflicts occur, Vibe Kanban provides tools to resolve them through a struc
 The interface automatically detects when your task branch is behind the base branch and displays a **Rebase** button.
 
 <Frame>
-<img src="/images/rebase-button-screenshot.png" alt="Rebase button displayed when branch is behind" />
+<img src="/images/vk-rebase-needed.png" alt="Rebase button displayed when branch is behind" />
 </Frame>
 
 ### Step 2: Initiating the Rebase
@@ -121,9 +121,9 @@ For developers comfortable with Git, you can resolve conflicts manually:
 <Step title="Open in editor">
   Click **Open in Editor** from the conflict banner to access the worktree files directly.
   
-  <Frame>
-  <img src="/images/conflict-banner-screenshot.png" alt="Conflict banner with resolution options" />
-  </Frame>
+  <Note>
+  The conflict banner appears above the follow-up text field and provides three resolution options when conflicts occur.
+  </Note>
 </Step>
 
 <Step title="Edit conflicted files">
@@ -164,6 +164,13 @@ For developers comfortable with Git, you can resolve conflicts manually:
 For a more automated approach, let the coding agent resolve conflicts:
 
 <Steps>
+<Step title="Access the conflict resolution banner">
+  When conflicts occur, a banner appears above the follow-up text field with three options:
+  - **Open in Editor** - Opens the worktree files for manual editing
+  - **Insert Resolve-Conflicts Instructions** - Auto-generates conflict resolution instructions
+  - **Abort Rebase** - Cancels the rebase and returns to the previous state
+</Step>
+
 <Step title="Insert conflict resolution instructions">
   Click **Insert Resolve-Conflicts Instructions** from the conflict banner.
   
@@ -179,7 +186,7 @@ For a more automated approach, let the coding agent resolve conflicts:
   - Specific commands to run after resolution
   
   <Frame>
-  <img src="/images/generated-instructions-screenshot.png" alt="Auto-generated conflict resolution instructions" />
+  <img src="/images/vk-rebase-conflicts-prompt-zoom.png" alt="Conflict resolution banner with auto-generated instructions in the follow-up field" />
   </Frame>
 </Step>
 
