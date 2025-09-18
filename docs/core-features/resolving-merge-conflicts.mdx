@@ -34,11 +34,15 @@ Once the agent completes the resolution, your task status returns to **Ready to 
 
 ## Manual Resolution (Alternative)
 
-If you prefer to resolve conflicts manually:
+If you prefer to resolve conflicts manually, you have two options:
+
+**For single files:** Use **Open in Editor** from the conflict banner to edit one conflicted file at a time. After resolving and refreshing the page, you can press the button again for the next file.
+
+**For multiple files (recommended):** Use the **Open in [Your IDE]** button from the Actions pane to open all worktree files in your chosen IDE, where you can resolve all conflicts at once.
 
 <Steps>
-<Step title="Open in editor">
-  Click **Open in Editor** from the conflict banner to access the worktree files.
+<Step title="Open your IDE">
+  Click **Open in [Your IDE]** from the Actions pane to access all worktree files, or use **Open in Editor** from the banner for individual files.
 </Step>
 
 <Step title="Edit conflicted files">
@@ -58,10 +62,10 @@ If you prefer to resolve conflicts manually:
 </Step>
 
 <Step title="Continue the rebase">
-  After editing, stage and continue:
+  After editing all conflicts, stage and continue:
   
   ```bash
-  git add resolved-file.js
+  git add .
   git rebase --continue
   ```
 </Step>
