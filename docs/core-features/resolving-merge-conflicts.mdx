@@ -43,7 +43,7 @@ sequenceDiagram
     participant Task as Task Branch
     participant Agent as Coding Agent
     
-    Main->>Task: Create branch (commit A)
+    Main->>Task: Create task branch
     Agent->>Task: Make changes (commits B, C)
     Note over Main: Other changes merged
     Main->>Main: Advance to commit D
@@ -65,23 +65,21 @@ The interface automatically detects when your task branch is behind the base bra
 
 ### Step 2: Initiating the Rebase
 
+When you see the **Rebase** button, the base branch has already been determined from when you created the task. Simply click the button to start the rebase process.
+
 <Steps>
 <Step title="Click the Rebase button">
-  The rebase dialog will open, allowing you to select which branch to rebase onto.
+  Click the **Rebase** button to rebase your task branch onto the latest version of the base branch.
 </Step>
 
-<Step title="Select your base branch">
-  Choose the target branch (typically `main` or your feature branch).
-  
-  <Frame>
-  <img src="/images/rebase-dialog-screenshot.png" alt="Rebase dialog with branch selection" />
-  </Frame>
-</Step>
-
-<Step title="Confirm the rebase">
-  Click **Rebase** to start the process.
+<Step title="Wait for the process to complete">
+  The system will automatically rebase your changes onto the current base branch.
 </Step>
 </Steps>
+
+<Note>
+The base branch was set when you originally created the task. The rebase process updates your task branch to include the latest changes from that base branch.
+</Note>
 
 ### Step 3: Handling the Results
 
@@ -89,7 +87,7 @@ After initiating the rebase, one of three outcomes occurs:
 
 <Tabs>
 <Tab title="Clean Rebase">
-  If there are no conflicts, the rebase completes automatically and the **Merge** button reappears.
+  If there are no conflicts, the rebase completes automatically. The status changes from "Rebase needed" and the **Merge** button becomes available.
   
   <Check>
   Your task branch is now up-to-date with the base branch and ready to merge.
@@ -97,7 +95,7 @@ After initiating the rebase, one of three outcomes occurs:
 </Tab>
 
 <Tab title="Merge Conflicts">
-  If conflicts exist, you'll see a conflict banner with resolution options.
+  If conflicts exist, the status changes from "Rebase needed" to "Rebase conflicts" and you'll see a conflict resolution banner.
   
   <Warning>
   The rebase process is paused until conflicts are resolved.
