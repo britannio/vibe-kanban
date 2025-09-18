@@ -4,72 +4,26 @@ description: "Learn how to handle rebase conflicts when your base branch has adv
 sidebarTitle: "Resolving Merge Conflicts"
 ---
 
-## When You See "Rebase Needed"
+## When You See "Rebase Conflicts"
 
-When your task's base branch advances while you're working, you'll see a **Rebase** button indicating your branch needs to be updated.
+After clicking the rebase button, if your changes conflict with the base branch, your task status changes to "Rebase conflicts" and a conflict resolution banner appears.
 
 <Frame>
-<img src="/images/vk-rebase-needed.png" alt="Rebase button displayed when branch is behind" />
+<img src="/images/vk-rebase-conflicts-actions-pane.png" alt="Task showing rebase conflicts status with conflict resolution options" />
 </Frame>
 
-Click the **Rebase** button to update your branch with the latest changes from the base branch.
-
-## What Happens When You Rebase
-
-After clicking rebase, one of two things occurs:
-
-<Tabs>
-<Tab title="Clean Rebase">
-  If there are no conflicts, the rebase completes automatically and your task becomes ready to merge.
-  
-  <Check>
-  Your task status updates and the **Merge** button becomes available.
-  </Check>
-</Tab>
-
-<Tab title="Rebase Conflicts">
-  If your changes conflict with the base branch, the status changes to "Rebase conflicts" and a conflict resolution banner appears.
-  
-  <Warning>
-  The rebase process pauses until conflicts are resolved.
-  </Warning>
-</Tab>
-</Tabs>
+The conflict banner provides three options to resolve the situation:
+- **Open in Editor** - Manually edit conflicted files
+- **Insert Resolve-Conflicts Instructions** - Auto-generate resolution instructions for the coding agent
+- **Abort Rebase** - Cancel and return to previous state
 
 ## Resolving Conflicts Automatically
 
-When conflicts occur, the simplest solution is to let the coding agent resolve them automatically.
+The simplest solution is to let the coding agent resolve conflicts automatically. Click **Insert Resolve-Conflicts Instructions** from the conflict banner to generate specific instructions tailored to your conflict situation and insert them into the follow-up message area. Review the generated instructions and click **Send** to have the agent analyze the conflicted files, make intelligent resolution decisions, stage the resolved files, and continue the rebase process automatically.
 
 <Frame>
 <img src="/images/vk-rebase-conflicts-prompt-zoom.png" alt="Conflict resolution banner with auto-generated instructions in the follow-up field" />
 </Frame>
-
-The conflict banner provides three options:
-- **Open in Editor** - Manually edit conflicted files
-- **Insert Resolve-Conflicts Instructions** - Auto-generate resolution instructions
-- **Abort Rebase** - Cancel and return to previous state
-
-### Recommended Approach: Automatic Resolution
-
-<Steps>
-<Step title="Insert conflict resolution instructions">
-  Click **Insert Resolve-Conflicts Instructions** from the conflict banner.
-  
-  This generates specific instructions tailored to your conflict situation and inserts them into the follow-up message area.
-</Step>
-
-<Step title="Send to coding agent">
-  Review the generated instructions and click **Send**.
-</Step>
-
-<Step title="Wait for resolution">
-  The agent will:
-  1. Analyze the conflicted files
-  2. Make intelligent resolution decisions
-  3. Stage the resolved files
-  4. Continue the rebase process automatically
-</Step>
-</Steps>
 
 Once the agent completes the resolution, your task status returns to **Ready to Merge**.
 
