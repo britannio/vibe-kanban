@@ -48,14 +48,14 @@ export function IdeIcon({ editorType, className = 'h-4 w-4' }: IdeIconProps) {
   }
 
   if (editorType === EditorType.INTELLI_J) {
-    return <img src="/ide/intellij.svg" alt="IntelliJ IDEA" className={className} />;
+    return (
+      <img src="/ide/intellij.svg" alt="IntelliJ IDEA" className={className} />
+    );
   }
 
   if (editorType === EditorType.ZED) {
     const zedIcon =
-      resolvedTheme === 'dark'
-        ? '/ide/zed-light.svg'
-        : '/ide/zed-dark.svg';
+      resolvedTheme === 'dark' ? '/ide/zed-light.svg' : '/ide/zed-dark.svg';
 
     return <img src={zedIcon} alt="Zed" className={className} />;
   }
