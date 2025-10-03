@@ -28,7 +28,14 @@ export async function createDefaultTasks(projectId: string): Promise<void> {
       return tasksApi.create(createData);
     });
 
-    await Promise.all(createPromises);
+    const results = await Promise.allSettled(createPromises);
+    
+    // Log any failed task creations
+    results.forEach((result, index) => {
+      if (result.status === 'rejected') {
+        console.error(`Failed to create default task "${DEFAULT_TASKS[index].title}":`, result.reason);
+      }
+    });
   } catch (error) {
     console.error('Failed to create default tasks:', error);
     // Don't throw here to avoid breaking project creation
