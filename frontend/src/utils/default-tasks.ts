@@ -1,6 +1,9 @@
 import { tasksApi } from '@/lib/api';
 import type { CreateTask } from 'shared/types';
-import { COMPANION_INSTALL_TASK_TITLE, COMPANION_INSTALL_TASK_DESCRIPTION } from './companion-install-task';
+import {
+  COMPANION_INSTALL_TASK_TITLE,
+  COMPANION_INSTALL_TASK_DESCRIPTION,
+} from './companion-install-task';
 
 export interface DefaultTaskDefinition {
   title: string;
@@ -17,7 +20,7 @@ export const DEFAULT_TASKS: DefaultTaskDefinition[] = [
 export async function createDefaultTasks(projectId: string): Promise<void> {
   try {
     // Create default tasks in parallel
-    const createPromises = DEFAULT_TASKS.map(task => {
+    const createPromises = DEFAULT_TASKS.map((task) => {
       const createData: CreateTask = {
         project_id: projectId,
         title: task.title,
@@ -29,11 +32,14 @@ export async function createDefaultTasks(projectId: string): Promise<void> {
     });
 
     const results = await Promise.allSettled(createPromises);
-    
+
     // Log any failed task creations
     results.forEach((result, index) => {
       if (result.status === 'rejected') {
-        console.error(`Failed to create default task "${DEFAULT_TASKS[index].title}":`, result.reason);
+        console.error(
+          `Failed to create default task "${DEFAULT_TASKS[index].title}":`,
+          result.reason
+        );
       }
     });
   } catch (error) {
