@@ -125,36 +125,36 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
         <div className="flex items-center justify-center mb-4">
           <div className="flex items-center space-x-2">
             <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium border-2 ${
                 step === STEP_AGENT_CONFIG
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-primary text-primary-foreground border-primary'
                   : step > STEP_AGENT_CONFIG
-                  ? 'bg-green-500 text-white'
-                  : 'bg-muted text-muted-foreground'
+                  ? 'bg-green-500 text-white border-green-500'
+                  : 'bg-transparent text-muted-foreground border-muted-foreground'
               }`}
             >
               {step > STEP_AGENT_CONFIG ? '✓' : '1'}
             </div>
             <div className={`w-8 h-0.5 ${step > STEP_AGENT_CONFIG ? 'bg-green-500' : 'bg-muted'}`} />
             <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium border-2 ${
                 step === STEP_SAFETY_NOTICE
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-primary text-primary-foreground border-primary'
                   : step > STEP_SAFETY_NOTICE
-                  ? 'bg-green-500 text-white'
-                  : 'bg-muted text-muted-foreground'
+                  ? 'bg-green-500 text-white border-green-500'
+                  : 'bg-transparent text-muted-foreground border-muted-foreground'
               }`}
             >
               {step > STEP_SAFETY_NOTICE ? '✓' : '2'}
             </div>
             <div className={`w-8 h-0.5 ${step > STEP_SAFETY_NOTICE ? 'bg-green-500' : 'bg-muted'}`} />
             <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium border-2 ${
                 step === STEP_FEEDBACK_OPTIN
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-primary text-primary-foreground border-primary'
                   : step > STEP_FEEDBACK_OPTIN
-                  ? 'bg-green-500 text-white'
-                  : 'bg-muted text-muted-foreground'
+                  ? 'bg-green-500 text-white border-green-500'
+                  : 'bg-transparent text-muted-foreground border-muted-foreground'
               }`}
             >
               3
