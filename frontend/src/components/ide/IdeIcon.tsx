@@ -41,8 +41,8 @@ export function IdeIcon({ editorType, className = 'h-4 w-4' }: IdeIconProps) {
   if (editorType === EditorType.WINDSURF) {
     const windsurfIcon =
       resolvedTheme === 'dark'
-        ? '/ide/windsurf-dark.svg'
-        : '/ide/windsurf-light.svg';
+        ? '/ide/windsurf-light.svg'
+        : '/ide/windsurf-dark.svg';
 
     return <img src={windsurfIcon} alt="Windsurf" className={className} />;
   }
@@ -54,10 +54,14 @@ export function IdeIcon({ editorType, className = 'h-4 w-4' }: IdeIconProps) {
   if (editorType === EditorType.ZED) {
     const zedIcon =
       resolvedTheme === 'dark'
-        ? '/ide/zed-dark.svg'
-        : '/ide/zed-light.svg';
+        ? '/ide/zed-light.svg'
+        : '/ide/zed-dark.svg';
 
     return <img src={zedIcon} alt="Zed" className={className} />;
+  }
+
+  if (editorType === EditorType.XCODE) {
+    return <img src="/ide/xcode.svg" alt="Xcode" className={className} />;
   }
 
   // Generic fallback for other IDEs or no IDE configured
