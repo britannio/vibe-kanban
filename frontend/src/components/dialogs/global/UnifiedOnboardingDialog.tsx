@@ -50,7 +50,8 @@ export type UnifiedOnboardingResult = {
 };
 
 const STEP_AGENT_CONFIG = 1;
-const STEP_SAFETY_FEEDBACK = 2;
+const STEP_SAFETY_NOTICE = 2;
+const STEP_FEEDBACK_OPTIN = 3;
 
 const UnifiedOnboardingDialog = NiceModal.create(() => {
   const modal = useModal();
@@ -73,13 +74,17 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
 
   const handleStepForward = () => {
     if (step === STEP_AGENT_CONFIG) {
-      setStep(STEP_SAFETY_FEEDBACK);
+      setStep(STEP_SAFETY_NOTICE);
+    } else if (step === STEP_SAFETY_NOTICE) {
+      setStep(STEP_FEEDBACK_OPTIN);
     }
   };
 
   const handleStepBack = () => {
-    if (step === STEP_SAFETY_FEEDBACK) {
+    if (step === STEP_SAFETY_NOTICE) {
       setStep(STEP_AGENT_CONFIG);
+    } else if (step === STEP_FEEDBACK_OPTIN) {
+      setStep(STEP_SAFETY_NOTICE);
     }
   };
 
@@ -113,7 +118,7 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
             <DialogTitle>Welcome to Vibe Kanban</DialogTitle>
           </div>
           <DialogDescription className="text-left pt-2">
-            Let's get you set up in just two quick steps.
+            Let's get you set up in just three quick steps.
           </DialogDescription>
         </DialogHeader>
 
@@ -130,17 +135,29 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
             >
               {step > STEP_AGENT_CONFIG ? '✓' : '1'}
             </div>
-            <div className={`w-12 h-0.5 ${step > STEP_AGENT_CONFIG ? 'bg-green-500' : 'bg-muted'}`} />
+            <div className={`w-8 h-0.5 ${step > STEP_AGENT_CONFIG ? 'bg-green-500' : 'bg-muted'}`} />
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                step === STEP_SAFETY_FEEDBACK
+                step === STEP_SAFETY_NOTICE
                   ? 'bg-primary text-primary-foreground'
-                  : step > STEP_SAFETY_FEEDBACK
+                  : step > STEP_SAFETY_NOTICE
                   ? 'bg-green-500 text-white'
                   : 'bg-muted text-muted-foreground'
               }`}
             >
-              2
+              {step > STEP_SAFETY_NOTICE ? '✓' : '2'}
+            </div>
+            <div className={`w-8 h-0.5 ${step > STEP_SAFETY_NOTICE ? 'bg-green-500' : 'bg-muted'}`} />
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                step === STEP_FEEDBACK_OPTIN
+                  ? 'bg-primary text-primary-foreground'
+                  : step > STEP_FEEDBACK_OPTIN
+                  ? 'bg-green-500 text-white'
+                  : 'bg-muted text-muted-foreground'
+              }`}
+            >
+              3
             </div>
           </div>
         </div>
@@ -282,96 +299,96 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
           </div>
         )}
 
-        {step === STEP_SAFETY_FEEDBACK && (
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <AlertTriangle className="h-6 w-6 text-destructive mt-1 flex-shrink-0" />
-                <div className="space-y-2">
-                  <h2 className="text-xl font-semibold">Safety Notice</h2>
-                  <div className="space-y-3 text-sm">
-                    <p>
-                      Vibe Kanban runs AI coding agents with{' '}
-                      <code className="bg-muted px-1 py-0.5 rounded">--dangerously-skip-permissions</code> / <code className="bg-muted px-1 py-0.5 rounded">--yolo</code>{' '}
-                      by default, giving them unrestricted access to execute code and
-                      run commands on your system.
-                    </p>
-                    <p>
-                      <strong>Important:</strong> Always review what agents are doing
-                      and ensure you have backups of important work. This software is
-                      experimental - use it responsibly.
-                    </p>
-                    <p>
-                      Learn more at{' '}
-                      <a
-                        href="https://www.vibekanban.com/docs/getting-started#safety-notice"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 dark:text-blue-400 underline hover:no-underline"
-                      >
-                        our safety documentation
-                      </a>
-                    </p>
-                  </div>
+        {step === STEP_SAFETY_NOTICE && (
+          <div className="space-y-4">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="h-6 w-6 text-destructive mt-1 flex-shrink-0" />
+              <div className="space-y-2">
+                <h2 className="text-xl font-semibold">Safety Notice</h2>
+                <div className="space-y-3 text-sm">
+                  <p>
+                    Vibe Kanban runs AI coding agents with{' '}
+                    <code className="bg-muted px-1 py-0.5 rounded">--dangerously-skip-permissions</code> / <code className="bg-muted px-1 py-0.5 rounded">--yolo</code>{' '}
+                    by default, giving them unrestricted access to execute code and
+                    run commands on your system.
+                  </p>
+                  <p>
+                    <strong>Important:</strong> Always review what agents are doing
+                    and ensure you have backups of important work. This software is
+                    experimental - use it responsibly.
+                  </p>
+                  <p>
+                    Learn more at{' '}
+                    <a
+                      href="https://www.vibekanban.com/docs/getting-started#safety-notice"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 dark:text-blue-400 underline hover:no-underline"
+                    >
+                      our safety documentation
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>
+          </div>
+        )}
 
-            <div className="border-t pt-4">
-              <div className="flex items-start gap-3">
-                <Shield className="h-6 w-6 text-primary text-primary-foreground mt-1 flex-shrink-0" />
-                <div className="space-y-4 flex-1">
-                  <h2 className="text-xl font-semibold">Help Improve Vibe Kanban</h2>
-                  <div className="space-y-3">
-                    <div className="flex items-start space-x-3">
-                      <Checkbox
-                        id="analytics"
-                        checked={analyticsEnabled}
-                        onCheckedChange={(checked) => setAnalyticsEnabled(!!checked)}
-                      />
-                      <div className="grid gap-1.5 leading-none">
-                        <label
-                          htmlFor="analytics"
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Share usage data to help us improve the product
-                        </label>
-                        <p className="text-xs text-muted-foreground">
-                          We collect high-level usage metrics and performance data, but never your code or personal information.
-                        </p>
+        {step === STEP_FEEDBACK_OPTIN && (
+          <div className="space-y-4">
+            <div className="flex items-start gap-3">
+              <Shield className="h-6 w-6 text-primary text-primary-foreground mt-1 flex-shrink-0" />
+              <div className="space-y-4 flex-1">
+                <h2 className="text-xl font-semibold">Help Improve Vibe Kanban</h2>
+                <div className="space-y-4">
+                  <div className="flex items-start space-x-3">
+                    <Checkbox
+                      id="analytics"
+                      checked={analyticsEnabled}
+                      onCheckedChange={(checked) => setAnalyticsEnabled(!!checked)}
+                    />
+                    <div className="grid gap-1.5 leading-none">
+                      <label
+                        htmlFor="analytics"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Share usage data to help us improve the product
+                      </label>
+                      <p className="text-sm text-muted-foreground">
+                        We collect high-level usage metrics and performance data, but never your code or personal information.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 text-sm">
+                    <p className="font-medium">What we collect:</p>
+                    <div className="space-y-2">
+                      {isGitHubAuthenticated && (
+                        <div className="flex items-start gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                          <span>GitHub profile info for important updates only</span>
+                        </div>
+                      )}
+                      <div className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                        <span>High-level usage metrics and feature usage</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                        <span>Performance and error data</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <XCircle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
+                        <span>We do NOT collect task contents, code, or project names</span>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="space-y-2 text-xs">
-                      <p className="font-medium">What we collect:</p>
-                      <div className="space-y-1">
-                        {isGitHubAuthenticated && (
-                          <div className="flex items-start gap-2">
-                            <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span>GitHub profile info for important updates only</span>
-                          </div>
-                        )}
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-                          <span>High-level usage metrics and feature usage</span>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500 mt-0.5 flex-shrink-0" />
-                          <span>Performance and error data</span>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <XCircle className="h-3 w-3 text-destructive mt-0.5 flex-shrink-0" />
-                          <span>We do NOT collect task contents, code, or project names</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 p-2 rounded-lg">
-                      <Settings className="h-3 w-3 flex-shrink-0" />
-                      <span>
-                        You can change this preference anytime in Settings.
-                      </span>
-                    </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+                    <Settings className="h-4 w-4 flex-shrink-0" />
+                    <span>
+                      You can change this preference anytime in Settings.
+                    </span>
                   </div>
                 </div>
               </div>
@@ -380,7 +397,7 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
         )}
 
         <DialogFooter className="flex gap-2">
-          {step === STEP_SAFETY_FEEDBACK && (
+          {(step === STEP_SAFETY_NOTICE || step === STEP_FEEDBACK_OPTIN) && (
             <Button variant="outline" onClick={handleStepBack}>
               Back
             </Button>
@@ -398,7 +415,13 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
             </Button>
           )}
 
-          {step === STEP_SAFETY_FEEDBACK && (
+          {step === STEP_SAFETY_NOTICE && (
+            <Button onClick={handleStepForward} className="min-w-24">
+              I Understand, Continue
+            </Button>
+          )}
+
+          {step === STEP_FEEDBACK_OPTIN && (
             <Button onClick={handleComplete} className="min-w-24">
               Complete Setup
             </Button>
