@@ -17,6 +17,7 @@ import {
   DisclaimerDialog,
   OnboardingDialog,
   PrivacyOptInDialog,
+  UnifiedOnboardingDialog,
   ProvidePatDialog,
   ReleaseNotesDialog,
   TaskFormDialog,
@@ -39,6 +40,7 @@ NiceModal.register('create-pr', CreatePRDialog);
 NiceModal.register('confirm', ConfirmDialog);
 NiceModal.register('disclaimer', DisclaimerDialog);
 NiceModal.register('onboarding', OnboardingDialog);
+NiceModal.register('unified-onboarding', UnifiedOnboardingDialog);
 NiceModal.register('privacy-opt-in', PrivacyOptInDialog);
 NiceModal.register('provide-pat', ProvidePatDialog);
 NiceModal.register('release-notes', ReleaseNotesDialog);
