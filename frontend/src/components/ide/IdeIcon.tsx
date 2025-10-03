@@ -38,6 +38,28 @@ export function IdeIcon({ editorType, className = 'h-4 w-4' }: IdeIconProps) {
     return <img src={cursorIcon} alt="Cursor" className={className} />;
   }
 
+  if (editorType === EditorType.WINDSURF) {
+    const windsurfIcon =
+      resolvedTheme === 'dark'
+        ? '/ide/windsurf-dark.svg'
+        : '/ide/windsurf-light.svg';
+
+    return <img src={windsurfIcon} alt="Windsurf" className={className} />;
+  }
+
+  if (editorType === EditorType.INTELLI_J) {
+    return <img src="/ide/intellij.svg" alt="IntelliJ IDEA" className={className} />;
+  }
+
+  if (editorType === EditorType.ZED) {
+    const zedIcon =
+      resolvedTheme === 'dark'
+        ? '/ide/zed-dark.svg'
+        : '/ide/zed-light.svg';
+
+    return <img src={zedIcon} alt="Zed" className={className} />;
+  }
+
   // Generic fallback for other IDEs or no IDE configured
   return <Code2 className={className} />;
 }
