@@ -61,7 +61,10 @@ const ConfirmDialog = NiceModal.create<ConfirmDialogProps>((props) => {
   };
 
   return (
-    <Dialog open={modal.visible} onOpenChange={(open) => !open && handleCancel()}>
+    <Dialog
+      open={modal.visible}
+      onOpenChange={(open) => !open && handleCancel()}
+    >
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <div className="flex items-center gap-3">

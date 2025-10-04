@@ -8,7 +8,10 @@ import { useKeyExit } from '@/keyboard/hooks';
 import { Scope } from '@/keyboard/registry';
 import NiceModal from '@ebay/nice-modal-react';
 import { ConfirmDialog } from '@/components/dialogs/shared/ConfirmDialog';
-import { SettingsProvider, useSettingsContext } from '@/contexts/SettingsContext';
+import {
+  SettingsProvider,
+  useSettingsContext,
+} from '@/contexts/SettingsContext';
 
 const settingsNavigation = [
   {
@@ -38,10 +41,12 @@ function SettingsLayoutContent() {
           title: t('settings.general.save.discardTitle'),
           message: t('settings.general.save.discardMessage'),
           confirmText: t('settings.general.save.discard'),
-          cancelText: t('common:actions.cancel', { defaultValue: 'Continue Editing' }),
+          cancelText: t('common:actions.cancel', {
+            defaultValue: 'Continue Editing',
+          }),
           variant: 'destructive',
         });
-        
+
         if (result === 'confirmed') {
           goToPreviousPath();
         }
@@ -62,7 +67,11 @@ function SettingsLayoutContent() {
         {/* Sidebar Navigation */}
         <aside className="w-full lg:w-64 lg:shrink-0 lg:sticky lg:top-8 lg:h-fit lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto">
           <div className="space-y-1">
-            <Button variant="ghost" onClick={handleNavigateBack} className="mb-4">
+            <Button
+              variant="ghost"
+              onClick={handleNavigateBack}
+              className="mb-4"
+            >
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t('settings.layout.nav.backToApp')}
             </Button>
