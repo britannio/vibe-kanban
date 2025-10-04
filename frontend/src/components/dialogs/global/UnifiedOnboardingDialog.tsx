@@ -24,11 +24,11 @@ import {
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { 
-  Sparkles, 
-  Code, 
-  ChevronDown, 
-  HandMetal, 
+import {
+  Sparkles,
+  Code,
+  ChevronDown,
+  HandMetal,
   AlertTriangle,
   Shield,
   CheckCircle,
@@ -36,9 +36,14 @@ import {
   Settings,
   Github,
   Check,
-  Clipboard
+  Clipboard,
 } from 'lucide-react';
-import { BaseCodingAgent, EditorType, DeviceFlowStartResponse, DevicePollStatus } from 'shared/types';
+import {
+  BaseCodingAgent,
+  EditorType,
+  DeviceFlowStartResponse,
+  DevicePollStatus,
+} from 'shared/types';
 import type { ExecutorProfileId } from 'shared/types';
 import { useUserSystem } from '@/components/config-provider';
 
@@ -61,10 +66,11 @@ const STEP_FEEDBACK_OPTIN = 4;
 
 const UnifiedOnboardingDialog = NiceModal.create(() => {
   const modal = useModal();
-  const { profiles, config, githubTokenInvalid, reloadSystem } = useUserSystem();
+  const { profiles, config, githubTokenInvalid, reloadSystem } =
+    useUserSystem();
 
   const [step, setStep] = useState(STEP_AGENT_CONFIG);
-  
+
   // Step 1: Agent & Editor configuration
   const [profile, setProfile] = useState<ExecutorProfileId>(
     config?.executor_profile || {
@@ -78,12 +84,13 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
   // Step 2: GitHub login
   const [fetching, setFetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [deviceState, setDeviceState] = useState<null | DeviceFlowStartResponse>(null);
+  const [deviceState, setDeviceState] =
+    useState<null | DeviceFlowStartResponse>(null);
   const [polling, setPolling] = useState(false);
   const [copied, setCopied] = useState(false);
 
   // Step 3: Safety notice (acknowledgment happens in handleComplete)
-  
+
   // Step 4: Feedback opt-in
   const [analyticsEnabled, setAnalyticsEnabled] = useState(true); // Default enabled as requested
 
@@ -126,7 +133,8 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
     (editorType === EditorType.CUSTOM && customCommand.trim() !== '');
 
   const isGitHubAuthenticated =
-    !!(config?.github?.username && config?.github?.oauth_token) && !githubTokenInvalid;
+    !!(config?.github?.username && config?.github?.oauth_token) &&
+    !githubTokenInvalid;
 
   const handleGitHubLogin = async () => {
     setFetching(true);
@@ -239,44 +247,50 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
                 step === STEP_AGENT_CONFIG
                   ? 'bg-primary text-primary-foreground border-primary'
                   : step > STEP_AGENT_CONFIG
-                  ? 'bg-green-500 text-white border-green-500'
-                  : 'bg-transparent text-muted-foreground border-muted-foreground'
+                    ? 'bg-green-500 text-white border-green-500'
+                    : 'bg-transparent text-muted-foreground border-muted-foreground'
               }`}
             >
               {step > STEP_AGENT_CONFIG ? '✓' : '1'}
             </div>
-            <div className={`w-6 h-0.5 ${step > STEP_AGENT_CONFIG ? 'bg-green-500' : 'bg-muted'}`} />
+            <div
+              className={`w-6 h-0.5 ${step > STEP_AGENT_CONFIG ? 'bg-green-500' : 'bg-muted'}`}
+            />
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium border-2 ${
                 step === STEP_GITHUB_LOGIN
                   ? 'bg-primary text-primary-foreground border-primary'
                   : step > STEP_GITHUB_LOGIN
-                  ? 'bg-green-500 text-white border-green-500'
-                  : 'bg-transparent text-muted-foreground border-muted-foreground'
+                    ? 'bg-green-500 text-white border-green-500'
+                    : 'bg-transparent text-muted-foreground border-muted-foreground'
               }`}
             >
               {step > STEP_GITHUB_LOGIN ? '✓' : '2'}
             </div>
-            <div className={`w-6 h-0.5 ${step > STEP_GITHUB_LOGIN ? 'bg-green-500' : 'bg-muted'}`} />
+            <div
+              className={`w-6 h-0.5 ${step > STEP_GITHUB_LOGIN ? 'bg-green-500' : 'bg-muted'}`}
+            />
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium border-2 ${
                 step === STEP_SAFETY_NOTICE
                   ? 'bg-primary text-primary-foreground border-primary'
                   : step > STEP_SAFETY_NOTICE
-                  ? 'bg-green-500 text-white border-green-500'
-                  : 'bg-transparent text-muted-foreground border-muted-foreground'
+                    ? 'bg-green-500 text-white border-green-500'
+                    : 'bg-transparent text-muted-foreground border-muted-foreground'
               }`}
             >
               {step > STEP_SAFETY_NOTICE ? '✓' : '3'}
             </div>
-            <div className={`w-6 h-0.5 ${step > STEP_SAFETY_NOTICE ? 'bg-green-500' : 'bg-muted'}`} />
+            <div
+              className={`w-6 h-0.5 ${step > STEP_SAFETY_NOTICE ? 'bg-green-500' : 'bg-muted'}`}
+            />
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium border-2 ${
                 step === STEP_FEEDBACK_OPTIN
                   ? 'bg-primary text-primary-foreground border-primary'
                   : step > STEP_FEEDBACK_OPTIN
-                  ? 'bg-green-500 text-white border-green-500'
-                  : 'bg-transparent text-muted-foreground border-muted-foreground'
+                    ? 'bg-green-500 text-white border-green-500'
+                    : 'bg-transparent text-muted-foreground border-muted-foreground'
               }`}
             >
               4
@@ -297,7 +311,10 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
                   <Select
                     value={profile.executor}
                     onValueChange={(v) =>
-                      setProfile({ executor: v as BaseCodingAgent, variant: null })
+                      setProfile({
+                        executor: v as BaseCodingAgent,
+                        variant: null,
+                      })
                     }
                   >
                     <SelectTrigger id="profile" className="flex-1">
@@ -319,7 +336,8 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
                   {(() => {
                     const selectedProfile = profiles?.[profile.executor];
                     const hasVariants =
-                      selectedProfile && Object.keys(selectedProfile).length > 0;
+                      selectedProfile &&
+                      Object.keys(selectedProfile).length > 0;
 
                     if (hasVariants) {
                       return (
@@ -398,7 +416,8 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
                   </SelectContent>
                 </Select>
                 <p className="text-sm text-muted-foreground">
-                  This editor will be used to open task attempts and project files.
+                  This editor will be used to open task attempts and project
+                  files.
                 </p>
 
                 {editorType === EditorType.CUSTOM && (
@@ -411,8 +430,8 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
                       onChange={(e) => setCustomCommand(e.target.value)}
                     />
                     <p className="text-sm text-muted-foreground">
-                      Enter the command to run your custom editor. Use spaces for
-                      arguments (e.g., "code --wait").
+                      Enter the command to run your custom editor. Use spaces
+                      for arguments (e.g., "code --wait").
                     </p>
                   </div>
                 )}
@@ -426,9 +445,12 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
             <div className="flex items-start gap-3">
               <Github className="h-6 w-6 text-primary text-primary-foreground mt-1 flex-shrink-0" />
               <div className="space-y-2 flex-1">
-                <h2 className="text-xl font-semibold">Sign in with GitHub (Optional)</h2>
+                <h2 className="text-xl font-semibold">
+                  Sign in with GitHub (Optional)
+                </h2>
                 <p className="text-sm text-muted-foreground">
-                  Connect your GitHub account to create pull requests directly from Vibe Kanban.
+                  Connect your GitHub account to create pull requests directly
+                  from Vibe Kanban.
                 </p>
               </div>
             </div>
@@ -440,7 +462,8 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
                   <span className="font-medium">Successfully connected!</span>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  You are signed in as <strong>{config?.github?.username}</strong>
+                  You are signed in as{' '}
+                  <strong>{config?.github?.username}</strong>
                 </p>
               </div>
             ) : deviceState ? (
@@ -518,15 +541,21 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
                   <div className="space-y-2">
                     <div className="flex items-start gap-2">
                       <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">Create pull requests from task attempts</span>
+                      <span className="text-sm">
+                        Create pull requests from task attempts
+                      </span>
                     </div>
                     <div className="flex items-start gap-2">
                       <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">Push changes and create branches automatically</span>
+                      <span className="text-sm">
+                        Push changes and create branches automatically
+                      </span>
                     </div>
                     <div className="flex items-start gap-2">
                       <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">Streamline your development workflow</span>
+                      <span className="text-sm">
+                        Streamline your development workflow
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -559,14 +588,18 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
                 <div className="space-y-3 text-sm">
                   <p>
                     Vibe Kanban runs AI coding agents with{' '}
-                    <code className="bg-muted px-1 py-0.5 rounded">--dangerously-skip-permissions</code> / <code className="bg-muted px-1 py-0.5 rounded">--yolo</code>{' '}
-                    by default, giving them unrestricted access to execute code and
-                    run commands on your system.
+                    <code className="bg-muted px-1 py-0.5 rounded">
+                      --dangerously-skip-permissions
+                    </code>{' '}
+                    /{' '}
+                    <code className="bg-muted px-1 py-0.5 rounded">--yolo</code>{' '}
+                    by default, giving them unrestricted access to execute code
+                    and run commands on your system.
                   </p>
                   <p>
-                    <strong>Important:</strong> Always review what agents are doing
-                    and ensure you have backups of important work. This software is
-                    experimental - use it responsibly.
+                    <strong>Important:</strong> Always review what agents are
+                    doing and ensure you have backups of important work. This
+                    software is experimental - use it responsibly.
                   </p>
                   <p>
                     Learn more at{' '}
@@ -590,13 +623,17 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
             <div className="flex items-start gap-3">
               <Shield className="h-6 w-6 text-primary text-primary-foreground mt-1 flex-shrink-0" />
               <div className="space-y-4 flex-1">
-                <h2 className="text-xl font-semibold">Help Improve Vibe Kanban</h2>
+                <h2 className="text-xl font-semibold">
+                  Help Improve Vibe Kanban
+                </h2>
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
                     <Checkbox
                       id="analytics"
                       checked={analyticsEnabled}
-                      onCheckedChange={(checked) => setAnalyticsEnabled(!!checked)}
+                      onCheckedChange={(checked) =>
+                        setAnalyticsEnabled(!!checked)
+                      }
                     />
                     <div className="grid gap-1.5 leading-none">
                       <label
@@ -606,7 +643,8 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
                         Share usage data to help us improve the product
                       </label>
                       <p className="text-sm text-muted-foreground">
-                        We collect high-level usage metrics and performance data, but never your code or personal information.
+                        We collect high-level usage metrics and performance
+                        data, but never your code or personal information.
                       </p>
                     </div>
                   </div>
@@ -617,7 +655,9 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
                       {isGitHubAuthenticated && (
                         <div className="flex items-start gap-2">
                           <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                          <span>GitHub profile info for important updates only</span>
+                          <span>
+                            GitHub profile info for important updates only
+                          </span>
                         </div>
                       )}
                       <div className="flex items-start gap-2">
@@ -630,7 +670,10 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
                       </div>
                       <div className="flex items-start gap-2">
                         <XCircle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
-                        <span>We do NOT collect task contents, code, or project names</span>
+                        <span>
+                          We do NOT collect task contents, code, or project
+                          names
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -648,14 +691,16 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
         )}
 
         <DialogFooter className="flex gap-2">
-          {(step === STEP_GITHUB_LOGIN || step === STEP_SAFETY_NOTICE || step === STEP_FEEDBACK_OPTIN) && (
+          {(step === STEP_GITHUB_LOGIN ||
+            step === STEP_SAFETY_NOTICE ||
+            step === STEP_FEEDBACK_OPTIN) && (
             <Button variant="outline" onClick={handleStepBack}>
               Back
             </Button>
           )}
-          
+
           <div className="flex-1" />
-          
+
           {step === STEP_AGENT_CONFIG && (
             <Button
               onClick={handleStepForward}
@@ -667,7 +712,11 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
           )}
 
           {step === STEP_GITHUB_LOGIN && (
-            <Button onClick={handleStepForward} variant="outline" className="min-w-24">
+            <Button
+              onClick={handleStepForward}
+              variant="outline"
+              className="min-w-24"
+            >
               Skip
             </Button>
           )}
