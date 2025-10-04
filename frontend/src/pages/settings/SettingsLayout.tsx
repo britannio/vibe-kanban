@@ -12,6 +12,8 @@ import {
   SettingsProvider,
   useSettingsContext,
 } from '@/contexts/SettingsContext';
+import { useHotkeysContext } from 'react-hotkeys-hook';
+import { useEffect } from 'react';
 
 const settingsNavigation = [
   {
@@ -32,6 +34,13 @@ function SettingsLayoutContent() {
   const { t } = useTranslation('settings');
   const goToPreviousPath = usePreviousPath();
   const { checkForUnsavedChanges } = useSettingsContext();
+  const { enableScope, disableScope } = useHotkeysContext();
+
+  // Explicitly enable the SETTINGS scope so it remains active even after dialogs open/close
+  useEffect(() => {
+    enableScope(Scope.SETTINGS);
+    return () => disableScope(Scope.SETTINGS);
+  }, [enableScope, disableScope]);
 
   // Handle navigation with unsaved changes protection
   const handleNavigateBack = async () => {
