@@ -36,20 +36,16 @@ function SettingsLayoutContent() {
   // Handle navigation with unsaved changes protection
   const handleNavigateBack = async () => {
     if (checkForUnsavedChanges()) {
-      try {
-        const result = await NiceModal.show(ConfirmDialog, {
-          title: t('settings.general.save.discardTitle'),
-          message: t('settings.general.save.discardMessage'),
-          confirmText: t('settings.general.save.discard'),
-          cancelText: t('settings.general.save.continueEditing'),
-          variant: 'destructive',
-        });
+      const result = await NiceModal.show(ConfirmDialog, {
+        title: t('settings.general.save.discardTitle'),
+        message: t('settings.general.save.discardMessage'),
+        confirmText: t('settings.general.save.discard'),
+        cancelText: t('settings.general.save.continueEditing'),
+        variant: 'destructive',
+      });
 
-        if (result === 'confirmed') {
-          goToPreviousPath();
-        }
-      } catch (error) {
-        // User cancelled or dialog was closed
+      if (result === 'confirmed') {
+        goToPreviousPath();
       }
     } else {
       goToPreviousPath();
