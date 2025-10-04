@@ -7,7 +7,6 @@ import { usePreviousPath } from '@/hooks/usePreviousPath';
 import { useKeyExit } from '@/keyboard/hooks';
 import { Scope } from '@/keyboard/registry';
 import NiceModal from '@ebay/nice-modal-react';
-import { ConfirmDialog } from '@/components/dialogs/shared/ConfirmDialog';
 import {
   SettingsProvider,
   useSettingsContext,
@@ -45,7 +44,7 @@ function SettingsLayoutContent() {
   // Handle navigation with unsaved changes protection
   const handleNavigateBack = async () => {
     if (checkForUnsavedChanges()) {
-      const result = await NiceModal.show(ConfirmDialog, {
+      const result = await NiceModal.show('confirm', {
         title: t('settings.general.save.discardTitle'),
         message: t('settings.general.save.discardMessage'),
         confirmText: t('settings.general.save.discard'),
