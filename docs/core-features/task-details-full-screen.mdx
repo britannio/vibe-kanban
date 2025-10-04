@@ -23,7 +23,7 @@ Full screen mode uses a two-column layout:
 - **Relationships**: Subtasks and parent task links
 
 ### Right Panel
-- **Tab Navigation**: Switch between Logs, Diffs, and Processes
+- **Tab Navigation**: Switch between Logs, Diffs, Processes, and Preview
 - **Content Area**: Active tab content with real-time updates
 - **Follow-up Section**: Additional context and actions
 
@@ -111,6 +111,22 @@ The Processes tab displays a timeline view of all running and completed processe
 <img src="/images/vk-processes.png" alt="Processes tab showing timeline of running and completed processes with status tracking" />
 </Frame>
 
+#### Preview Tab
+The Preview tab provides an embedded browser experience for testing web applications directly within Vibe Kanban. When you start a development server, the tab automatically detects the URL and displays your running application in an embedded iframe. This eliminates the need to switch between your browser and Vibe Kanban during development.
+
+**Key features:**
+- **Embedded browser**: View your application running directly in the task interface
+- **Automatic URL detection**: Automatically detects development server URLs from process logs
+- **Component selection**: Use the Web Companion to select specific UI components for precise feedback
+- **Development controls**: Start, stop, and manage your development server from the toolbar
+
+<Frame>
+<!-- Placeholder for preview tab screenshot -->
+<img src="/images/vk-preview.png" alt="Preview tab showing embedded web application with development controls" />
+</Frame>
+
+For detailed setup instructions and usage guidance, see [Preview Mode](/core-features/preview-mode).
+
 ## Navigation & Controls
 
 ### Keyboard Shortcuts
@@ -130,6 +146,7 @@ The interface gracefully transitions back to the compact sidebar view while pres
 
 ## Related Documentation
 
+- [Preview Mode](/core-features/preview-mode) - Embedded browser preview and component selection
 - [Creating Task Attempts](/core-features/creating-task-attempts) - Learn about task attempt lifecycle
 - [Reviewing Code Changes](/core-features/reviewing-code-changes) - Deep dive into diff analysis  
 - [Resolving Rebase Conflicts](/core-features/resolving-rebase-conflicts) - Handle rebase conflicts and merge issues

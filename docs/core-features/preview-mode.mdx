@@ -1,0 +1,301 @@
+---
+title: "Preview Mode"
+description: "Live preview your web applications with embedded browser viewing and precise component selection for seamless development workflows"
+---
+
+## Overview
+
+Preview Mode provides an embedded browser experience within Vibe Kanban, allowing you to test and iterate on your web applications without leaving the development environment. This feature eliminates the need to switch between your browser, IDE, and Vibe Kanban by providing live preview capabilities and precise component selection tools.
+
+**Key Benefits:**
+- **Embedded viewing**: See your application running directly in Vibe Kanban
+- **Precise component selection**: Click to select specific UI components for targeted feedback
+- **Seamless workflows**: No context switching between tools
+- **Real-time preview**: Instant visual feedback as changes are made
+
+## Prerequisites
+
+Before using Preview Mode, ensure you have:
+
+1. **Development server script configured** for your project
+2. **Web Companion installed** in your application (for component selection)
+3. **Project running** a web application that serves to localhost
+
+## Setting Up Preview Mode
+
+<Steps>
+<Step title="Configure Development Server Script">
+  Navigate to your project settings and configure the development server script that starts your local development environment.
+
+  **Common examples:**
+  - `npm run dev` (Vite, Next.js)
+  - `npm start` (Create React App)
+  - `yarn dev` (Yarn projects)
+  - `pnpm dev` (PNPM projects)
+
+  <Frame>
+  <!-- Placeholder for development server configuration screenshot -->
+  <img src="/images/preview-mode-dev-script-config.png" alt="Development server script configuration interface" />
+  </Frame>
+
+  <Tip>
+  Ensure your development server prints the URL (e.g., `http://localhost:3000`) to stdout/stderr for automatic detection.
+  </Tip>
+</Step>
+
+<Step title="Install Web Companion">
+  For precise component selection, install the `vibe-kanban-web-companion` package in your application.
+
+  <Tabs>
+  <Tab title="React/Vite">
+    ```bash
+    npm install vibe-kanban-web-companion
+    ```
+
+    Add to your app root (e.g., `src/main.tsx` or `src/App.tsx`):
+    ```jsx
+    import { VibeKanbanWebCompanion } from 'vibe-kanban-web-companion'
+
+    function App() {
+      return (
+        <div>
+          {/* Your app content */}
+          {process.env.NODE_ENV === 'development' && <VibeKanbanWebCompanion />}
+        </div>
+      )
+    }
+    ```
+  </Tab>
+
+  <Tab title="Next.js">
+    ```bash
+    npm install vibe-kanban-web-companion
+    ```
+
+    Add to `pages/_app.js` or `app/layout.tsx`:
+    ```jsx
+    import { VibeKanbanWebCompanion } from 'vibe-kanban-web-companion'
+
+    export default function App({ Component, pageProps }) {
+      return (
+        <>
+          <Component {...pageProps} />
+          {process.env.NODE_ENV === 'development' && <VibeKanbanWebCompanion />}
+        </>
+      )
+    }
+    ```
+  </Tab>
+
+  <Tab title="Vue.js">
+    ```bash
+    npm install vibe-kanban-web-companion
+    ```
+
+    Add to your main application file:
+    ```javascript
+    import { VibeKanbanWebCompanion } from 'vibe-kanban-web-companion'
+
+    // In your app component or main.js
+    if (process.env.NODE_ENV === 'development') {
+      app.component('VibeKanbanWebCompanion', VibeKanbanWebCompanion)
+    }
+    ```
+  </Tab>
+  </Tabs>
+
+  <Info>
+  Vibe Kanban can automatically create a task to install the Web Companion. Look for the "Install companion automatically" button in the Preview tab if you haven't set it up yet.
+  </Info>
+</Step>
+
+<Step title="Start Development Server">
+  In your task's full screen mode, click the **Dev** button (▶️) to start your development server.
+
+  <Frame>
+  <!-- Placeholder for dev server start button screenshot -->
+  <img src="/images/preview-mode-start-dev-server.png" alt="Starting development server from task interface" />
+  </Frame>
+
+  The system will:
+  - Launch your configured development script
+  - Monitor the output for URL detection
+  - Automatically switch to Preview tab when ready
+</Step>
+</Steps>
+
+## Using Preview Mode
+
+### Accessing the Preview
+
+Once your development server is running and a URL is detected:
+
+1. **Navigate to Preview tab** in the task details panel
+2. **View embedded application** in the iframe
+3. **Interact with your app** directly within Vibe Kanban
+
+<Frame>
+<!-- Placeholder for preview mode interface screenshot -->
+<img src="/images/preview-mode-interface.png" alt="Preview mode showing embedded application with toolbar controls" />
+</Frame>
+
+### Preview Toolbar Controls
+
+The preview toolbar provides essential controls for managing your preview experience:
+
+- **Refresh** (🔄): Reload the preview iframe
+- **Copy URL** (📋): Copy the development server URL to clipboard  
+- **Open in Browser** (🌐): Open the application in your default browser
+- **Stop Dev** (⏹️): Terminate the development server
+
+### Component Selection
+
+When the Web Companion is installed, you can precisely select UI components for targeted feedback:
+
+<Steps>
+<Step title="Activate Selection Mode">
+  Use one of these methods to select components:
+  - **Alt + Click**: Hold Alt and click on any component
+  - **Context Menu**: Right-click and select "Edit in Vibe Kanban"
+
+  <Frame>
+  <!-- Placeholder for component selection screenshot -->
+  <img src="/images/preview-mode-component-selection.png" alt="Component selection interface showing selectable elements highlighted" />
+  </Frame>
+</Step>
+
+<Step title="Choose Component Depth">
+  When you click a component, Vibe Kanban shows a hierarchy of components from innermost to outermost. Select the appropriate level for your feedback:
+
+  - **Inner components**: For specific UI elements (buttons, inputs)
+  - **Outer components**: For broader sections (cards, layouts)
+
+  <Frame>
+  <!-- Placeholder for component depth selection screenshot -->
+  <img src="/images/preview-mode-component-depth.png" alt="Component depth selection showing hierarchy of selectable components" />
+  </Frame>
+</Step>
+
+<Step title="Provide Targeted Feedback">
+  After selecting a component, write your follow-up message. The coding agent will receive:
+  - **Precise DOM selector** information
+  - **Component hierarchy** and source file locations
+  - **Your specific instructions** about what to change
+
+  <Check>
+  No need to describe "the button in the top right" - the agent knows exactly which component you mean!
+  </Check>
+</Step>
+</Steps>
+
+## Troubleshooting
+
+### URL Not Detected
+
+If the preview doesn't load automatically:
+
+<AccordionGroup>
+<Accordion title="Check Development Server Logs">
+  1. Navigate to the **Processes** tab
+  2. Look for your development server process
+  3. Verify the server started successfully
+  4. Ensure a URL like `http://localhost:3000` appears in the logs
+
+  <Warning>
+  The development server must print a URL to stdout/stderr for automatic detection.
+  </Warning>
+</Accordion>
+
+<Accordion title="Verify URL Format">
+  Supported URL formats include:
+  - `http://localhost:3000`
+  - `https://localhost:3000`
+  - `http://127.0.0.1:3000`
+  - `http://0.0.0.0:5173`
+
+  URLs using `0.0.0.0` or `::` are automatically converted to `localhost` for embedding.
+</Accordion>
+
+<Accordion title="Manual URL Entry">
+  If automatic detection fails, you can:
+  1. Copy the URL from your development server logs
+  2. Click **Open in Browser** to verify it works
+  3. Use the **Copy URL** button to share the address
+</Accordion>
+</AccordionGroup>
+
+### Component Selection Not Working
+
+<AccordionGroup>
+<Accordion title="Verify Web Companion Installation">
+  1. Check that `vibe-kanban-web-companion` is installed
+  2. Ensure it's rendered in your app during development
+  3. Look for the small companion widget in the bottom-right of your app
+
+  <Tip>
+  The companion only appears in development mode and when properly configured.
+  </Tip>
+</Accordion>
+
+<Accordion title="Check Browser Console">
+  Open browser developer tools and look for:
+  - Web Companion initialisation messages
+  - Any JavaScript errors that might prevent selection
+  - PostMessage communication between the iframe and Vibe Kanban
+</Accordion>
+
+<Accordion title="Framework-Specific Issues">
+  - **React**: Ensure the companion is rendered after React's reconciliation
+  - **Next.js**: Verify SSR compatibility and client-side rendering
+  - **Vue**: Check that the component is properly registered
+</Accordion>
+</AccordionGroup>
+
+### Performance Considerations
+
+<AccordionGroup>
+<Accordion title="iframe Responsiveness">
+  - Large applications may take time to load in the preview
+  - Consider using development builds for faster loading
+  - Monitor the Processes tab for build completion
+</Accordion>
+
+<Accordion title="Memory Usage">
+  - Running multiple preview instances increases memory usage
+  - Stop unused development servers when switching tasks
+  - Use the **Stop Dev** button to clean up resources
+</Accordion>
+</AccordionGroup>
+
+## Advanced Usage
+
+### Custom Development Scripts
+
+For complex development setups, you can configure advanced development scripts:
+
+```bash
+# Multiple services
+concurrently "npm run api:dev" "npm run web:dev"
+
+# With environment variables
+REACT_APP_API_URL=http://localhost:8080 npm run dev
+
+# Docker-based development
+docker-compose up web
+```
+
+### Integration with Build Tools
+
+Preview Mode works with various build tools and frameworks:
+
+- **Vite**: Automatic HMR support with instant updates
+- **Webpack**: Hot module replacement for live reloading
+- **Parcel**: Zero-configuration development server
+- **Rollup**: Custom development server configurations
+
+## Related Documentation
+
+- [Task Details Full Screen Mode](/core-features/task-details-full-screen) - Complete guide to full screen task management
+- [Creating Task Attempts](/core-features/creating-task-attempts) - Learn about task attempt lifecycle
+- [Reviewing Code Changes](/core-features/reviewing-code-changes) - Analyse and review code modifications
+- [Configuration & Customisation](/configuration-customisation/global-settings) - Customise Vibe Kanban settings
