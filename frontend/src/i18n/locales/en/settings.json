@@ -22,7 +22,8 @@
         "unsavedChanges": "• You have unsaved changes",
         "discard": "Discard",
         "discardTitle": "Discard unsaved changes?",
-        "discardMessage": "You have unsaved changes. Are you sure you want to discard them?"
+        "discardMessage": "You have unsaved changes. Are you sure you want to discard them?",
+        "continueEditing": "Continue Editing"
       },
       "appearance": {
         "title": "Appearance",

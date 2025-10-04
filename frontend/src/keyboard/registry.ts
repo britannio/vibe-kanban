@@ -66,13 +66,6 @@ export const keyBindings: KeyBinding[] = [
   {
     action: Action.EXIT,
     keys: 'esc',
-    scopes: [Scope.APPROVALS],
-    description: 'Close approvals view',
-    group: 'Navigation',
-  },
-  {
-    action: Action.EXIT,
-    keys: 'esc',
     scopes: [Scope.SETTINGS],
     description: 'Go back to previous page',
     group: 'Navigation',

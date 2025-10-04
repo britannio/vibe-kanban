@@ -41,9 +41,7 @@ function SettingsLayoutContent() {
           title: t('settings.general.save.discardTitle'),
           message: t('settings.general.save.discardMessage'),
           confirmText: t('settings.general.save.discard'),
-          cancelText: t('common:actions.cancel', {
-            defaultValue: 'Continue Editing',
-          }),
+          cancelText: t('settings.general.save.continueEditing'),
           variant: 'destructive',
         });
 
