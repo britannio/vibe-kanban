@@ -61,6 +61,7 @@ function AppContent() {
         disclaimer_acknowledged: result.disclaimerAccepted,
         telemetry_acknowledged: true,
         analytics_enabled: result.analyticsEnabled,
+        github_login_acknowledged: result.githubLoginAcknowledged,
         executor_profile: result.profile,
         editor: result.editor,
       };
@@ -77,7 +78,7 @@ function AppContent() {
       if (!config || cancelled) return;
 
       // Check if we need to show the unified onboarding dialog
-      if (!config.onboarding_acknowledged || !config.disclaimer_acknowledged || !config.telemetry_acknowledged) {
+      if (!config.onboarding_acknowledged || !config.disclaimer_acknowledged || !config.telemetry_acknowledged || !config.github_login_acknowledged) {
         const result: UnifiedOnboardingResult = await NiceModal.show('unified-onboarding');
         await handleUnifiedOnboardingComplete(result);
         await NiceModal.hide('unified-onboarding');

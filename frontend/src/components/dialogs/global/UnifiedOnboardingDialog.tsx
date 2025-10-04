@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -33,13 +33,17 @@ import {
   Shield,
   CheckCircle,
   XCircle,
-  Settings
+  Settings,
+  Github,
+  Check,
+  Clipboard
 } from 'lucide-react';
-import { BaseCodingAgent, EditorType } from 'shared/types';
+import { BaseCodingAgent, EditorType, DeviceFlowStartResponse, DevicePollStatus } from 'shared/types';
 import type { ExecutorProfileId } from 'shared/types';
 import { useUserSystem } from '@/components/config-provider';
 
 import { toPrettyCase } from '@/utils/string';
+import { githubAuthApi } from '@/lib/api';
 import NiceModal, { useModal } from '@ebay/nice-modal-react';
 
 export type UnifiedOnboardingResult = {
@@ -47,15 +51,17 @@ export type UnifiedOnboardingResult = {
   editor: { editor_type: EditorType; custom_command: string | null };
   disclaimerAccepted: boolean;
   analyticsEnabled: boolean;
+  githubLoginAcknowledged: boolean;
 };
 
 const STEP_AGENT_CONFIG = 1;
-const STEP_SAFETY_NOTICE = 2;
-const STEP_FEEDBACK_OPTIN = 3;
+const STEP_GITHUB_LOGIN = 2;
+const STEP_SAFETY_NOTICE = 3;
+const STEP_FEEDBACK_OPTIN = 4;
 
 const UnifiedOnboardingDialog = NiceModal.create(() => {
   const modal = useModal();
-  const { profiles, config } = useUserSystem();
+  const { profiles, config, githubTokenInvalid, reloadSystem } = useUserSystem();
 
   const [step, setStep] = useState(STEP_AGENT_CONFIG);
   
@@ -69,11 +75,22 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
   const [editorType, setEditorType] = useState<EditorType>(EditorType.VS_CODE);
   const [customCommand, setCustomCommand] = useState<string>('');
 
-  // Step 2: Safety notice & feedback opt-in
+  // Step 2: GitHub login
+  const [fetching, setFetching] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [deviceState, setDeviceState] = useState<null | DeviceFlowStartResponse>(null);
+  const [polling, setPolling] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  // Step 3: Safety notice (acknowledgment happens in handleComplete)
+  
+  // Step 4: Feedback opt-in
   const [analyticsEnabled, setAnalyticsEnabled] = useState(true); // Default enabled as requested
 
   const handleStepForward = () => {
     if (step === STEP_AGENT_CONFIG) {
+      setStep(STEP_GITHUB_LOGIN);
+    } else if (step === STEP_GITHUB_LOGIN) {
       setStep(STEP_SAFETY_NOTICE);
     } else if (step === STEP_SAFETY_NOTICE) {
       setStep(STEP_FEEDBACK_OPTIN);
@@ -81,8 +98,10 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
   };
 
   const handleStepBack = () => {
-    if (step === STEP_SAFETY_NOTICE) {
+    if (step === STEP_GITHUB_LOGIN) {
       setStep(STEP_AGENT_CONFIG);
+    } else if (step === STEP_SAFETY_NOTICE) {
+      setStep(STEP_GITHUB_LOGIN);
     } else if (step === STEP_FEEDBACK_OPTIN) {
       setStep(STEP_SAFETY_NOTICE);
     }
@@ -98,6 +117,7 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
       },
       disclaimerAccepted: true,
       analyticsEnabled,
+      githubLoginAcknowledged: true,
     } as UnifiedOnboardingResult);
   };
 
@@ -105,9 +125,99 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
     editorType !== EditorType.CUSTOM ||
     (editorType === EditorType.CUSTOM && customCommand.trim() !== '');
 
-  // Check if user is authenticated with GitHub for step 2 display
   const isGitHubAuthenticated =
-    config?.github?.username && config?.github?.oauth_token;
+    !!(config?.github?.username && config?.github?.oauth_token) && !githubTokenInvalid;
+
+  const handleGitHubLogin = async () => {
+    setFetching(true);
+    setError(null);
+    setDeviceState(null);
+    try {
+      const data = await githubAuthApi.start();
+      setDeviceState(data);
+      setPolling(true);
+    } catch (e: any) {
+      console.error(e);
+      setError(e?.message || 'Network error');
+    } finally {
+      setFetching(false);
+    }
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } else {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+          console.warn('Copy to clipboard failed:', err);
+        }
+        document.body.removeChild(textArea);
+      }
+    } catch (err) {
+      console.warn('Copy to clipboard failed:', err);
+    }
+  };
+
+  // Poll for GitHub authentication completion
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    if (polling && deviceState) {
+      const poll = async () => {
+        try {
+          const poll_status = await githubAuthApi.poll();
+          switch (poll_status) {
+            case DevicePollStatus.SUCCESS:
+              setPolling(false);
+              setDeviceState(null);
+              setError(null);
+              await reloadSystem();
+              break;
+            case DevicePollStatus.AUTHORIZATION_PENDING:
+              timer = setTimeout(poll, deviceState.interval * 1000);
+              break;
+            case DevicePollStatus.SLOW_DOWN:
+              timer = setTimeout(poll, (deviceState.interval + 5) * 1000);
+          }
+        } catch (e: any) {
+          if (e?.message === 'expired_token') {
+            setPolling(false);
+            setError('Device code expired. Please try again.');
+            setDeviceState(null);
+          } else {
+            setPolling(false);
+            setError(e?.message || 'Login failed.');
+            setDeviceState(null);
+          }
+        }
+      };
+      timer = setTimeout(poll, deviceState.interval * 1000);
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [polling, deviceState, reloadSystem]);
+
+  // Auto-copy code to clipboard when deviceState is set
+  useEffect(() => {
+    if (deviceState?.user_code) {
+      copyToClipboard(deviceState.user_code);
+    }
+  }, [deviceState?.user_code]);
 
   return (
     <Dialog open={modal.visible} uncloseable={true}>
@@ -118,7 +228,7 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
             <DialogTitle>Welcome to Vibe Kanban</DialogTitle>
           </div>
           <DialogDescription className="text-left pt-2">
-            Let's get you set up in just three quick steps.
+            Let's get you set up in just four quick steps.
           </DialogDescription>
         </DialogHeader>
 
@@ -135,7 +245,19 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
             >
               {step > STEP_AGENT_CONFIG ? '✓' : '1'}
             </div>
-            <div className={`w-8 h-0.5 ${step > STEP_AGENT_CONFIG ? 'bg-green-500' : 'bg-muted'}`} />
+            <div className={`w-6 h-0.5 ${step > STEP_AGENT_CONFIG ? 'bg-green-500' : 'bg-muted'}`} />
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium border-2 ${
+                step === STEP_GITHUB_LOGIN
+                  ? 'bg-primary text-primary-foreground border-primary'
+                  : step > STEP_GITHUB_LOGIN
+                  ? 'bg-green-500 text-white border-green-500'
+                  : 'bg-transparent text-muted-foreground border-muted-foreground'
+              }`}
+            >
+              {step > STEP_GITHUB_LOGIN ? '✓' : '2'}
+            </div>
+            <div className={`w-6 h-0.5 ${step > STEP_GITHUB_LOGIN ? 'bg-green-500' : 'bg-muted'}`} />
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium border-2 ${
                 step === STEP_SAFETY_NOTICE
@@ -145,9 +267,9 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
                   : 'bg-transparent text-muted-foreground border-muted-foreground'
               }`}
             >
-              {step > STEP_SAFETY_NOTICE ? '✓' : '2'}
+              {step > STEP_SAFETY_NOTICE ? '✓' : '3'}
             </div>
-            <div className={`w-8 h-0.5 ${step > STEP_SAFETY_NOTICE ? 'bg-green-500' : 'bg-muted'}`} />
+            <div className={`w-6 h-0.5 ${step > STEP_SAFETY_NOTICE ? 'bg-green-500' : 'bg-muted'}`} />
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium border-2 ${
                 step === STEP_FEEDBACK_OPTIN
@@ -157,7 +279,7 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
                   : 'bg-transparent text-muted-foreground border-muted-foreground'
               }`}
             >
-              3
+              4
             </div>
           </div>
         </div>
@@ -299,6 +421,135 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
           </div>
         )}
 
+        {step === STEP_GITHUB_LOGIN && (
+          <div className="space-y-4">
+            <div className="flex items-start gap-3">
+              <Github className="h-6 w-6 text-primary text-primary-foreground mt-1 flex-shrink-0" />
+              <div className="space-y-2 flex-1">
+                <h2 className="text-xl font-semibold">Sign in with GitHub (Optional)</h2>
+                <p className="text-sm text-muted-foreground">
+                  Connect your GitHub account to create pull requests directly from Vibe Kanban.
+                </p>
+              </div>
+            </div>
+
+            {isGitHubAuthenticated ? (
+              <div className="bg-muted/50 border rounded-lg p-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <Check className="h-5 w-5 text-green-500" />
+                  <span className="font-medium">Successfully connected!</span>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  You are signed in as <strong>{config?.github?.username}</strong>
+                </p>
+              </div>
+            ) : deviceState ? (
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <span className="flex-shrink-0 w-8 h-8 bg-background border rounded-full flex items-center justify-center text-sm font-semibold">
+                    1
+                  </span>
+                  <div>
+                    <p className="text-sm font-medium mb-1">
+                      Go to GitHub Device Authorization
+                    </p>
+                    <a
+                      href={deviceState.verification_uri}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-blue-600 dark:text-blue-400 underline hover:no-underline"
+                    >
+                      {deviceState.verification_uri}
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <span className="flex-shrink-0 w-8 h-8 bg-background border rounded-full flex items-center justify-center text-sm font-semibold">
+                    2
+                  </span>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium mb-2">Enter this code:</p>
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm font-mono font-bold tracking-[0.2em] bg-muted border flex h-9 px-3 items-center rounded">
+                        {deviceState.user_code}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => copyToClipboard(deviceState.user_code)}
+                        disabled={copied}
+                      >
+                        {copied ? (
+                          <>
+                            <Check className="w-4 h-4 mr-1" />
+                            Copied
+                          </>
+                        ) : (
+                          <>
+                            <Clipboard className="w-4 h-4 mr-1" />
+                            Copy
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+                  <Github className="h-4 w-4 flex-shrink-0" />
+                  <span>
+                    {copied
+                      ? 'Code copied! Complete the authorization on GitHub.'
+                      : 'Waiting for authorization on GitHub...'}
+                  </span>
+                </div>
+
+                {error && (
+                  <div className="bg-destructive/10 border border-destructive/20 text-destructive p-3 rounded-lg text-sm">
+                    {error}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="bg-muted/30 border rounded-lg p-4 space-y-3">
+                  <p className="text-sm font-medium">Why connect GitHub?</p>
+                  <div className="space-y-2">
+                    <div className="flex items-start gap-2">
+                      <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">Create pull requests from task attempts</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">Push changes and create branches automatically</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">Streamline your development workflow</span>
+                    </div>
+                  </div>
+                </div>
+
+                {error && (
+                  <div className="bg-destructive/10 border border-destructive/20 text-destructive p-3 rounded-lg text-sm">
+                    {error}
+                  </div>
+                )}
+
+                <Button
+                  onClick={handleGitHubLogin}
+                  disabled={fetching}
+                  className="w-full"
+                >
+                  <Github className="h-4 w-4 mr-2" />
+                  {fetching ? 'Starting...' : 'Sign in with GitHub'}
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+
         {step === STEP_SAFETY_NOTICE && (
           <div className="space-y-4">
             <div className="flex items-start gap-3">
@@ -397,7 +648,7 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
         )}
 
         <DialogFooter className="flex gap-2">
-          {(step === STEP_SAFETY_NOTICE || step === STEP_FEEDBACK_OPTIN) && (
+          {(step === STEP_GITHUB_LOGIN || step === STEP_SAFETY_NOTICE || step === STEP_FEEDBACK_OPTIN) && (
             <Button variant="outline" onClick={handleStepBack}>
               Back
             </Button>
@@ -412,6 +663,12 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
               className="min-w-24"
             >
               Next
+            </Button>
+          )}
+
+          {step === STEP_GITHUB_LOGIN && (
+            <Button onClick={handleStepForward} variant="outline" className="min-w-24">
+              Skip
             </Button>
           )}
 
