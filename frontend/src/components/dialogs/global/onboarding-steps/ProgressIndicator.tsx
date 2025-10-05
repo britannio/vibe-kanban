@@ -24,8 +24,8 @@ export function ProgressIndicator({
                   isCompleted
                     ? 'bg-green-500 text-white'
                     : isCurrent
-                    ? 'bg-green-500 text-white'
-                    : 'bg-muted text-muted-foreground'
+                      ? 'bg-green-500 text-white'
+                      : 'bg-muted text-muted-foreground'
                 }`}
               >
                 {isCompleted ? '✓' : stepNumber}
