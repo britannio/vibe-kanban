@@ -70,7 +70,9 @@ export function AgentConfigStep({
           {t('onboarding.agentConfig.agentTitle')}
         </h2>
         <div className="space-y-2">
-          <Label htmlFor="profile">{t('onboarding.agentConfig.agentLabel')}</Label>
+          <Label htmlFor="profile">
+            {t('onboarding.agentConfig.agentLabel')}
+          </Label>
           <div className="flex gap-2">
             <Select
               value={profile.executor}
@@ -82,7 +84,9 @@ export function AgentConfigStep({
               }
             >
               <SelectTrigger id="profile" className="flex-1">
-                <SelectValue placeholder={t('onboarding.agentConfig.agentPlaceholder')} />
+                <SelectValue
+                  placeholder={t('onboarding.agentConfig.agentPlaceholder')}
+                />
               </SelectTrigger>
               <SelectContent>
                 {profiles &&
@@ -146,13 +150,17 @@ export function AgentConfigStep({
         </h2>
 
         <div className="space-y-2">
-          <Label htmlFor="editor">{t('onboarding.agentConfig.editorLabel')}</Label>
+          <Label htmlFor="editor">
+            {t('onboarding.agentConfig.editorLabel')}
+          </Label>
           <Select
             value={editorType}
             onValueChange={(value: EditorType) => onEditorChange(value)}
           >
             <SelectTrigger id="editor">
-              <SelectValue placeholder={t('onboarding.agentConfig.editorPlaceholder')} />
+              <SelectValue
+                placeholder={t('onboarding.agentConfig.editorPlaceholder')}
+              />
             </SelectTrigger>
             <SelectContent>
               {Object.values(EditorType).map((type) => (
@@ -168,10 +176,14 @@ export function AgentConfigStep({
 
           {editorType === EditorType.CUSTOM && (
             <div className="space-y-2">
-              <Label htmlFor="custom-command">{t('onboarding.agentConfig.customCommandLabel')}</Label>
+              <Label htmlFor="custom-command">
+                {t('onboarding.agentConfig.customCommandLabel')}
+              </Label>
               <Input
                 id="custom-command"
-                placeholder={t('onboarding.agentConfig.customCommandPlaceholder')}
+                placeholder={t(
+                  'onboarding.agentConfig.customCommandPlaceholder'
+                )}
                 value={customCommand}
                 onChange={(e) => onCustomCommandChange(e.target.value)}
               />

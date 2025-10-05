@@ -60,7 +60,9 @@ export function FeedbackOptInStep({
             </div>
 
             <div className="space-y-3 text-sm">
-              <p className="font-medium">{t('onboarding.feedback.whatWeCollect')}</p>
+              <p className="font-medium">
+                {t('onboarding.feedback.whatWeCollect')}
+              </p>
               <div className="space-y-2">
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />

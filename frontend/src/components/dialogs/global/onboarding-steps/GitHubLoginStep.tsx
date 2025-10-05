@@ -47,7 +47,7 @@ export function GitHubLoginStep({
   onCopyCode,
 }: GitHubLoginStepProps) {
   const { t } = useTranslation('common');
-  
+
   return (
     <div className="space-y-4">
       <div className="flex items-start gap-3">
@@ -66,7 +66,9 @@ export function GitHubLoginStep({
         <div className="bg-muted/50 border rounded-lg p-4">
           <div className="flex items-center gap-3 mb-2">
             <Check className="h-5 w-5 text-green-500" />
-            <span className="font-medium">{t('onboarding.githubLogin.successTitle')}</span>
+            <span className="font-medium">
+              {t('onboarding.githubLogin.successTitle')}
+            </span>
           </div>
           <p className="text-sm text-muted-foreground">
             {t('onboarding.githubLogin.signedInAs')} <strong>{username}</strong>
@@ -98,7 +100,9 @@ export function GitHubLoginStep({
               2
             </span>
             <div className="flex-1">
-              <p className="text-sm font-medium mb-2">{t('onboarding.githubLogin.deviceStep2')}</p>
+              <p className="text-sm font-medium mb-2">
+                {t('onboarding.githubLogin.deviceStep2')}
+              </p>
               <div className="flex items-center gap-3">
                 <span className="text-sm font-mono font-bold tracking-[0.2em] bg-muted border flex h-9 px-3 items-center rounded">
                   {deviceState.user_code}
@@ -143,7 +147,9 @@ export function GitHubLoginStep({
       ) : (
         <div className="space-y-4">
           <div className="bg-muted/30 border rounded-lg p-4 space-y-3">
-            <p className="text-sm font-medium">{t('onboarding.githubLogin.whyConnect')}</p>
+            <p className="text-sm font-medium">
+              {t('onboarding.githubLogin.whyConnect')}
+            </p>
             <div className="space-y-2">
               <div className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
@@ -174,7 +180,9 @@ export function GitHubLoginStep({
 
           <Button onClick={onLogin} disabled={fetching} className="w-full">
             <Github className="h-4 w-4 mr-2" />
-            {fetching ? t('onboarding.githubLogin.starting') : t('onboarding.githubLogin.signInButton')}
+            {fetching
+              ? t('onboarding.githubLogin.starting')
+              : t('onboarding.githubLogin.signInButton')}
           </Button>
         </div>
       )}
