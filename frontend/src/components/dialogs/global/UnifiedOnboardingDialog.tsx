@@ -3,13 +3,12 @@ import { useTranslation } from 'react-i18next';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { HandMetal } from 'lucide-react';
+import { Settings, Shield, Github, AlertTriangle } from 'lucide-react';
 import {
   BaseCodingAgent,
   EditorType,
@@ -223,20 +222,47 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
     }
   }, [deviceState?.user_code]);
 
+  const getStepTitle = () => {
+    switch (step) {
+      case STEP_AGENT_CONFIG:
+        return t('onboarding.agentConfig.title');
+      case STEP_FEEDBACK_OPTIN:
+        return t('onboarding.feedback.title');
+      case STEP_GITHUB_LOGIN:
+        return t('onboarding.githubLogin.title');
+      case STEP_SAFETY_NOTICE:
+        return t('onboarding.safetyNotice.title');
+      default:
+        return '';
+    }
+  };
+
+  const getStepIcon = () => {
+    switch (step) {
+      case STEP_AGENT_CONFIG:
+        return <Settings className="h-5 w-5" />;
+      case STEP_FEEDBACK_OPTIN:
+        return <Shield className="h-5 w-5" />;
+      case STEP_GITHUB_LOGIN:
+        return <Github className="h-5 w-5" />;
+      case STEP_SAFETY_NOTICE:
+        return <AlertTriangle className="h-5 w-5 text-destructive" />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Dialog open={modal.visible} uncloseable={true}>
       <DialogContent className="sm:max-w-[600px] space-y-4">
-        <DialogHeader>
-          <div className="flex items-center gap-3">
-            <HandMetal className="h-6 w-6 text-primary text-primary-foreground" />
-            <DialogTitle>{t('onboarding.welcome.title')}</DialogTitle>
-          </div>
-          <DialogDescription className="text-left pt-2">
-            {t('onboarding.welcome.description')}
-          </DialogDescription>
-        </DialogHeader>
-
         <ProgressIndicator currentStep={step} totalSteps={4} />
+
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            {getStepIcon()}
+            {getStepTitle()}
+          </DialogTitle>
+        </DialogHeader>
 
         {step === STEP_AGENT_CONFIG && (
           <AgentConfigStep

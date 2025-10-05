@@ -56,6 +56,7 @@
       "description": "Let's get you set up in just four quick steps."
     },
     "agentConfig": {
+      "title": "Agent & Editor Configuration",
       "agentTitle": "Choose Your Coding Agent",
       "agentLabel": "Default Agent",
       "agentPlaceholder": "Select your preferred coding agent",

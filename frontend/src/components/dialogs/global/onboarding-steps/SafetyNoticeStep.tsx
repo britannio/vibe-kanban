@@ -1,4 +1,3 @@
-import { AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 /**
@@ -21,41 +20,33 @@ export function SafetyNoticeStep() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-start gap-3">
-        <AlertTriangle className="h-6 w-6 text-destructive mt-1 flex-shrink-0" />
-        <div className="space-y-2">
-          <h2 className="text-xl font-semibold">
-            {t('onboarding.safetyNotice.title')}
-          </h2>
-          <div className="space-y-3 text-sm">
-            <p>
-              {t('onboarding.safetyNotice.warning1')}{' '}
-              <code className="bg-muted px-1 py-0.5 rounded">
-                {t('onboarding.safetyNotice.code1')}
-              </code>{' '}
-              {t('onboarding.safetyNotice.warning2')}{' '}
-              <code className="bg-muted px-1 py-0.5 rounded">
-                {t('onboarding.safetyNotice.code2')}
-              </code>{' '}
-              {t('onboarding.safetyNotice.warning3')}
-            </p>
-            <p>
-              <strong>{t('onboarding.safetyNotice.important')}</strong>{' '}
-              {t('onboarding.safetyNotice.importantText')}
-            </p>
-            <p>
-              {t('onboarding.safetyNotice.learnMore')}{' '}
-              <a
-                href="https://www.vibekanban.com/docs/getting-started#safety-notice"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 dark:text-blue-400 underline hover:no-underline"
-              >
-                {t('onboarding.safetyNotice.docsLink')}
-              </a>
-            </p>
-          </div>
-        </div>
+      <div className="space-y-3 text-sm">
+        <p>
+          {t('onboarding.safetyNotice.warning1')}{' '}
+          <code className="bg-muted px-1 py-0.5 rounded">
+            {t('onboarding.safetyNotice.code1')}
+          </code>{' '}
+          {t('onboarding.safetyNotice.warning2')}{' '}
+          <code className="bg-muted px-1 py-0.5 rounded">
+            {t('onboarding.safetyNotice.code2')}
+          </code>{' '}
+          {t('onboarding.safetyNotice.warning3')}
+        </p>
+        <p>
+          <strong>{t('onboarding.safetyNotice.important')}</strong>{' '}
+          {t('onboarding.safetyNotice.importantText')}
+        </p>
+        <p>
+          {t('onboarding.safetyNotice.learnMore')}{' '}
+          <a
+            href="https://www.vibekanban.com/docs/getting-started#safety-notice"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 dark:text-blue-400 underline hover:no-underline"
+          >
+            {t('onboarding.safetyNotice.docsLink')}
+          </a>
+        </p>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Github, Check, Clipboard } from 'lucide-react';
+import { Check, Clipboard, Github } from 'lucide-react';
 import type { DeviceFlowStartResponse } from 'shared/types';
 
 type GitHubLoginStepProps = {
@@ -50,17 +50,9 @@ export function GitHubLoginStep({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-start gap-3">
-        <Github className="h-6 w-6 text-primary text-primary-foreground mt-1 flex-shrink-0" />
-        <div className="space-y-2 flex-1">
-          <h2 className="text-xl font-semibold">
-            {t('onboarding.githubLogin.title')}
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            {t('onboarding.githubLogin.description')}
-          </p>
-        </div>
-      </div>
+      <p className="text-sm text-muted-foreground">
+        {t('onboarding.githubLogin.description')}
+      </p>
 
       {isAuthenticated ? (
         <div className="bg-muted/50 border rounded-lg p-4">

@@ -15,7 +15,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Code, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { BaseCodingAgent, EditorType } from 'shared/types';
 import type { ExecutorProfileId } from 'shared/types';
 import { toPrettyCase } from '@/utils/string';
@@ -65,134 +65,117 @@ export function AgentConfigStep({
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <h2 className="text-xl flex items-center gap-2">
-          <Sparkles className="h-4 w-4" />
-          {t('onboarding.agentConfig.agentTitle')}
-        </h2>
-        <div className="space-y-2">
-          <Label htmlFor="profile">
-            {t('onboarding.agentConfig.agentLabel')}
-          </Label>
-          <div className="flex gap-2">
-            <Select
-              value={profile.executor}
-              onValueChange={(v) =>
-                onProfileChange({
-                  executor: v as BaseCodingAgent,
-                  variant: null,
-                })
-              }
-            >
-              <SelectTrigger id="profile" className="flex-1">
-                <SelectValue
-                  placeholder={t('onboarding.agentConfig.agentPlaceholder')}
-                />
-              </SelectTrigger>
-              <SelectContent>
-                {profiles &&
-                  (Object.keys(profiles) as BaseCodingAgent[]).map((agent) => (
-                    <SelectItem key={agent} value={agent}>
-                      {agent}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
+        <Label htmlFor="profile">
+          {t('onboarding.agentConfig.agentLabel')}
+        </Label>
+        <div className="flex gap-2">
+          <Select
+            value={profile.executor}
+            onValueChange={(v) =>
+              onProfileChange({
+                executor: v as BaseCodingAgent,
+                variant: null,
+              })
+            }
+          >
+            <SelectTrigger id="profile" className="flex-1">
+              <SelectValue
+                placeholder={t('onboarding.agentConfig.agentPlaceholder')}
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {profiles &&
+                (Object.keys(profiles) as BaseCodingAgent[]).map((agent) => (
+                  <SelectItem key={agent} value={agent}>
+                    {agent}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
 
-            {hasVariants ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="flex-1 px-2 flex items-center justify-between"
+          {hasVariants ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="flex-1 px-2 flex items-center justify-between"
+                >
+                  <span className="text-xs truncate flex-1 text-left">
+                    {profile.variant || 'DEFAULT'}
+                  </span>
+                  <ChevronDown className="h-3 w-3 ml-1 flex-shrink-0" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {Object.keys(selectedProfile).map((variant) => (
+                  <DropdownMenuItem
+                    key={variant}
+                    onClick={() =>
+                      onProfileChange({
+                        ...profile,
+                        variant: variant,
+                      })
+                    }
+                    className={profile.variant === variant ? 'bg-accent' : ''}
                   >
-                    <span className="text-xs truncate flex-1 text-left">
-                      {profile.variant || 'DEFAULT'}
-                    </span>
-                    <ChevronDown className="h-3 w-3 ml-1 flex-shrink-0" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  {Object.keys(selectedProfile).map((variant) => (
-                    <DropdownMenuItem
-                      key={variant}
-                      onClick={() =>
-                        onProfileChange({
-                          ...profile,
-                          variant: variant,
-                        })
-                      }
-                      className={profile.variant === variant ? 'bg-accent' : ''}
-                    >
-                      {variant}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : selectedProfile ? (
-              <Button
-                variant="outline"
-                className="flex-1 px-2 flex items-center justify-between"
-                disabled
-              >
-                <span className="text-xs truncate flex-1 text-left">
-                  Default
-                </span>
-              </Button>
-            ) : null}
-          </div>
+                    {variant}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : selectedProfile ? (
+            <Button
+              variant="outline"
+              className="flex-1 px-2 flex items-center justify-between"
+              disabled
+            >
+              <span className="text-xs truncate flex-1 text-left">Default</span>
+            </Button>
+          ) : null}
         </div>
       </div>
 
       <div className="space-y-2">
-        <h2 className="text-xl flex items-center gap-2">
-          <Code className="h-4 w-4" />
-          {t('onboarding.agentConfig.editorTitle')}
-        </h2>
+        <Label htmlFor="editor">
+          {t('onboarding.agentConfig.editorLabel')}
+        </Label>
+        <Select
+          value={editorType}
+          onValueChange={(value: EditorType) => onEditorChange(value)}
+        >
+          <SelectTrigger id="editor">
+            <SelectValue
+              placeholder={t('onboarding.agentConfig.editorPlaceholder')}
+            />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.values(EditorType).map((type) => (
+              <SelectItem key={type} value={type}>
+                {toPrettyCase(type)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-sm text-muted-foreground">
+          {t('onboarding.agentConfig.editorHelper')}
+        </p>
 
-        <div className="space-y-2">
-          <Label htmlFor="editor">
-            {t('onboarding.agentConfig.editorLabel')}
-          </Label>
-          <Select
-            value={editorType}
-            onValueChange={(value: EditorType) => onEditorChange(value)}
-          >
-            <SelectTrigger id="editor">
-              <SelectValue
-                placeholder={t('onboarding.agentConfig.editorPlaceholder')}
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.values(EditorType).map((type) => (
-                <SelectItem key={type} value={type}>
-                  {toPrettyCase(type)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <p className="text-sm text-muted-foreground">
-            {t('onboarding.agentConfig.editorHelper')}
-          </p>
-
-          {editorType === EditorType.CUSTOM && (
-            <div className="space-y-2">
-              <Label htmlFor="custom-command">
-                {t('onboarding.agentConfig.customCommandLabel')}
-              </Label>
-              <Input
-                id="custom-command"
-                placeholder={t(
-                  'onboarding.agentConfig.customCommandPlaceholder'
-                )}
-                value={customCommand}
-                onChange={(e) => onCustomCommandChange(e.target.value)}
-              />
-              <p className="text-sm text-muted-foreground">
-                {t('onboarding.agentConfig.customCommandHelper')}
-              </p>
-            </div>
-          )}
-        </div>
+        {editorType === EditorType.CUSTOM && (
+          <div className="space-y-2">
+            <Label htmlFor="custom-command">
+              {t('onboarding.agentConfig.customCommandLabel')}
+            </Label>
+            <Input
+              id="custom-command"
+              placeholder={t('onboarding.agentConfig.customCommandPlaceholder')}
+              value={customCommand}
+              onChange={(e) => onCustomCommandChange(e.target.value)}
+            />
+            <p className="text-sm text-muted-foreground">
+              {t('onboarding.agentConfig.customCommandHelper')}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
