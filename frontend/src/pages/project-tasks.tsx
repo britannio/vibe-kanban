@@ -39,6 +39,7 @@ import { useProjectTasks } from '@/hooks/useProjectTasks';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import NiceModal from '@ebay/nice-modal-react';
 import { useHotkeysContext } from 'react-hotkeys-hook';
+import { ProjectSetupWizard } from '@/components/projects/ProjectSetupWizard';
 
 type Task = TaskWithAttemptStatus;
 
@@ -91,6 +92,12 @@ export function ProjectTasks() {
   // Panel state
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+
+  // Setup wizard state
+  const [setupComplete, setSetupComplete] = useState(() => {
+    if (!projectId) return true;
+    return localStorage.getItem(`project-setup-complete-${projectId}`) === 'true';
+  });
 
   // Fullscreen state using custom hook
   const { isFullscreen, navigateToTask, navigateToAttempt, toggleFullscreen } =
@@ -462,6 +469,27 @@ export function ProjectTasks() {
   // Combine loading states for initial load
   const isInitialTasksLoad = isLoading && tasks.length === 0;
 
+  // Determine if we should show setup wizard
+  const shouldShowSetup = 
+    tasks.length === 0 && 
+    !setupComplete && 
+    !isLoading &&
+    !!project;
+
+  const handleCompleteSetup = useCallback(() => {
+    if (projectId) {
+      localStorage.setItem(`project-setup-complete-${projectId}`, 'true');
+      setSetupComplete(true);
+    }
+  }, [projectId]);
+
+  const handleSkipSetup = useCallback(() => {
+    if (projectId) {
+      localStorage.setItem(`project-setup-complete-${projectId}`, 'true');
+      setSetupComplete(true);
+    }
+  }, [projectId]);
+
   if (projectError) {
     return (
       <div className="p-4">
@@ -500,7 +528,13 @@ export function ProjectTasks() {
       <div className="flex-1 min-h-0 xl:flex">
         {/* Left Column - Kanban Section */}
         <div className={getKanbanSectionClasses(isPanelOpen, isFullscreen)}>
-          {tasks.length === 0 ? (
+          {shouldShowSetup && project ? (
+            <ProjectSetupWizard
+              project={project}
+              onComplete={handleCompleteSetup}
+              onSkip={handleSkipSetup}
+            />
+          ) : tasks.length === 0 ? (
             <div className="max-w-7xl mx-auto mt-8">
               <Card>
                 <CardContent className="text-center py-8">
