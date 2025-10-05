@@ -31,14 +31,14 @@ type AgentConfigStepProps = {
 
 /**
  * AgentConfigStep - Step 1 of the unified onboarding flow
- * 
+ *
  * Allows users to configure their default coding agent and preferred code editor.
- * 
+ *
  * Features:
  * - Agent selection with variant support (e.g., claude-code with temperature variants)
  * - Editor type selection (VS Code, Cursor, Custom, etc.)
  * - Custom command input for custom editor configurations
- * 
+ *
  * @param profile - Current executor profile (agent + variant)
  * @param profiles - Available agent profiles from config
  * @param editorType - Selected editor type

@@ -2,17 +2,17 @@ import { AlertTriangle } from 'lucide-react';
 
 /**
  * SafetyNoticeStep - Step 3 of the unified onboarding flow
- * 
+ *
  * Displays critical safety information about AI coding agents running with unrestricted
  * permissions. This is a mandatory acknowledgment step that users must read and accept
  * before using the application.
- * 
+ *
  * Features:
  * - Clear warning about --dangerously-skip-permissions / --yolo flags
  * - Reminder to review agent actions and backup important work
  * - Link to comprehensive safety documentation
  * - No interactive elements - pure informational display
- * 
+ *
  * This component has no props as it displays static safety information.
  */
 export function SafetyNoticeStep() {
