@@ -13,8 +13,7 @@ export function SafetyNoticeStep() {
               <code className="bg-muted px-1 py-0.5 rounded">
                 --dangerously-skip-permissions
               </code>{' '}
-              /{' '}
-              <code className="bg-muted px-1 py-0.5 rounded">--yolo</code> by
+              / <code className="bg-muted px-1 py-0.5 rounded">--yolo</code> by
               default, giving them unrestricted access to execute code and run
               commands on your system.
             </p>

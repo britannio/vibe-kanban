@@ -39,7 +39,8 @@ export function AgentConfigStep({
   onCustomCommandChange,
 }: AgentConfigStepProps) {
   const selectedProfile = profiles?.[profile.executor];
-  const hasVariants = selectedProfile && Object.keys(selectedProfile).length > 0;
+  const hasVariants =
+    selectedProfile && Object.keys(selectedProfile).length > 0;
 
   return (
     <div className="space-y-6">
@@ -96,9 +97,7 @@ export function AgentConfigStep({
                           variant: variant,
                         })
                       }
-                      className={
-                        profile.variant === variant ? 'bg-accent' : ''
-                      }
+                      className={profile.variant === variant ? 'bg-accent' : ''}
                     >
                       {variant}
                     </DropdownMenuItem>

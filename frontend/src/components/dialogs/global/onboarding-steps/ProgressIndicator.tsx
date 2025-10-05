@@ -3,16 +3,19 @@ type ProgressIndicatorProps = {
   totalSteps: number;
 };
 
-export function ProgressIndicator({ currentStep, totalSteps }: ProgressIndicatorProps) {
+export function ProgressIndicator({
+  currentStep,
+  totalSteps,
+}: ProgressIndicatorProps) {
   const steps = Array.from({ length: totalSteps }, (_, i) => i + 1);
-  
+
   return (
     <div className="flex items-center justify-center mb-4">
       <div className="flex items-center space-x-2">
         {steps.map((stepNumber, index) => {
           const isCompleted = currentStep > stepNumber;
           const isCurrent = currentStep === stepNumber;
-          
+
           return (
             <>
               <div
@@ -21,8 +24,8 @@ export function ProgressIndicator({ currentStep, totalSteps }: ProgressIndicator
                   isCurrent
                     ? 'bg-primary text-primary-foreground border-primary'
                     : isCompleted
-                    ? 'bg-green-500 text-white border-green-500'
-                    : 'bg-transparent text-muted-foreground border-muted-foreground'
+                      ? 'bg-green-500 text-white border-green-500'
+                      : 'bg-transparent text-muted-foreground border-muted-foreground'
                 }`}
               >
                 {isCompleted ? '✓' : stepNumber}
