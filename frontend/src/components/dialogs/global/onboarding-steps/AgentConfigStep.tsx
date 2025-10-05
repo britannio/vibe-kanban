@@ -29,6 +29,24 @@ type AgentConfigStepProps = {
   onCustomCommandChange: (command: string) => void;
 };
 
+/**
+ * AgentConfigStep - Step 1 of the unified onboarding flow
+ * 
+ * Allows users to configure their default coding agent and preferred code editor.
+ * 
+ * Features:
+ * - Agent selection with variant support (e.g., claude-code with temperature variants)
+ * - Editor type selection (VS Code, Cursor, Custom, etc.)
+ * - Custom command input for custom editor configurations
+ * 
+ * @param profile - Current executor profile (agent + variant)
+ * @param profiles - Available agent profiles from config
+ * @param editorType - Selected editor type
+ * @param customCommand - Custom editor command (when EditorType.CUSTOM is selected)
+ * @param onProfileChange - Callback when profile changes
+ * @param onEditorChange - Callback when editor type changes
+ * @param onCustomCommandChange - Callback when custom command changes
+ */
 export function AgentConfigStep({
   profile,
   profiles,

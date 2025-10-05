@@ -13,6 +13,28 @@ type GitHubLoginStepProps = {
   onCopyCode: (code: string) => void;
 };
 
+/**
+ * GitHubLoginStep - Step 2 of the unified onboarding flow
+ * 
+ * Optional GitHub OAuth authentication using device flow. Users can skip this step
+ * and continue with the onboarding process.
+ * 
+ * Features:
+ * - GitHub device flow authentication (OAuth without redirect)
+ * - Auto-copy device code to clipboard
+ * - Three states: unauthenticated, authenticating (with device code), authenticated
+ * - Clear benefits explanation for connecting GitHub
+ * - User-friendly error handling for denied/expired auth
+ * 
+ * @param isAuthenticated - Whether user is already authenticated with GitHub
+ * @param username - GitHub username if authenticated
+ * @param deviceState - Device flow state (contains verification URL and code)
+ * @param error - Error message to display
+ * @param copied - Whether device code was copied to clipboard
+ * @param fetching - Whether authentication flow is starting
+ * @param onLogin - Callback to initiate GitHub login
+ * @param onCopyCode - Callback to copy device code to clipboard
+ */
 export function GitHubLoginStep({
   isAuthenticated,
   username,

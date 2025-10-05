@@ -7,6 +7,22 @@ type FeedbackOptInStepProps = {
   onAnalyticsChange: (enabled: boolean) => void;
 };
 
+/**
+ * FeedbackOptInStep - Step 4 of the unified onboarding flow
+ * 
+ * Allows users to opt in or out of anonymous usage data collection and telemetry.
+ * The checkbox is enabled by default to encourage users to help improve the product.
+ * 
+ * Features:
+ * - Clear explanation of what data is collected
+ * - Transparency about GitHub profile usage (context-aware based on auth status)
+ * - Explicit statement of what is NOT collected
+ * - Reminder that settings can be changed later
+ * 
+ * @param analyticsEnabled - Current analytics opt-in status
+ * @param isGitHubAuthenticated - Whether user is signed in with GitHub
+ * @param onAnalyticsChange - Callback when analytics preference changes
+ */
 export function FeedbackOptInStep({
   analyticsEnabled,
   isGitHubAuthenticated,
@@ -42,12 +58,15 @@ export function FeedbackOptInStep({
             <div className="space-y-3 text-sm">
               <p className="font-medium">What we collect:</p>
               <div className="space-y-2">
-                {isGitHubAuthenticated && (
-                  <div className="flex items-start gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span>GitHub profile info for important updates only</span>
-                  </div>
-                )}
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span>
+                    GitHub profile info for important updates only
+                    {!isGitHubAuthenticated && (
+                      <span className="text-muted-foreground"> (when signed in)</span>
+                    )}
+                  </span>
+                </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
                   <span>High-level usage metrics and feature usage</span>

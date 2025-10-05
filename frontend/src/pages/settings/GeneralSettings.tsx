@@ -471,9 +471,7 @@ export function GeneralSettings() {
           {draft?.editor.editor_type === EditorType.CUSTOM && (
             <div className="space-y-2">
               <Label htmlFor="custom-command">
-                {t('settings.general.editor.customCommand.label', {
-                  defaultValue: 'Custom Command',
-                })}
+                {t('settings.general.editor.customCommand.label')}
               </Label>
               <Input
                 id="custom-command"
@@ -489,10 +487,7 @@ export function GeneralSettings() {
                 }
               />
               <p className="text-sm text-muted-foreground">
-                {t('settings.general.editor.customCommand.helper', {
-                  defaultValue:
-                    'Enter the command to run your custom editor. Use spaces for arguments (e.g., "code --wait").',
-                })}
+                {t('settings.general.editor.customCommand.helper')}
               </p>
             </div>
           )}
