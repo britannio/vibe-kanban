@@ -96,7 +96,9 @@ export function ProjectTasks() {
   // Setup wizard state
   const [setupComplete, setSetupComplete] = useState(() => {
     if (!projectId) return true;
-    return localStorage.getItem(`project-setup-complete-${projectId}`) === 'true';
+    return (
+      localStorage.getItem(`project-setup-complete-${projectId}`) === 'true'
+    );
   });
 
   // Fullscreen state using custom hook
@@ -470,11 +472,8 @@ export function ProjectTasks() {
   const isInitialTasksLoad = isLoading && tasks.length === 0;
 
   // Determine if we should show setup wizard
-  const shouldShowSetup = 
-    tasks.length === 0 && 
-    !setupComplete && 
-    !isLoading &&
-    !!project;
+  const shouldShowSetup =
+    tasks.length === 0 && !setupComplete && !isLoading && !!project;
 
   const handleCompleteSetup = useCallback(() => {
     if (projectId) {
