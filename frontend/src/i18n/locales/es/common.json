@@ -35,7 +35,6 @@
       "show": "Mostrar detalles",
       "hide": "Ocultar detalles"
     },
-<<<<<<< HEAD
     "args": "Argumentos",
     "output": "Salida",
     "result": "Resultado",
@@ -50,10 +49,6 @@
       "remote": "remota"
     },
     "currentDisabled": "No se puede seleccionar la rama actual"
-=======
-    "args": "Args",
-    "output": "Salida",
-    "result": "Resultado"
   },
   "onboarding": {
     "welcome": {
@@ -95,9 +90,10 @@
       "warning1": "Vibe Kanban ejecuta agentes de codificación de IA con",
       "code1": "--dangerously-skip-permissions",
       "code2": "--yolo",
-      "warning2": "por defecto, otorgándoles acceso sin restricciones para ejecutar código y comandos en tu sistema.",
+      "warning2": "/",
+      "warning3": "por defecto, otorgándoles acceso sin restricciones para ejecutar código y comandos en tu sistema.",
       "important": "Importante:",
-      "warning3": "Siempre revisa lo que están haciendo los agentes y asegúrate de tener copias de seguridad de tu trabajo importante. Este software es experimental - úsalo responsablemente.",
+      "importantText": "Siempre revisa lo que están haciendo los agentes y asegúrate de tener copias de seguridad de tu trabajo importante. Este software es experimental - úsalo responsablemente.",
       "learnMore": "Más información en",
       "docsLink": "nuestra documentación de seguridad"
     },
@@ -106,17 +102,16 @@
       "optInLabel": "Compartir datos de uso para ayudarnos a mejorar el producto",
       "optInHelper": "Recopilamos métricas de uso de alto nivel y datos de rendimiento, pero nunca tu código o información personal.",
       "whatWeCollect": "Qué recopilamos:",
-      "collect1": "Información del perfil de GitHub solo para actualizaciones importantes",
+      "collectGitHub": "Información del perfil de GitHub solo para actualizaciones importantes",
       "whenSignedIn": "(cuando hayas iniciado sesión)",
-      "collect2": "Métricas de uso de alto nivel y uso de funciones",
-      "collect3": "Datos de rendimiento y errores",
-      "notCollect": "NO recopilamos contenidos de tareas, código o nombres de proyectos",
+      "collectUsage": "Métricas de uso de alto nivel y uso de funciones",
+      "collectPerformance": "Datos de rendimiento y errores",
+      "doNotCollect": "NO recopilamos contenidos de tareas, código o nombres de proyectos",
       "settingsNote": "Puedes cambiar esta preferencia en cualquier momento en Configuración."
     },
     "buttons": {
       "understand": "Entiendo, Continuar",
       "complete": "Completar Configuración"
     }
->>>>>>> b2635bde (Perfect! All tasks completed successfully. Let me create a summary:)
   }
 }

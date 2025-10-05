@@ -37,7 +37,6 @@
     },
     "args": "Args",
     "output": "Output",
-<<<<<<< HEAD
     "result": "Result",
     "deniedByUser": "{{toolName}} denied by user"
   },
@@ -50,8 +49,6 @@
       "remote": "remote"
     },
     "currentDisabled": "Cannot select the current branch"
-=======
-    "result": "Result"
   },
   "onboarding": {
     "welcome": {
@@ -93,9 +90,10 @@
       "warning1": "Vibe Kanban runs AI coding agents with",
       "code1": "--dangerously-skip-permissions",
       "code2": "--yolo",
-      "warning2": "by default, giving them unrestricted access to execute code and run commands on your system.",
+      "warning2": "/",
+      "warning3": "by default, giving them unrestricted access to execute code and run commands on your system.",
       "important": "Important:",
-      "warning3": "Always review what agents are doing and ensure you have backups of important work. This software is experimental - use it responsibly.",
+      "importantText": "Always review what agents are doing and ensure you have backups of important work. This software is experimental - use it responsibly.",
       "learnMore": "Learn more at",
       "docsLink": "our safety documentation"
     },
@@ -104,17 +102,16 @@
       "optInLabel": "Share usage data to help us improve the product",
       "optInHelper": "We collect high-level usage metrics and performance data, but never your code or personal information.",
       "whatWeCollect": "What we collect:",
-      "collect1": "GitHub profile info for important updates only",
+      "collectGitHub": "GitHub profile info for important updates only",
       "whenSignedIn": "(when signed in)",
-      "collect2": "High-level usage metrics and feature usage",
-      "collect3": "Performance and error data",
-      "notCollect": "We do NOT collect task contents, code, or project names",
+      "collectUsage": "High-level usage metrics and feature usage",
+      "collectPerformance": "Performance and error data",
+      "doNotCollect": "We do NOT collect task contents, code, or project names",
       "settingsNote": "You can change this preference anytime in Settings."
     },
     "buttons": {
       "understand": "I Understand, Continue",
       "complete": "Complete Setup"
     }
->>>>>>> b2635bde (Perfect! All tasks completed successfully. Let me create a summary:)
   }
 }

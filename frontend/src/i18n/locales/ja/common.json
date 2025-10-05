@@ -37,7 +37,6 @@
     },
     "args": "引数",
     "output": "出力",
-<<<<<<< HEAD
     "result": "結果",
     "deniedByUser": "{{toolName}} がユーザーによって拒否されました"
   },
@@ -50,8 +49,6 @@
       "remote": "リモート"
     },
     "currentDisabled": "現在のブランチは選択できません"
-=======
-    "result": "結果"
   },
   "onboarding": {
     "welcome": {
@@ -93,9 +90,10 @@
       "warning1": "Vibe Kanbanは、AIコーディングエージェントを",
       "code1": "--dangerously-skip-permissions",
       "code2": "--yolo",
-      "warning2": "でデフォルトで実行し、システム上でコードやコマンドを無制限に実行できるアクセス権を与えます。",
+      "warning2": "/",
+      "warning3": "でデフォルトで実行し、システム上でコードやコマンドを無制限に実行できるアクセス権を与えます。",
       "important": "重要：",
-      "warning3": "エージェントが何をしているかを常に確認し、重要な作業のバックアップがあることを確認してください。このソフトウェアは実験的なものです - 責任を持って使用してください。",
+      "importantText": "エージェントが何をしているかを常に確認し、重要な作業のバックアップがあることを確認してください。このソフトウェアは実験的なものです - 責任を持って使用してください。",
       "learnMore": "詳細はこちら",
       "docsLink": "安全性に関するドキュメント"
     },
@@ -104,17 +102,16 @@
       "optInLabel": "製品の改善に役立つ使用データを共有する",
       "optInHelper": "高レベルの使用メトリクスとパフォーマンスデータを収集しますが、コードや個人情報は収集しません。",
       "whatWeCollect": "収集するデータ：",
-      "collect1": "重要な更新のためのGitHubプロフィール情報のみ",
+      "collectGitHub": "重要な更新のためのGitHubプロフィール情報のみ",
       "whenSignedIn": "（サインイン時）",
-      "collect2": "高レベルの使用メトリクスと機能使用状況",
-      "collect3": "パフォーマンスとエラーデータ",
-      "notCollect": "タスクの内容、コード、プロジェクト名は収集しません",
+      "collectUsage": "高レベルの使用メトリクスと機能使用状況",
+      "collectPerformance": "パフォーマンスとエラーデータ",
+      "doNotCollect": "タスクの内容、コード、プロジェクト名は収集しません",
       "settingsNote": "この設定は設定でいつでも変更できます。"
     },
     "buttons": {
       "understand": "理解しました、続行",
       "complete": "セットアップを完了"
     }
->>>>>>> b2635bde (Perfect! All tasks completed successfully. Let me create a summary:)
   }
 }
