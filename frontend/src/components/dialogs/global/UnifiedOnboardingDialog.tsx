@@ -204,18 +204,28 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
         } catch (e: any) {
           setPolling(false);
           setDeviceState(null);
-          
+
           const msg = e?.message?.toLowerCase?.() || '';
-          
+
           if (msg.includes('expired_token') || msg === 'expired_token') {
             setError('Device code expired. Please try again.');
           } else if (msg.includes('access_denied') || msg === 'access_denied') {
-            setError('GitHub authorization was denied. No changes were made. You can try again.');
-          } else if (msg.includes('device_flow_not_started') || msg === 'device_flow_not_started') {
+            setError(
+              'GitHub authorization was denied. No changes were made. You can try again.'
+            );
+          } else if (
+            msg.includes('device_flow_not_started') ||
+            msg === 'device_flow_not_started'
+          ) {
             setError('Please start GitHub sign-in before polling.');
-          } else if (msg.includes('tokenresponse') || msg.includes('did not match any variant')) {
+          } else if (
+            msg.includes('tokenresponse') ||
+            msg.includes('did not match any variant')
+          ) {
             // This is the cryptic octocrab parsing error when user denies - treat as access_denied
-            setError('GitHub authorization was denied. No changes were made. You can try again.');
+            setError(
+              'GitHub authorization was denied. No changes were made. You can try again.'
+            );
           } else {
             setError(e?.message || 'Login failed. Please try again.');
           }
