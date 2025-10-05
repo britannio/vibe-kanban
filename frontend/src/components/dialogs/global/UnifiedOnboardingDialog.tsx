@@ -37,15 +37,20 @@ export type UnifiedOnboardingResult = {
 };
 
 const STEP_AGENT_CONFIG = 1;
-const STEP_GITHUB_LOGIN = 2;
-const STEP_SAFETY_NOTICE = 3;
-const STEP_FEEDBACK_OPTIN = 4;
+const STEP_FEEDBACK_OPTIN = 2;
+const STEP_GITHUB_LOGIN = 3;
+const STEP_SAFETY_NOTICE = 4;
 
 const UnifiedOnboardingDialog = NiceModal.create(() => {
   const modal = useModal();
   const { t } = useTranslation('common');
-  const { profiles, config, githubTokenInvalid, reloadSystem } =
-    useUserSystem();
+  const {
+    profiles,
+    config,
+    githubTokenInvalid,
+    reloadSystem,
+    updateAndSaveConfig,
+  } = useUserSystem();
 
   const [step, setStep] = useState(STEP_AGENT_CONFIG);
 
@@ -70,24 +75,34 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
   // Step 4: Feedback opt-in
   const [analyticsEnabled, setAnalyticsEnabled] = useState(true);
 
-  const handleStepForward = () => {
+  const handleStepForward = async () => {
     if (step === STEP_AGENT_CONFIG) {
+      setStep(STEP_FEEDBACK_OPTIN);
+    } else if (step === STEP_FEEDBACK_OPTIN) {
+      await saveFeedbackPreference();
       setStep(STEP_GITHUB_LOGIN);
     } else if (step === STEP_GITHUB_LOGIN) {
       setStep(STEP_SAFETY_NOTICE);
-    } else if (step === STEP_SAFETY_NOTICE) {
-      setStep(STEP_FEEDBACK_OPTIN);
     }
   };
 
   const handleStepBack = () => {
-    if (step === STEP_GITHUB_LOGIN) {
+    if (step === STEP_FEEDBACK_OPTIN) {
       setStep(STEP_AGENT_CONFIG);
+    } else if (step === STEP_GITHUB_LOGIN) {
+      setStep(STEP_FEEDBACK_OPTIN);
     } else if (step === STEP_SAFETY_NOTICE) {
       setStep(STEP_GITHUB_LOGIN);
-    } else if (step === STEP_FEEDBACK_OPTIN) {
-      setStep(STEP_SAFETY_NOTICE);
     }
+  };
+
+  const saveFeedbackPreference = async () => {
+    const updatedConfig = {
+      ...config,
+      telemetry_acknowledged: true,
+      analytics_enabled: analyticsEnabled,
+    };
+    await updateAndSaveConfig(updatedConfig);
   };
 
   const handleComplete = () => {
@@ -235,6 +250,14 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
           />
         )}
 
+        {step === STEP_FEEDBACK_OPTIN && (
+          <FeedbackOptInStep
+            analyticsEnabled={analyticsEnabled}
+            isGitHubAuthenticated={isGitHubAuthenticated}
+            onAnalyticsChange={setAnalyticsEnabled}
+          />
+        )}
+
         {step === STEP_GITHUB_LOGIN && (
           <GitHubLoginStep
             isAuthenticated={isGitHubAuthenticated}
@@ -250,18 +273,10 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
 
         {step === STEP_SAFETY_NOTICE && <SafetyNoticeStep />}
 
-        {step === STEP_FEEDBACK_OPTIN && (
-          <FeedbackOptInStep
-            analyticsEnabled={analyticsEnabled}
-            isGitHubAuthenticated={isGitHubAuthenticated}
-            onAnalyticsChange={setAnalyticsEnabled}
-          />
-        )}
-
         <DialogFooter className="flex gap-2">
-          {(step === STEP_GITHUB_LOGIN ||
-            step === STEP_SAFETY_NOTICE ||
-            step === STEP_FEEDBACK_OPTIN) && (
+          {(step === STEP_FEEDBACK_OPTIN ||
+            step === STEP_GITHUB_LOGIN ||
+            step === STEP_SAFETY_NOTICE) && (
             <Button variant="outline" onClick={handleStepBack}>
               {t('buttons.back')}
             </Button>
@@ -279,6 +294,12 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
             </Button>
           )}
 
+          {step === STEP_FEEDBACK_OPTIN && (
+            <Button onClick={handleStepForward} className="min-w-24">
+              {t('buttons.next')}
+            </Button>
+          )}
+
           {step === STEP_GITHUB_LOGIN && (
             <Button
               onClick={handleStepForward}
@@ -290,12 +311,6 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
           )}
 
           {step === STEP_SAFETY_NOTICE && (
-            <Button onClick={handleStepForward} className="min-w-24">
-              {t('onboarding.buttons.understand')}
-            </Button>
-          )}
-
-          {step === STEP_FEEDBACK_OPTIN && (
             <Button onClick={handleComplete} className="min-w-24">
               {t('onboarding.buttons.complete')}
             </Button>

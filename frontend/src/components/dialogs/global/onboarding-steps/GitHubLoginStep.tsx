@@ -15,7 +15,7 @@ type GitHubLoginStepProps = {
 };
 
 /**
- * GitHubLoginStep - Step 2 of the unified onboarding flow
+ * GitHubLoginStep - Step 3 of the unified onboarding flow
  *
  * Optional GitHub OAuth authentication using device flow. Users can skip this step
  * and continue with the onboarding process.

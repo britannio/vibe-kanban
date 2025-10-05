@@ -2,7 +2,7 @@ import { AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 /**
- * SafetyNoticeStep - Step 3 of the unified onboarding flow
+ * SafetyNoticeStep - Step 4 of the unified onboarding flow
  *
  * Displays critical safety information about AI coding agents running with unrestricted
  * permissions. This is a mandatory acknowledgment step that users must read and accept

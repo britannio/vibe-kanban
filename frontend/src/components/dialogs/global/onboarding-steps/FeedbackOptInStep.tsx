@@ -9,7 +9,7 @@ type FeedbackOptInStepProps = {
 };
 
 /**
- * FeedbackOptInStep - Step 4 of the unified onboarding flow
+ * FeedbackOptInStep - Step 2 of the unified onboarding flow
  *
  * Allows users to opt in or out of anonymous usage data collection and telemetry.
  * The checkbox is enabled by default to encourage users to help improve the product.
