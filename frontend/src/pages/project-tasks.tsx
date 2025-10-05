@@ -482,13 +482,6 @@ export function ProjectTasks() {
     }
   }, [projectId]);
 
-  const handleSkipSetup = useCallback(() => {
-    if (projectId) {
-      localStorage.setItem(`project-setup-complete-${projectId}`, 'true');
-      setSetupComplete(true);
-    }
-  }, [projectId]);
-
   if (projectError) {
     return (
       <div className="p-4">
@@ -531,7 +524,6 @@ export function ProjectTasks() {
             <ProjectSetupWizard
               project={project}
               onComplete={handleCompleteSetup}
-              onSkip={handleSkipSetup}
             />
           ) : tasks.length === 0 ? (
             <div className="max-w-7xl mx-auto mt-8">
