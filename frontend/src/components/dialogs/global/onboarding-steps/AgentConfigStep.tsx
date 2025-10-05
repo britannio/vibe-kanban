@@ -103,7 +103,7 @@ export function AgentConfigStep({
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-32 px-2 flex items-center justify-between"
+                    className="flex-1 px-2 flex items-center justify-between"
                   >
                     <span className="text-xs truncate flex-1 text-left">
                       {profile.variant || 'DEFAULT'}
@@ -131,7 +131,7 @@ export function AgentConfigStep({
             ) : selectedProfile ? (
               <Button
                 variant="outline"
-                className="w-32 px-2 flex items-center justify-between"
+                className="flex-1 px-2 flex items-center justify-between"
                 disabled
               >
                 <span className="text-xs truncate flex-1 text-left">
