@@ -103,26 +103,20 @@ Added missing translation keys:
 
 ## Redundant Code Analysis
 
-### Currently Redundant Dialogs 🔄
+### Currently Redundant Dialogs ✅ REMOVED
 
-These dialogs are **still registered but NO LONGER USED** by the application:
+These dialogs have been **DELETED** as they're fully replaced by UnifiedOnboardingDialog:
 
-1. **`DisclaimerDialog.tsx`** (63 lines)
-   - ❌ Only showed safety notice
-   - ✅ Now part of UnifiedOnboardingDialog Step 3
-   - **Recommendation:** Can be safely removed
+1. ~~**`DisclaimerDialog.tsx`**~~ (63 lines) - Removed ✅
+   - Now part of UnifiedOnboardingDialog Step 3
 
-2. **`OnboardingDialog.tsx`** (228 lines)
-   - ❌ Only handled agent/editor config
-   - ✅ Now part of UnifiedOnboardingDialog Step 1
-   - **Recommendation:** Can be safely removed
+2. ~~**`OnboardingDialog.tsx`**~~ (228 lines) - Removed ✅
+   - Now part of UnifiedOnboardingDialog Step 1
 
-3. **`PrivacyOptInDialog.tsx`** (117 lines)
-   - ❌ Only showed feedback opt-in
-   - ✅ Now part of UnifiedOnboardingDialog Step 4
-   - **Recommendation:** Can be safely removed
+3. ~~**`PrivacyOptInDialog.tsx`**~~ (117 lines) - Removed ✅
+   - Now part of UnifiedOnboardingDialog Step 4
 
-**Total redundant code:** ~408 lines that can be removed
+**Total code removed:** 408 lines ✅
 
 ### GitHub Dialog - Keep But Refactor 🔧
 
@@ -281,15 +275,15 @@ The onboarding step components currently use **hard-coded English text**. This n
 - ✅ GitHub error handling improved
 - ✅ Settings page custom command works
 - ✅ i18n strings added for settings
+- ✅ Redundant dialogs removed (DisclaimerDialog, OnboardingDialog, PrivacyOptInDialog)
 - ⚠️ Onboarding steps need i18n extraction
-- ⚠️ Redundant dialogs still registered (cleanup needed)
 - ⚠️ GitHub auth logic duplicated (refactor opportunity)
 
 ## Next Steps
 
 ### High Priority:
 1. **Extract onboarding i18n strings** - Make all text translatable
-2. **Remove redundant dialogs** - Clean up DisclaimerDialog, OnboardingDialog, PrivacyOptInDialog
+2. ~~**Remove redundant dialogs**~~ ✅ COMPLETED
 3. **Test complete onboarding flow** - Verify all steps work end-to-end
 
 ### Medium Priority:
