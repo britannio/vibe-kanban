@@ -20,12 +20,12 @@ export function ProgressIndicator({
             <>
               <div
                 key={stepNumber}
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium border-2 ${
-                  isCurrent
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : isCompleted
-                      ? 'bg-green-500 text-white border-green-500'
-                      : 'bg-transparent text-muted-foreground border-muted-foreground'
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                  isCompleted
+                    ? 'bg-green-500 text-white'
+                    : isCurrent
+                    ? 'bg-green-500 text-white'
+                    : 'bg-muted text-muted-foreground'
                 }`}
               >
                 {isCompleted ? '✓' : stepNumber}
