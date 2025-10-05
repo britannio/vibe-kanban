@@ -122,7 +122,7 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
       setPolling(true);
     } catch (e: any) {
       console.error(e);
-      setError(e?.message || 'Network error');
+      setError(e?.message || t('onboarding.githubLogin.error.network'));
     } finally {
       setFetching(false);
     }
@@ -179,18 +179,18 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
               break;
             case DevicePollStatus.ACCESS_DENIED:
               setPolling(false);
-              setError('GitHub authorization was denied. You can try again.');
+              setError(t('onboarding.githubLogin.error.denied'));
               setDeviceState(null);
               break;
             case DevicePollStatus.EXPIRED_TOKEN:
               setPolling(false);
-              setError('Device code expired. Please try again.');
+              setError(t('onboarding.githubLogin.error.expired'));
               setDeviceState(null);
               break;
           }
         } catch (e: any) {
           setPolling(false);
-          setError(e?.message || 'Login failed.');
+          setError(e?.message || t('onboarding.githubLogin.error.failed'));
           setDeviceState(null);
         }
       };

@@ -66,7 +66,7 @@ function AppContent() {
         editor: result.editor,
       };
 
-      updateAndSaveConfig(updatedConfig);
+      await updateAndSaveConfig(updatedConfig);
     };
 
     const handleReleaseNotesClose = async () => {

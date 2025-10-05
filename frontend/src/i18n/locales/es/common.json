@@ -83,7 +83,13 @@
       "benefit2": "Enviar cambios y crear ramas automáticamente",
       "benefit3": "Optimizar tu flujo de trabajo de desarrollo",
       "signInButton": "Iniciar sesión con GitHub",
-      "starting": "Iniciando..."
+      "starting": "Iniciando...",
+      "error": {
+        "network": "Error de red. Por favor, verifica tu conexión e intenta de nuevo.",
+        "failed": "Error al iniciar sesión. Por favor, intenta de nuevo.",
+        "denied": "Se denegó la autorización de GitHub. Puedes intentar de nuevo.",
+        "expired": "El código del dispositivo expiró. Por favor, intenta de nuevo."
+      }
     },
     "safetyNotice": {
       "title": "Aviso de Seguridad",

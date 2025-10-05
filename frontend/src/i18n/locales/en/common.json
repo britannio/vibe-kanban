@@ -83,7 +83,13 @@
       "benefit2": "Push changes and create branches automatically",
       "benefit3": "Streamline your development workflow",
       "signInButton": "Sign in with GitHub",
-      "starting": "Starting..."
+      "starting": "Starting...",
+      "error": {
+        "network": "Network error. Please check your connection and try again.",
+        "failed": "Login failed. Please try again.",
+        "denied": "GitHub authorization was denied. You can try again.",
+        "expired": "Device code expired. Please try again."
+      }
     },
     "safetyNotice": {
       "title": "Safety Notice",
