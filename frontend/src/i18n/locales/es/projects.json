@@ -24,7 +24,7 @@
     },
     "cleanupScript": {
       "label": "Script de Limpieza",
-      "help": "Este script se ejecuta después de la ejecución del agente de codificación <strong>solo si se realizaron cambios</strong>. Úsalo para tareas de control de calidad como ejecutar linters, formateadores, pruebas u otros pasos de validación. Si no se realizan cambios, este script se omite."
+      "help": "Este script se ejecuta después de la ejecución del agente de codificación solo si se realizaron cambios. Úsalo para tareas de control de calidad como ejecutar linters, formateadores, pruebas u otros pasos de validación. Si no se realizan cambios, este script se omite."
     },
     "copyFiles": {
       "label": "Copiar Archivos",

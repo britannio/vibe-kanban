@@ -25,7 +25,7 @@ export function ProjectSetupView({
   return (
     <div className="flex h-full gap-6">
       {/* Single TODO column - DnD disabled in empty state */}
-      <div className="flex-shrink-0 w-80">
+      <div className="flex-shrink-0 w-80 border-r pr-6">
         <KanbanBoard id="todo">
           <KanbanHeader
             name={statusLabels.todo}

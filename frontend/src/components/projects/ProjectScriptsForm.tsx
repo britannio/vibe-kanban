@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { Label } from '@/components/ui/label';
 import { CopyFilesField } from './copy-files-field';
 
@@ -81,7 +81,12 @@ export function ProjectScriptsForm({
           className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
         />
         <p className="text-sm text-muted-foreground">
-          {t('setup.cleanupScript.help')}
+          <Trans i18nKey="setup.cleanupScript.help" t={t}>
+            This script runs after coding agent execution{' '}
+            <strong>only if changes were made</strong>. Use it for quality
+            assurance tasks like running linters, formatters, tests, or other
+            validation steps. If no changes are made, this script is skipped.
+          </Trans>
         </p>
       </div>
 
