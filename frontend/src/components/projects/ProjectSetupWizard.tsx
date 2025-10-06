@@ -27,7 +27,7 @@ interface ProjectSetupWizardProps {
  * - Configure setup, dev server, and cleanup scripts
  * - Specify files to copy to worktrees
  * - Select from default task templates (e.g., Vibe Kanban Companion installation)
- * - Fully internationalized (supports English, Spanish, Japanese)
+ * - Fully internationalized
  * - Automatically saves configuration and creates selected tasks
  */
 export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
