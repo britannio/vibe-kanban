@@ -1,4 +1,11 @@
-import { GitCompare, MessageSquare, Cog, Monitor, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import {
+  GitCompare,
+  MessageSquare,
+  Cog,
+  Monitor,
+  ChevronsLeft,
+  ChevronsRight,
+} from 'lucide-react';
 import type { TabType } from '@/types/tabs';
 import type { TaskAttempt } from 'shared/types';
 
@@ -13,7 +20,13 @@ type Props = {
   onToggleSidebar?: () => void;
 };
 
-function TabNavigation({ activeTab, setActiveTab, rightContent, isSidebarCollapsed, onToggleSidebar }: Props) {
+function TabNavigation({
+  activeTab,
+  setActiveTab,
+  rightContent,
+  isSidebarCollapsed,
+  onToggleSidebar,
+}: Props) {
   const tabs = [
     { id: 'logs' as TabType, label: 'Logs', icon: MessageSquare },
     { id: 'diffs' as TabType, label: 'Diffs', icon: GitCompare },
@@ -37,7 +50,7 @@ function TabNavigation({ activeTab, setActiveTab, rightContent, isSidebarCollaps
           <button
             onClick={onToggleSidebar}
             className="flex items-center py-2 px-2 text-sm font-medium text-secondary-foreground hover:text-primary-foreground"
-            title={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            title={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {isSidebarCollapsed ? (
               <ChevronsRight className="h-4 w-4" />
