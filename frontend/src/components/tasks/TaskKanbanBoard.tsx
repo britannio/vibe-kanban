@@ -15,6 +15,7 @@ import { statusBoardColors, statusLabels } from '@/utils/status-labels';
 type Task = TaskWithAttemptStatus;
 
 interface TaskKanbanBoardProps {
+  // Partial to support showing only a subset of columns (e.g., just TODO in setup wizard)
   groupedTasks: Partial<Record<TaskStatus, Task[]>>;
   onDragEnd: (event: DragEndEvent) => void;
   onEditTask: (task: Task) => void;
