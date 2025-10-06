@@ -2,7 +2,6 @@ import {
   KanbanBoard,
   KanbanCards,
   KanbanHeader,
-  KanbanProvider,
 } from '@/components/ui/shadcn-io/kanban';
 import { statusBoardColors, statusLabels } from '@/utils/status-labels';
 import { ProjectSetupWizard } from './ProjectSetupWizard';
@@ -25,18 +24,16 @@ export function ProjectSetupView({
 }: ProjectSetupViewProps) {
   return (
     <div className="flex h-full gap-6">
-      {/* Single TODO column */}
+      {/* Single TODO column - DnD disabled in empty state */}
       <div className="flex-shrink-0 w-80">
-        <KanbanProvider onDragEnd={() => {}}>
-          <KanbanBoard id="todo">
-            <KanbanHeader
-              name={statusLabels.todo}
-              color={statusBoardColors.todo}
-              onAddTask={onCreateTask}
-            />
-            <KanbanCards children={null} />
-          </KanbanBoard>
-        </KanbanProvider>
+        <KanbanBoard id="todo">
+          <KanbanHeader
+            name={statusLabels.todo}
+            color={statusBoardColors.todo}
+            onAddTask={onCreateTask}
+          />
+          <KanbanCards />
+        </KanbanBoard>
       </div>
       {/* Setup wizard on the right */}
       <div className="flex-1 min-w-0 overflow-y-auto">

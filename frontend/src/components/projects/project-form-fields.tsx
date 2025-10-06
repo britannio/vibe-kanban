@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -17,8 +16,7 @@ import {
   ScriptPlaceholderContext,
 } from '@/utils/script-placeholders';
 import { useUserSystem } from '@/components/config-provider';
-import { CopyFilesField } from './copy-files-field';
-// Removed collapsible sections for simplicity; show fields always in edit mode
+import { ProjectScriptsForm } from './ProjectScriptsForm';
 import { fileSystemApi } from '@/lib/api';
 import { showFolderPicker } from '@/lib/modals';
 import { DirectoryEntry } from 'shared/types';
@@ -73,7 +71,6 @@ export function ProjectFormFields({
   projectId,
   onCreateProject,
 }: ProjectFormFieldsProps) {
-  const { t } = useTranslation('projects');
   const { system } = useUserSystem();
 
   // Create strategy-based placeholders
@@ -429,68 +426,19 @@ export function ProjectFormFields({
       )}
 
       {isEditing && (
-        <div className="space-y-4 pt-4 border-t border-border">
-          <div className="space-y-2">
-            <Label htmlFor="setup-script">{t('setup.setupScript.label')}</Label>
-            <textarea
-              id="setup-script"
-              value={setupScript}
-              onChange={(e) => setSetupScript(e.target.value)}
-              placeholder={placeholders.setup}
-              rows={4}
-              className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
-            />
-            <p className="text-sm text-muted-foreground">
-              {t('setup.setupScript.help')}
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="dev-script">{t('setup.devScript.label')}</Label>
-            <textarea
-              id="dev-script"
-              value={devScript}
-              onChange={(e) => setDevScript(e.target.value)}
-              placeholder={placeholders.dev}
-              rows={4}
-              className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
-            />
-            <p className="text-sm text-muted-foreground">
-              {t('setup.devScript.help')}
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="cleanup-script">
-              {t('setup.cleanupScript.label')}
-            </Label>
-            <textarea
-              id="cleanup-script"
-              value={cleanupScript}
-              onChange={(e) => setCleanupScript(e.target.value)}
-              placeholder={placeholders.cleanup}
-              rows={4}
-              className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
-            />
-            <p
-              className="text-sm text-muted-foreground"
-              dangerouslySetInnerHTML={{
-                __html: t('setup.cleanupScript.help'),
-              }}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label>{t('setup.copyFiles.label')}</Label>
-            <CopyFilesField
-              value={copyFiles}
-              onChange={setCopyFiles}
-              projectId={projectId}
-            />
-            <p className="text-sm text-muted-foreground">
-              {t('setup.copyFiles.help')}
-            </p>
-          </div>
+        <div className="pt-4 border-t border-border">
+          <ProjectScriptsForm
+            setupScript={setupScript}
+            setSetupScript={setSetupScript}
+            devScript={devScript}
+            setDevScript={setDevScript}
+            cleanupScript={cleanupScript}
+            setCleanupScript={setCleanupScript}
+            copyFiles={copyFiles}
+            setCopyFiles={setCopyFiles}
+            placeholders={placeholders}
+            projectId={projectId}
+          />
         </div>
       )}
 

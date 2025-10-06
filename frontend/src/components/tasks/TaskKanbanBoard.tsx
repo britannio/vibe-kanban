@@ -46,7 +46,7 @@ function TaskKanbanBoard({
             onAddTask={onCreateTask}
           />
           <KanbanCards>
-            {statusTasks.map((task, index) => (
+            {(statusTasks ?? []).map((task, index) => (
               <TaskCard
                 key={task.id}
                 task={task}
