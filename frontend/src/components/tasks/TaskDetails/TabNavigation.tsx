@@ -69,7 +69,6 @@ function TabNavigation({
               </TooltipTrigger>
               <TooltipContent side="bottom">
                 {isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-                <span className="ml-2 text-muted-foreground">(⌘/Ctrl+B)</span>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

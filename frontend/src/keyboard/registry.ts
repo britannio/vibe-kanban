@@ -21,7 +21,6 @@ export enum Action {
   OPEN_DETAILS = 'open_details',
   SHOW_HELP = 'show_help',
   TOGGLE_FULLSCREEN = 'toggle_fullscreen',
-  TOGGLE_SIDEBAR = 'toggle_sidebar',
   DELETE_TASK = 'delete_task',
   APPROVE_REQUEST = 'approve_request',
   DENY_APPROVAL = 'deny_approval',
@@ -148,13 +147,6 @@ export const keyBindings: KeyBinding[] = [
     keys: ['meta+enter', 'ctrl+enter'],
     scopes: [Scope.KANBAN],
     description: 'Toggle fullscreen view',
-    group: 'Task Details',
-  },
-  {
-    action: Action.TOGGLE_SIDEBAR,
-    keys: ['meta+b', 'ctrl+b'],
-    scopes: [Scope.KANBAN],
-    description: 'Toggle sidebar in fullscreen',
     group: 'Task Details',
   },
 
