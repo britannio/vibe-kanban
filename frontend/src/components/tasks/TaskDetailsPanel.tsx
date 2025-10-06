@@ -90,14 +90,11 @@ export function TaskDetailsPanel({
   };
 
   // Register keyboard shortcut for toggling sidebar
-  useKeyToggleSidebar(
-    () => setIsSidebarCollapsed((prev) => !prev),
-    {
-      scope: Scope.KANBAN,
-      when: !!isFullScreen,
-      preventDefault: true,
-    }
-  );
+  useKeyToggleSidebar(() => setIsSidebarCollapsed((prev) => !prev), {
+    scope: Scope.KANBAN,
+    when: !!isFullScreen,
+    preventDefault: true,
+  });
 
   // Reset to logs tab when task changes
   useEffect(() => {
