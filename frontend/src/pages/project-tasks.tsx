@@ -93,14 +93,6 @@ export function ProjectTasks() {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
-  // Setup wizard state
-  const [setupComplete, setSetupComplete] = useState(() => {
-    if (!projectId) return true;
-    return (
-      localStorage.getItem(`project-setup-complete-${projectId}`) === 'true'
-    );
-  });
-
   // Fullscreen state using custom hook
   const { isFullscreen, navigateToTask, navigateToAttempt, toggleFullscreen } =
     useTaskViewManager();
@@ -471,16 +463,8 @@ export function ProjectTasks() {
   // Combine loading states for initial load
   const isInitialTasksLoad = isLoading && tasks.length === 0;
 
-  // Determine if we should show setup wizard
-  const shouldShowSetup =
-    tasks.length === 0 && !setupComplete && !isLoading && !!project;
-
-  const handleCompleteSetup = useCallback(() => {
-    if (projectId) {
-      localStorage.setItem(`project-setup-complete-${projectId}`, 'true');
-      setSetupComplete(true);
-    }
-  }, [projectId]);
+  // Show setup wizard when there are no tasks
+  const shouldShowSetup = tasks.length === 0 && !isLoading && !!project;
 
   if (projectError) {
     return (
@@ -537,10 +521,7 @@ export function ProjectTasks() {
               </div>
               {/* Setup wizard on the right */}
               <div className="flex-1 min-w-0 overflow-y-auto">
-                <ProjectSetupWizard
-                  project={project}
-                  onComplete={handleCompleteSetup}
-                />
+                <ProjectSetupWizard project={project} />
               </div>
             </div>
           ) : tasks.length === 0 ? (

@@ -19,13 +19,9 @@ import {
 
 interface ProjectSetupWizardProps {
   project: Project;
-  onComplete: () => void;
 }
 
-export function ProjectSetupWizard({
-  project,
-  onComplete,
-}: ProjectSetupWizardProps) {
+export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
   const [setupScript, setSetupScript] = useState(project.setup_script ?? '');
   const [devScript, setDevScript] = useState(project.dev_script ?? '');
   const [cleanupScript, setCleanupScript] = useState(
@@ -86,8 +82,6 @@ export function ProjectSetupWizard({
         };
         await tasksApi.create(taskData);
       }
-
-      onComplete();
     } catch (err) {
       console.error('Failed to save setup:', err);
       setError('Failed to save setup');
