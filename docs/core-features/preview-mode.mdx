@@ -46,67 +46,76 @@ Before using Preview Mode, ensure you have:
 <Step title="Install Web Companion">
   For precise component selection, install the `vibe-kanban-web-companion` package in your application.
 
+  <Info>
+  **Recommended**: Use the "Install companion automatically" button in the Preview tab to have Vibe Kanban create a task that installs and configures the companion for you.
+  </Info>
+
+  **Manual Installation:**
+
+  Add the dependency to your project:
+  ```bash
+  npm install vibe-kanban-web-companion
+  ```
+
+  Then add the companion to your application:
+
   <Tabs>
-  <Tab title="React/Vite">
-    ```bash
-    npm install vibe-kanban-web-companion
-    ```
-
-    Add to your app root (e.g., `src/main.tsx` or `src/App.tsx`):
+  <Tab title="Create React App">
+    Add to your `src/index.js` or `src/index.tsx`:
     ```jsx
-    import { VibeKanbanWebCompanion } from 'vibe-kanban-web-companion'
+    import { VibeKanbanWebCompanion } from 'vibe-kanban-web-companion';
+    import React from 'react';
+    import ReactDOM from 'react-dom/client';
+    import App from './App';
 
-    function App() {
-      return (
-        <div>
-          {/* Your app content */}
-          {process.env.NODE_ENV === 'development' && <VibeKanbanWebCompanion />}
-        </div>
-      )
-    }
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(
+      <React.StrictMode>
+        <VibeKanbanWebCompanion />
+        <App />
+      </React.StrictMode>
+    );
     ```
   </Tab>
 
   <Tab title="Next.js">
-    ```bash
-    npm install vibe-kanban-web-companion
-    ```
-
-    Add to `pages/_app.js` or `app/layout.tsx`:
+    Add to your `pages/_app.js` or `pages/_app.tsx`:
     ```jsx
     import { VibeKanbanWebCompanion } from 'vibe-kanban-web-companion'
+    import type { AppProps } from 'next/app'
 
-    export default function App({ Component, pageProps }) {
+    function MyApp({ Component, pageProps }: AppProps) {
       return (
         <>
+          <VibeKanbanWebCompanion />
           <Component {...pageProps} />
-          {process.env.NODE_ENV === 'development' && <VibeKanbanWebCompanion />}
         </>
       )
     }
     ```
   </Tab>
 
-  <Tab title="Vue.js">
-    ```bash
-    npm install vibe-kanban-web-companion
-    ```
+  <Tab title="Vite">
+    Add to your `src/main.jsx` or `src/main.tsx`:
+    ```jsx
+    import { VibeKanbanWebCompanion } from "vibe-kanban-web-companion";
+    import React from "react";
+    import ReactDOM from "react-dom/client";
+    import App from "./App";
 
-    Add to your main application file:
-    ```javascript
-    import { VibeKanbanWebCompanion } from 'vibe-kanban-web-companion'
-
-    // In your app component or main.js
-    if (process.env.NODE_ENV === 'development') {
-      app.component('VibeKanbanWebCompanion', VibeKanbanWebCompanion)
-    }
+    ReactDOM.createRoot(document.getElementById("root")).render(
+      <React.StrictMode>
+        <VibeKanbanWebCompanion />
+        <App />
+      </React.StrictMode>
+    );
     ```
   </Tab>
   </Tabs>
 
-  <Info>
-  Vibe Kanban can automatically create a task to install the Web Companion. Look for the "Install companion automatically" button in the Preview tab if you haven't set it up yet.
-  </Info>
+  <Note>
+  The Web Companion is automatically tree-shaken from production builds, so it only runs in development mode.
+  </Note>
 </Step>
 
 <Step title="Start Development Server">
