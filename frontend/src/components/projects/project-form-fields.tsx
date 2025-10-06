@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -72,6 +73,7 @@ export function ProjectFormFields({
   projectId,
   onCreateProject,
 }: ProjectFormFieldsProps) {
+  const { t } = useTranslation('projects');
   const { system } = useUserSystem();
 
   // Create strategy-based placeholders
@@ -429,7 +431,7 @@ export function ProjectFormFields({
       {isEditing && (
         <div className="space-y-4 pt-4 border-t border-border">
           <div className="space-y-2">
-            <Label htmlFor="setup-script">Setup Script</Label>
+            <Label htmlFor="setup-script">{t('setup.setupScript.label')}</Label>
             <textarea
               id="setup-script"
               value={setupScript}
@@ -439,14 +441,12 @@ export function ProjectFormFields({
               className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
             />
             <p className="text-sm text-muted-foreground">
-              This script will run after creating the worktree and before the
-              coding agent starts. Use it for setup tasks like installing
-              dependencies or preparing the environment.
+              {t('setup.setupScript.help')}
             </p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="dev-script">Dev Server Script</Label>
+            <Label htmlFor="dev-script">{t('setup.devScript.label')}</Label>
             <textarea
               id="dev-script"
               value={devScript}
@@ -456,14 +456,12 @@ export function ProjectFormFields({
               className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
             />
             <p className="text-sm text-muted-foreground">
-              This script can be run from task attempts to start a development
-              server. Use it to quickly start your project's dev server for
-              testing changes.
+              {t('setup.devScript.help')}
             </p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="cleanup-script">Cleanup Script</Label>
+            <Label htmlFor="cleanup-script">{t('setup.cleanupScript.label')}</Label>
             <textarea
               id="cleanup-script"
               value={cleanupScript}
@@ -472,28 +470,18 @@ export function ProjectFormFields({
               rows={4}
               className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
             />
-            <p className="text-sm text-muted-foreground">
-              This script runs after coding agent execution{' '}
-              <strong>only if changes were made</strong>. Use it for quality
-              assurance tasks like running linters, formatters, tests, or other
-              validation steps. If no changes are made, this script is skipped.
-            </p>
+            <p className="text-sm text-muted-foreground" dangerouslySetInnerHTML={{ __html: t('setup.cleanupScript.help') }} />
           </div>
 
           <div className="space-y-2">
-            <Label>Copy Files</Label>
+            <Label>{t('setup.copyFiles.label')}</Label>
             <CopyFilesField
               value={copyFiles}
               onChange={setCopyFiles}
               projectId={projectId}
             />
             <p className="text-sm text-muted-foreground">
-              Comma-separated list of files to copy from the original project
-              directory to the worktree. These files will be copied after the
-              worktree is created but before the setup script runs. Useful for
-              environment-specific files like .env, configuration files, and
-              local settings. Make sure these are gitignored or they could get
-              committed!
+              {t('setup.copyFiles.help')}
             </p>
           </div>
         </div>

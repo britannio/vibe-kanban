@@ -24,7 +24,7 @@
     },
     "cleanupScript": {
       "label": "Cleanup Script",
-      "help": "This script runs after coding agent execution only if changes were made. Use it for quality assurance tasks like running linters, formatters, tests, or other validation steps. If no changes are made, this script is skipped."
+      "help": "This script runs after coding agent execution <strong>only if changes were made</strong>. Use it for quality assurance tasks like running linters, formatters, tests, or other validation steps. If no changes are made, this script is skipped."
     },
     "copyFiles": {
       "label": "Copy Files",
