@@ -15,7 +15,7 @@ import { statusBoardColors, statusLabels } from '@/utils/status-labels';
 type Task = TaskWithAttemptStatus;
 
 interface TaskKanbanBoardProps {
-  groupedTasks: Record<TaskStatus, Task[]>;
+  groupedTasks: Partial<Record<TaskStatus, Task[]>>;
   onDragEnd: (event: DragEndEvent) => void;
   onEditTask: (task: Task) => void;
   onDeleteTask: (taskId: string) => void;
