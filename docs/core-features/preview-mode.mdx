@@ -276,32 +276,6 @@ If the preview doesn't load automatically:
 </Accordion>
 </AccordionGroup>
 
-## Advanced Usage
-
-### Custom Development Scripts
-
-For complex development setups, you can configure advanced development scripts:
-
-```bash
-# Multiple services
-concurrently "npm run api:dev" "npm run web:dev"
-
-# With environment variables
-REACT_APP_API_URL=http://localhost:8080 npm run dev
-
-# Docker-based development
-docker-compose up web
-```
-
-### Integration with Build Tools
-
-Preview Mode works with various build tools and frameworks:
-
-- **Vite**: Automatic HMR support with instant updates
-- **Webpack**: Hot module replacement for live reloading
-- **Parcel**: Zero-configuration development server
-- **Rollup**: Custom development server configurations
-
 ## Related Documentation
 
 - [Task Details Full Screen Mode](/core-features/task-details-full-screen) - Complete guide to full screen task management
