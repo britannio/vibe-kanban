@@ -200,82 +200,17 @@ When the Web Companion is installed, you can precisely select UI components for 
 
 ## Troubleshooting
 
-### URL Not Detected
+If the preview doesn't load automatically, ensure your development server prints the URL to stdout/stderr for automatic detection.
 
-If the preview doesn't load automatically:
+Supported URL formats:
+- `http://localhost:3000`
+- `https://localhost:3000`
+- `http://127.0.0.1:3000`
+- `http://0.0.0.0:5173`
 
-<AccordionGroup>
-<Accordion title="Check Development Server Logs">
-  1. Navigate to the **Processes** tab
-  2. Look for your development server process
-  3. Verify the server started successfully
-  4. Ensure a URL like `http://localhost:3000` appears in the logs
-
-  <Warning>
-  The development server must print a URL to stdout/stderr for automatic detection.
-  </Warning>
-</Accordion>
-
-<Accordion title="Verify URL Format">
-  Supported URL formats include:
-  - `http://localhost:3000`
-  - `https://localhost:3000`
-  - `http://127.0.0.1:3000`
-  - `http://0.0.0.0:5173`
-
-  URLs using `0.0.0.0` or `::` are automatically converted to `localhost` for embedding.
-</Accordion>
-
-<Accordion title="Manual URL Entry">
-  If automatic detection fails, you can:
-  1. Copy the URL from your development server logs
-  2. Click **Open in Browser** to verify it works
-  3. Use the **Copy URL** button to share the address
-</Accordion>
-</AccordionGroup>
-
-### Component Selection Not Working
-
-<AccordionGroup>
-<Accordion title="Verify Web Companion Installation">
-  1. Check that `vibe-kanban-web-companion` is installed
-  2. Ensure it's rendered in your app during development
-  3. Look for the small companion widget in the bottom-right of your app
-
-  <Tip>
-  The companion only appears in development mode and when properly configured.
-  </Tip>
-</Accordion>
-
-<Accordion title="Check Browser Console">
-  Open browser developer tools and look for:
-  - Web Companion initialisation messages
-  - Any JavaScript errors that might prevent selection
-  - PostMessage communication between the iframe and Vibe Kanban
-</Accordion>
-
-<Accordion title="Framework-Specific Issues">
-  - **React**: Ensure the companion is rendered after React's reconciliation
-  - **Next.js**: Verify SSR compatibility and client-side rendering
-  - **Vue**: Check that the component is properly registered
-</Accordion>
-</AccordionGroup>
-
-### Performance Considerations
-
-<AccordionGroup>
-<Accordion title="iframe Responsiveness">
-  - Large applications may take time to load in the preview
-  - Consider using development builds for faster loading
-  - Monitor the Processes tab for build completion
-</Accordion>
-
-<Accordion title="Memory Usage">
-  - Running multiple preview instances increases memory usage
-  - Stop unused development servers when switching tasks
-  - Use the **Stop Dev** button to clean up resources
-</Accordion>
-</AccordionGroup>
+<Note>
+URLs using `0.0.0.0` or `::` are automatically converted to `localhost` for embedding.
+</Note>
 
 ## Related Documentation
 
