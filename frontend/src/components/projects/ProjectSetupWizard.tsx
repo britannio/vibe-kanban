@@ -108,9 +108,7 @@ export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
   return (
     <div className="p-6 space-y-6">
       <div>
-        <h2 className="text-2xl font-semibold mb-2">
-          {t('setup.title')}
-        </h2>
+        <h2 className="text-2xl font-semibold mb-2">{t('setup.title')}</h2>
         <p className="text-base text-muted-foreground">
           {t('setup.description')}
         </p>
@@ -155,7 +153,9 @@ export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="cleanup-script">{t('setup.cleanupScript.label')}</Label>
+          <Label htmlFor="cleanup-script">
+            {t('setup.cleanupScript.label')}
+          </Label>
           <textarea
             id="cleanup-script"
             value={cleanupScript}
@@ -212,7 +212,10 @@ export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
                     {t(task.titleKey, task.title)}
                   </div>
                   <div className="text-sm text-muted-foreground mt-1">
-                    {t(task.descriptionKey, 'Automatically install vibe-kanban-web-companion and integrate it into your app.')}
+                    {t(
+                      task.descriptionKey,
+                      'Automatically install vibe-kanban-web-companion and integrate it into your app.'
+                    )}
                   </div>
                 </div>
               </div>
