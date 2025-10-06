@@ -175,7 +175,10 @@ export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
             rows={3}
             className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
           />
-          <p className="text-sm text-muted-foreground" dangerouslySetInnerHTML={{ __html: t('setup.cleanupScript.help') }} />
+          <p
+            className="text-sm text-muted-foreground"
+            dangerouslySetInnerHTML={{ __html: t('setup.cleanupScript.help') }}
+          />
         </div>
 
         <div className="space-y-2">
