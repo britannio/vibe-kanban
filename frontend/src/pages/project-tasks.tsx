@@ -39,7 +39,7 @@ import { useProjectTasks } from '@/hooks/useProjectTasks';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import NiceModal from '@ebay/nice-modal-react';
 import { useHotkeysContext } from 'react-hotkeys-hook';
-import { ProjectSetupWizard } from '@/components/projects/ProjectSetupWizard';
+import { ProjectSetupView } from '@/components/projects/ProjectSetupView';
 
 type Task = TaskWithAttemptStatus;
 
@@ -505,25 +505,10 @@ export function ProjectTasks() {
         {/* Left Column - Kanban Section */}
         <div className={getKanbanSectionClasses(isPanelOpen, isFullscreen)}>
           {shouldShowSetup && project ? (
-            <div className="flex h-full gap-6">
-              {/* Single TODO column */}
-              <div className="flex-shrink-0 w-80">
-                <TaskKanbanBoard
-                  groupedTasks={{ todo: [] }}
-                  onDragEnd={() => {}}
-                  onEditTask={handleEditTaskCallback}
-                  onDeleteTask={handleDeleteTask}
-                  onDuplicateTask={handleDuplicateTaskCallback}
-                  onViewTaskDetails={handleViewTaskDetails}
-                  selectedTask={undefined}
-                  onCreateTask={handleCreateNewTask}
-                />
-              </div>
-              {/* Setup wizard on the right */}
-              <div className="flex-1 min-w-0 overflow-y-auto">
-                <ProjectSetupWizard project={project} />
-              </div>
-            </div>
+            <ProjectSetupView
+              project={project}
+              onCreateTask={handleCreateNewTask}
+            />
           ) : tasks.length === 0 ? (
             <div className="max-w-7xl mx-auto mt-8">
               <Card>
