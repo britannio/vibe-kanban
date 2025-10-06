@@ -8,6 +8,12 @@ import {
 } from 'lucide-react';
 import type { TabType } from '@/types/tabs';
 import type { TaskAttempt } from 'shared/types';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 type Props = {
   activeTab: TabType;
@@ -47,17 +53,26 @@ function TabNavigation({
     <div className="border-b border-dashed bg-background sticky top-0 z-10">
       <div className="flex items-center px-3 space-x-3">
         {onToggleSidebar && (
-          <button
-            onClick={onToggleSidebar}
-            className="flex items-center py-2 px-2 text-sm font-medium text-secondary-foreground hover:text-primary-foreground"
-            title={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          >
-            {isSidebarCollapsed ? (
-              <ChevronsRight className="h-4 w-4" />
-            ) : (
-              <ChevronsLeft className="h-4 w-4" />
-            )}
-          </button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={onToggleSidebar}
+                  className="flex items-center py-2 px-2 text-sm font-medium text-secondary-foreground hover:text-primary-foreground"
+                >
+                  {isSidebarCollapsed ? (
+                    <ChevronsRight className="h-4 w-4" />
+                  ) : (
+                    <ChevronsLeft className="h-4 w-4" />
+                  )}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                {isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                <span className="ml-2 text-muted-foreground">(⌘/Ctrl+B)</span>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )}
         {tabs.map(({ id, label, icon: Icon }) => (
           <button

@@ -27,6 +27,7 @@ import { inIframe } from '@/vscode/bridge';
 import { TaskRelationshipViewer } from './TaskRelationshipViewer';
 import { useTaskViewManager } from '@/hooks/useTaskViewManager.ts';
 import type { TaskAttempt } from 'shared/types';
+import { Scope, useKeyToggleSidebar } from '@/keyboard';
 
 interface TaskDetailsPanelProps {
   task: TaskWithAttemptStatus | null;
@@ -87,6 +88,16 @@ export function TaskDetailsPanel({
   const jumpToLogsTab = () => {
     setActiveTab('logs');
   };
+
+  // Register keyboard shortcut for toggling sidebar
+  useKeyToggleSidebar(
+    () => setIsSidebarCollapsed((prev) => !prev),
+    {
+      scope: Scope.KANBAN,
+      when: !!isFullScreen,
+      preventDefault: true,
+    }
+  );
 
   // Reset to logs tab when task changes
   useEffect(() => {
