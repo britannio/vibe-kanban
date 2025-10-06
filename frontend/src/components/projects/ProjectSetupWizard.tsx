@@ -99,8 +99,8 @@ export function ProjectSetupWizard({
   return (
     <div className="p-6 space-y-6">
       <div>
-        <h2 className="text-xl font-semibold mb-2">Project Configuration</h2>
-        <p className="text-sm text-muted-foreground">
+        <h2 className="text-2xl font-semibold mb-2">Project Configuration</h2>
+        <p className="text-base text-muted-foreground">
           Configure scripts for your development workflow
         </p>
       </div>
@@ -114,9 +114,7 @@ export function ProjectSetupWizard({
 
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="setup-script" className="text-sm">
-            Setup Script
-          </Label>
+          <Label htmlFor="setup-script">Setup Script</Label>
           <textarea
             id="setup-script"
             value={setupScript}
@@ -125,15 +123,13 @@ export function ProjectSetupWizard({
             rows={3}
             className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
           />
-          <p className="text-xs text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Runs before coding agent starts
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="dev-script" className="text-sm">
-            Dev Server Script
-          </Label>
+          <Label htmlFor="dev-script">Dev Server Script</Label>
           <textarea
             id="dev-script"
             value={devScript}
@@ -142,15 +138,13 @@ export function ProjectSetupWizard({
             rows={3}
             className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
           />
-          <p className="text-xs text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Start development server
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="cleanup-script" className="text-sm">
-            Cleanup Script
-          </Label>
+          <Label htmlFor="cleanup-script">Cleanup Script</Label>
           <textarea
             id="cleanup-script"
             value={cleanupScript}
@@ -159,26 +153,26 @@ export function ProjectSetupWizard({
             rows={3}
             className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
           />
-          <p className="text-xs text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Runs after agent execution
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label className="text-sm">Copy Files</Label>
+          <Label>Copy Files</Label>
           <CopyFilesField
             value={copyFiles}
             onChange={setCopyFiles}
             projectId={project.id}
           />
-          <p className="text-xs text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Files to copy to worktree
           </p>
         </div>
       </div>
 
       <div className="border-t pt-6 space-y-3">
-        <h3 className="text-sm font-medium">Starter Task</h3>
+        <h3 className="text-base font-medium">Starter Task</h3>
         <div
           className={`p-3 border rounded-md cursor-pointer transition-all ${
             includeCompanionTask
@@ -203,7 +197,7 @@ export function ProjectSetupWizard({
               <div className="font-medium text-sm">
                 {COMPANION_INSTALL_TASK_TITLE}
               </div>
-              <div className="text-xs text-muted-foreground mt-1">
+              <div className="text-sm text-muted-foreground mt-1">
                 {COMPANION_TASK_SUMMARY}
               </div>
             </div>
