@@ -35,7 +35,9 @@ This works if you're adding the Vibe Kanban MCP server to any [supported coding 
 
 ### Option 2: Manual Configuration
 
-You can manually add the MCP server to your coding agent's configuration. Add the following configuration to your agent's MCP servers configuration:
+You can manually add the MCP server to your coding agent's configuration. The exact syntax will depend on your coding agent or MCP client.
+
+Add the following configuration to your agent's MCP servers configuration:
 
 ```json
 {
@@ -62,21 +64,17 @@ The Vibe Kanban MCP server provides the following tools for managing projects, t
 
 | Tool | Purpose | Required Parameters | Optional Parameters | Returns |
 |------|---------|-------------------|-------------------|---------|
-| `list_tasks` | List tasks in a project | `project_id` (UUID) | `status` (todo\|in-progress\|in-review\|done\|cancelled)<br/>`limit` (number, default: 50) | List of tasks with execution state |
-| `create_task` | Create a new task | `project_id` (UUID)<br/>`title` (string) | `description` (string) | Created task ID and confirmation |
-| `get_task` | Get task details | `task_id` (UUID) | None | Full task information |
-| `update_task` | Update task details | `task_id` (UUID) | `title` (string)<br/>`description` (string)<br/>`status` (string) | Updated task information |
-| `delete_task` | Delete a task | `task_id` (UUID) | None | Deletion confirmation |
+| `list_tasks` | List tasks in a project | `project_id` | `status`<br/>`limit` | List of tasks with execution state |
+| `create_task` | Create a new task | `project_id`<br/>`title` | `description` | Created task ID and confirmation |
+| `get_task` | Get task details | `task_id` | None | Full task information |
+| `update_task` | Update task details | `task_id` | `title`<br/>`description`<br/>`status` | Updated task information |
+| `delete_task` | Delete a task | `task_id` | None | Deletion confirmation |
 
 ### Task Execution
 
 | Tool | Purpose | Required Parameters | Optional Parameters | Returns |
 |------|---------|-------------------|-------------------|---------|
-| `start_task_attempt` | Start working on a task with a coding agent | `task_id` (UUID)<br/>`executor` (string)<br/>`base_branch` (string) | `variant` (string) | Attempt ID and confirmation |
-
-<Info>
-The `start_task_attempt` tool is a newly added feature that allows you to programmatically start task attempts with specific coding agents directly from MCP clients.
-</Info>
+| `start_task_attempt` | Start working on a task with a coding agent | `task_id`<br/>`executor`<br/>`base_branch` | `variant` | Attempt ID and confirmation |
 
 ### Supported Executors
 
