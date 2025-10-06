@@ -10,5 +10,34 @@
     "title": "Aún no hay proyectos",
     "description": "Comienza creando tu primer proyecto.",
     "createFirst": "Crear tu primer proyecto"
+  },
+  "setup": {
+    "title": "Configuración del Proyecto",
+    "description": "Configura scripts para tu flujo de trabajo de desarrollo",
+    "setupScript": {
+      "label": "Script de Configuración",
+      "help": "Se ejecuta antes de que comience el agente de codificación"
+    },
+    "devScript": {
+      "label": "Script del Servidor de Desarrollo",
+      "help": "Iniciar servidor de desarrollo"
+    },
+    "cleanupScript": {
+      "label": "Script de Limpieza",
+      "help": "Se ejecuta después de la ejecución del agente"
+    },
+    "copyFiles": {
+      "label": "Copiar Archivos",
+      "help": "Archivos para copiar al worktree"
+    },
+    "starterTasks": "Tareas Iniciales",
+    "saveButton": "Guardar Configuración",
+    "saving": "Guardando...",
+    "defaultTasks": {
+      "companionInstall": {
+        "title": "Instalar e integrar Vibe Kanban Web Companion",
+        "description": "Instalar automáticamente vibe-kanban-web-companion e integrarlo en tu aplicación."
+      }
+    }
   }
 }

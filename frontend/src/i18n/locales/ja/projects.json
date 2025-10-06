@@ -10,5 +10,34 @@
     "title": "プロジェクトがありません",
     "description": "最初のプロジェクトを作成して始めましょう。",
     "createFirst": "最初のプロジェクトを作成"
+  },
+  "setup": {
+    "title": "プロジェクト設定",
+    "description": "開発ワークフローのスクリプトを設定する",
+    "setupScript": {
+      "label": "セットアップスクリプト",
+      "help": "コーディングエージェント開始前に実行"
+    },
+    "devScript": {
+      "label": "開発サーバースクリプト",
+      "help": "開発サーバーを起動"
+    },
+    "cleanupScript": {
+      "label": "クリーンアップスクリプト",
+      "help": "エージェント実行後に実行"
+    },
+    "copyFiles": {
+      "label": "ファイルをコピー",
+      "help": "ワークツリーにコピーするファイル"
+    },
+    "starterTasks": "スタータータスク",
+    "saveButton": "設定を保存",
+    "saving": "保存中...",
+    "defaultTasks": {
+      "companionInstall": {
+        "title": "Vibe Kanban Web Companionをインストールして統合",
+        "description": "vibe-kanban-web-companionを自動的にインストールしてアプリに統合します。"
+      }
+    }
   }
 }

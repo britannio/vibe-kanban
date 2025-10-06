@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -12,23 +13,23 @@ import {
 } from '@/utils/script-placeholders';
 import { useUserSystem } from '@/components/config-provider';
 import { CopyFilesField } from './copy-files-field';
-import {
-  COMPANION_INSTALL_TASK_TITLE,
-  COMPANION_INSTALL_TASK_DESCRIPTION,
-} from '@/utils/companion-install-task';
+import { DEFAULT_TASKS } from '@/utils/default-tasks';
 
 interface ProjectSetupWizardProps {
   project: Project;
 }
 
 export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
+  const { t } = useTranslation('projects');
   const [setupScript, setSetupScript] = useState(project.setup_script ?? '');
   const [devScript, setDevScript] = useState(project.dev_script ?? '');
   const [cleanupScript, setCleanupScript] = useState(
     project.cleanup_script ?? ''
   );
   const [copyFiles, setCopyFiles] = useState(project.copy_files ?? '');
-  const [includeCompanionTask, setIncludeCompanionTask] = useState(false);
+  const [selectedTaskIds, setSelectedTaskIds] = useState<Set<string>>(
+    new Set()
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -45,8 +46,17 @@ export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
           '#!/bin/bash\n# Add cleanup commands here...\n# This runs after coding agent execution',
       };
 
-  const COMPANION_TASK_SUMMARY =
-    'Automatically install vibe-kanban-web-companion and integrate it into your app.';
+  const toggleTask = (taskId: string) => {
+    setSelectedTaskIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(taskId)) {
+        next.delete(taskId);
+      } else {
+        next.add(taskId);
+      }
+      return next;
+    });
+  };
 
   const { updateProject } = useProjectMutations({
     onUpdateError: (err) => {
@@ -72,11 +82,16 @@ export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
         },
       });
 
-      if (includeCompanionTask) {
+      // Create selected default tasks
+      const tasksToCreate = DEFAULT_TASKS.filter((task) =>
+        selectedTaskIds.has(task.id)
+      );
+
+      for (const defaultTask of tasksToCreate) {
         const taskData: CreateTask = {
           project_id: project.id,
-          title: COMPANION_INSTALL_TASK_TITLE,
-          description: COMPANION_INSTALL_TASK_DESCRIPTION,
+          title: defaultTask.title,
+          description: defaultTask.description,
           parent_task_attempt: null,
           image_ids: null,
         };
@@ -93,9 +108,11 @@ export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
   return (
     <div className="p-6 space-y-6">
       <div>
-        <h2 className="text-2xl font-semibold mb-2">Project Configuration</h2>
+        <h2 className="text-2xl font-semibold mb-2">
+          {t('setup.title')}
+        </h2>
         <p className="text-base text-muted-foreground">
-          Configure scripts for your development workflow
+          {t('setup.description')}
         </p>
       </div>
 
@@ -108,7 +125,7 @@ export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
 
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="setup-script">Setup Script</Label>
+          <Label htmlFor="setup-script">{t('setup.setupScript.label')}</Label>
           <textarea
             id="setup-script"
             value={setupScript}
@@ -118,12 +135,12 @@ export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
             className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
           />
           <p className="text-sm text-muted-foreground">
-            Runs before coding agent starts
+            {t('setup.setupScript.help')}
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="dev-script">Dev Server Script</Label>
+          <Label htmlFor="dev-script">{t('setup.devScript.label')}</Label>
           <textarea
             id="dev-script"
             value={devScript}
@@ -133,12 +150,12 @@ export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
             className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
           />
           <p className="text-sm text-muted-foreground">
-            Start development server
+            {t('setup.devScript.help')}
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="cleanup-script">Cleanup Script</Label>
+          <Label htmlFor="cleanup-script">{t('setup.cleanupScript.label')}</Label>
           <textarea
             id="cleanup-script"
             value={cleanupScript}
@@ -148,59 +165,64 @@ export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
             className="w-full px-3 py-2 text-sm border border-input bg-background text-foreground rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-ring"
           />
           <p className="text-sm text-muted-foreground">
-            Runs after agent execution
+            {t('setup.cleanupScript.help')}
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label>Copy Files</Label>
+          <Label>{t('setup.copyFiles.label')}</Label>
           <CopyFilesField
             value={copyFiles}
             onChange={setCopyFiles}
             projectId={project.id}
           />
           <p className="text-sm text-muted-foreground">
-            Files to copy to worktree
+            {t('setup.copyFiles.help')}
           </p>
         </div>
       </div>
 
       <div className="border-t pt-6 space-y-3">
-        <h3 className="text-base font-medium">Starter Task</h3>
-        <div
-          className={`p-3 border rounded-md cursor-pointer transition-all ${
-            includeCompanionTask
-              ? 'border-primary bg-primary/5'
-              : 'border-border hover:border-primary/50'
-          }`}
-          onClick={() => setIncludeCompanionTask(!includeCompanionTask)}
-        >
-          <div className="flex items-start gap-3">
+        <h3 className="text-base font-medium">{t('setup.starterTasks')}</h3>
+        <div className="space-y-2">
+          {DEFAULT_TASKS.map((task) => (
             <div
-              className={`flex-shrink-0 mt-0.5 h-4 w-4 rounded border-2 flex items-center justify-center ${
-                includeCompanionTask
-                  ? 'bg-primary border-primary'
-                  : 'border-muted-foreground'
+              key={task.id}
+              className={`p-3 border rounded-md cursor-pointer transition-all ${
+                selectedTaskIds.has(task.id)
+                  ? 'border-primary bg-primary/5'
+                  : 'border-border hover:border-primary/50'
               }`}
+              onClick={() => toggleTask(task.id)}
             >
-              {includeCompanionTask && (
-                <Check className="h-3 w-3 text-primary-foreground" />
-              )}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="font-medium text-sm">
-                {COMPANION_INSTALL_TASK_TITLE}
+              <div className="flex items-start gap-3">
+                <div
+                  className={`flex-shrink-0 mt-0.5 h-4 w-4 rounded border-2 flex items-center justify-center ${
+                    selectedTaskIds.has(task.id)
+                      ? 'bg-primary border-primary'
+                      : 'border-muted-foreground'
+                  }`}
+                >
+                  {selectedTaskIds.has(task.id) && (
+                    <Check className="h-3 w-3 text-primary-foreground" />
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-medium text-sm">
+                    {t(task.titleKey, task.title)}
+                  </div>
+                  <div className="text-sm text-muted-foreground mt-1">
+                    {t(task.descriptionKey, 'Automatically install vibe-kanban-web-companion and integrate it into your app.')}
+                  </div>
+                </div>
               </div>
-              <div className="text-sm text-muted-foreground mt-1">
-                {COMPANION_TASK_SUMMARY}
-              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
 
       <Button onClick={handleSave} disabled={saving} className="w-full">
-        {saving ? 'Saving...' : 'Save Configuration'}
+        {saving ? t('setup.saving') : t('setup.saveButton')}
       </Button>
     </div>
   );
