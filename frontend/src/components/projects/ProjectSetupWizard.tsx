@@ -19,6 +19,17 @@ interface ProjectSetupWizardProps {
   project: Project;
 }
 
+/**
+ * ProjectSetupWizard guides users through configuring their project's development
+ * scripts and optionally creating starter tasks from predefined templates.
+ *
+ * Features:
+ * - Configure setup, dev server, and cleanup scripts
+ * - Specify files to copy to worktrees
+ * - Select from default task templates (e.g., Vibe Kanban Companion installation)
+ * - Fully internationalized (supports English, Spanish, Japanese)
+ * - Automatically saves configuration and creates selected tasks
+ */
 export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
   const { t } = useTranslation('projects');
   const [setupScript, setSetupScript] = useState(project.setup_script ?? '');
@@ -208,14 +219,9 @@ export function ProjectSetupWizard({ project }: ProjectSetupWizardProps) {
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-sm">
-                    {t(task.titleKey, task.title)}
-                  </div>
+                  <div className="font-medium text-sm">{task.title}</div>
                   <div className="text-sm text-muted-foreground mt-1">
-                    {t(
-                      task.descriptionKey,
-                      'Automatically install vibe-kanban-web-companion and integrate it into your app.'
-                    )}
+                    {t(task.descriptionKey)}
                   </div>
                 </div>
               </div>

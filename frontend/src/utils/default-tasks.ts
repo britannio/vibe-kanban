@@ -5,8 +5,8 @@ import {
 
 export interface DefaultTask {
   id: string;
-  titleKey: string;
   descriptionKey: string;
+  // Title and description remain in English (technical content)
   title: string;
   description: string;
 }
@@ -14,15 +14,14 @@ export interface DefaultTask {
 export const DEFAULT_TASKS: DefaultTask[] = [
   {
     id: 'companion-install',
-    titleKey: 'setup.defaultTasks.companionInstall.title',
     descriptionKey: 'setup.defaultTasks.companionInstall.description',
+    // Title and description stay in English - they're technical and will be created as tasks
     title: COMPANION_INSTALL_TASK_TITLE,
     description: COMPANION_INSTALL_TASK_DESCRIPTION,
   },
   // Future tasks can be added here:
   // {
   //   id: 'setup-tests',
-  //   titleKey: 'setup.defaultTasks.setupTests.title',
   //   descriptionKey: 'setup.defaultTasks.setupTests.description',
   //   title: 'Set up testing framework',
   //   description: '...',

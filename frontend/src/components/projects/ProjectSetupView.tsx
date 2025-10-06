@@ -13,6 +13,12 @@ interface ProjectSetupViewProps {
   onCreateTask: () => void;
 }
 
+/**
+ * ProjectSetupView displays an empty TODO kanban column alongside the project
+ * setup wizard. This view is shown when a project has no tasks, providing
+ * users with configuration options while making it clear they can immediately
+ * start creating tasks via the "+" button.
+ */
 export function ProjectSetupView({
   project,
   onCreateTask,
