@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Github, Check, Clipboard } from 'lucide-react';
 import type { DeviceFlowStartResponse } from 'shared/types';
@@ -45,17 +46,18 @@ export function GitHubLoginStep({
   onLogin,
   onCopyCode,
 }: GitHubLoginStepProps) {
+  const { t } = useTranslation('common');
+  
   return (
     <div className="space-y-4">
       <div className="flex items-start gap-3">
         <Github className="h-6 w-6 text-primary text-primary-foreground mt-1 flex-shrink-0" />
         <div className="space-y-2 flex-1">
           <h2 className="text-xl font-semibold">
-            Sign in with GitHub (Optional)
+            {t('onboarding.githubLogin.title')}
           </h2>
           <p className="text-sm text-muted-foreground">
-            Connect your GitHub account to create pull requests directly from
-            Vibe Kanban.
+            {t('onboarding.githubLogin.description')}
           </p>
         </div>
       </div>
@@ -64,10 +66,10 @@ export function GitHubLoginStep({
         <div className="bg-muted/50 border rounded-lg p-4">
           <div className="flex items-center gap-3 mb-2">
             <Check className="h-5 w-5 text-green-500" />
-            <span className="font-medium">Successfully connected!</span>
+            <span className="font-medium">{t('onboarding.githubLogin.successTitle')}</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            You are signed in as <strong>{username}</strong>
+            {t('onboarding.githubLogin.signedInAs')} <strong>{username}</strong>
           </p>
         </div>
       ) : deviceState ? (
@@ -78,7 +80,7 @@ export function GitHubLoginStep({
             </span>
             <div>
               <p className="text-sm font-medium mb-1">
-                Go to GitHub Device Authorization
+                {t('onboarding.githubLogin.deviceStep1')}
               </p>
               <a
                 href={deviceState.verification_uri}
@@ -96,7 +98,7 @@ export function GitHubLoginStep({
               2
             </span>
             <div className="flex-1">
-              <p className="text-sm font-medium mb-2">Enter this code:</p>
+              <p className="text-sm font-medium mb-2">{t('onboarding.githubLogin.deviceStep2')}</p>
               <div className="flex items-center gap-3">
                 <span className="text-sm font-mono font-bold tracking-[0.2em] bg-muted border flex h-9 px-3 items-center rounded">
                   {deviceState.user_code}
@@ -110,12 +112,12 @@ export function GitHubLoginStep({
                   {copied ? (
                     <>
                       <Check className="w-4 h-4 mr-1" />
-                      Copied
+                      {t('onboarding.githubLogin.copied')}
                     </>
                   ) : (
                     <>
                       <Clipboard className="w-4 h-4 mr-1" />
-                      Copy
+                      {t('onboarding.githubLogin.copy')}
                     </>
                   )}
                 </Button>
@@ -127,8 +129,8 @@ export function GitHubLoginStep({
             <Github className="h-4 w-4 flex-shrink-0" />
             <span>
               {copied
-                ? 'Code copied! Complete the authorization on GitHub.'
-                : 'Waiting for authorization on GitHub...'}
+                ? t('onboarding.githubLogin.codeCopied')
+                : t('onboarding.githubLogin.waiting')}
             </span>
           </div>
 
@@ -141,24 +143,24 @@ export function GitHubLoginStep({
       ) : (
         <div className="space-y-4">
           <div className="bg-muted/30 border rounded-lg p-4 space-y-3">
-            <p className="text-sm font-medium">Why connect GitHub?</p>
+            <p className="text-sm font-medium">{t('onboarding.githubLogin.whyConnect')}</p>
             <div className="space-y-2">
               <div className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
                 <span className="text-sm">
-                  Create pull requests from task attempts
+                  {t('onboarding.githubLogin.benefit1')}
                 </span>
               </div>
               <div className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
                 <span className="text-sm">
-                  Push changes and create branches automatically
+                  {t('onboarding.githubLogin.benefit2')}
                 </span>
               </div>
               <div className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
                 <span className="text-sm">
-                  Streamline your development workflow
+                  {t('onboarding.githubLogin.benefit3')}
                 </span>
               </div>
             </div>
@@ -172,7 +174,7 @@ export function GitHubLoginStep({
 
           <Button onClick={onLogin} disabled={fetching} className="w-full">
             <Github className="h-4 w-4 mr-2" />
-            {fetching ? 'Starting...' : 'Sign in with GitHub'}
+            {fetching ? t('onboarding.githubLogin.starting') : t('onboarding.githubLogin.signInButton')}
           </Button>
         </div>
       )}

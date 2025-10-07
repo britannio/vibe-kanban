@@ -1,5 +1,6 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Shield, CheckCircle, XCircle, Settings } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 type FeedbackOptInStepProps = {
   analyticsEnabled: boolean;
@@ -28,12 +29,16 @@ export function FeedbackOptInStep({
   isGitHubAuthenticated,
   onAnalyticsChange,
 }: FeedbackOptInStepProps) {
+  const { t } = useTranslation('common');
+
   return (
     <div className="space-y-4">
       <div className="flex items-start gap-3">
         <Shield className="h-6 w-6 text-primary text-primary-foreground mt-1 flex-shrink-0" />
         <div className="space-y-4 flex-1">
-          <h2 className="text-xl font-semibold">Help Improve Vibe Kanban</h2>
+          <h2 className="text-xl font-semibold">
+            {t('onboarding.feedback.title')}
+          </h2>
           <div className="space-y-4">
             <div className="flex items-start space-x-3">
               <Checkbox
@@ -46,50 +51,47 @@ export function FeedbackOptInStep({
                   htmlFor="analytics"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Share usage data to help us improve the product
+                  {t('onboarding.feedback.optInLabel')}
                 </label>
                 <p className="text-sm text-muted-foreground">
-                  We collect high-level usage metrics and performance data, but
-                  never your code or personal information.
+                  {t('onboarding.feedback.optInHelper')}
                 </p>
               </div>
             </div>
 
             <div className="space-y-3 text-sm">
-              <p className="font-medium">What we collect:</p>
+              <p className="font-medium">{t('onboarding.feedback.whatWeCollect')}</p>
               <div className="space-y-2">
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
                   <span>
-                    GitHub profile info for important updates only
+                    {t('onboarding.feedback.collectGitHub')}
                     {!isGitHubAuthenticated && (
                       <span className="text-muted-foreground">
                         {' '}
-                        (when signed in)
+                        {t('onboarding.feedback.whenSignedIn')}
                       </span>
                     )}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>High-level usage metrics and feature usage</span>
+                  <span>{t('onboarding.feedback.collectUsage')}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>Performance and error data</span>
+                  <span>{t('onboarding.feedback.collectPerformance')}</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <XCircle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
-                  <span>
-                    We do NOT collect task contents, code, or project names
-                  </span>
+                  <span>{t('onboarding.feedback.doNotCollect')}</span>
                 </div>
               </div>
             </div>
 
             <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
               <Settings className="h-4 w-4 flex-shrink-0" />
-              <span>You can change this preference anytime in Settings.</span>
+              <span>{t('onboarding.feedback.settingsNote')}</span>
             </div>
           </div>
         </div>

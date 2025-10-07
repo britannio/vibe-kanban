@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Dialog,
   DialogContent,
@@ -42,6 +43,7 @@ const STEP_FEEDBACK_OPTIN = 4;
 
 const UnifiedOnboardingDialog = NiceModal.create(() => {
   const modal = useModal();
+  const { t } = useTranslation('common');
   const { profiles, config, githubTokenInvalid, reloadSystem } =
     useUserSystem();
 
@@ -212,10 +214,10 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
         <DialogHeader>
           <div className="flex items-center gap-3">
             <HandMetal className="h-6 w-6 text-primary text-primary-foreground" />
-            <DialogTitle>Welcome to Vibe Kanban</DialogTitle>
+            <DialogTitle>{t('onboarding.welcome.title')}</DialogTitle>
           </div>
           <DialogDescription className="text-left pt-2">
-            Let's get you set up in just four quick steps.
+            {t('onboarding.welcome.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -261,7 +263,7 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
             step === STEP_SAFETY_NOTICE ||
             step === STEP_FEEDBACK_OPTIN) && (
             <Button variant="outline" onClick={handleStepBack}>
-              Back
+              {t('buttons.back')}
             </Button>
           )}
 
@@ -273,7 +275,7 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
               disabled={!isStep1Valid}
               className="min-w-24"
             >
-              Next
+              {t('buttons.next')}
             </Button>
           )}
 
@@ -283,19 +285,19 @@ const UnifiedOnboardingDialog = NiceModal.create(() => {
               variant="outline"
               className="min-w-24"
             >
-              Skip
+              {t('buttons.skip')}
             </Button>
           )}
 
           {step === STEP_SAFETY_NOTICE && (
             <Button onClick={handleStepForward} className="min-w-24">
-              I Understand, Continue
+              {t('onboarding.buttons.understand')}
             </Button>
           )}
 
           {step === STEP_FEEDBACK_OPTIN && (
             <Button onClick={handleComplete} className="min-w-24">
-              Complete Setup
+              {t('onboarding.buttons.complete')}
             </Button>
           )}
         </DialogFooter>

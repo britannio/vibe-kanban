@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Select,
   SelectContent,
@@ -56,6 +57,7 @@ export function AgentConfigStep({
   onEditorChange,
   onCustomCommandChange,
 }: AgentConfigStepProps) {
+  const { t } = useTranslation('common');
   const selectedProfile = profiles?.[profile.executor];
   const hasVariants =
     selectedProfile && Object.keys(selectedProfile).length > 0;
@@ -65,10 +67,10 @@ export function AgentConfigStep({
       <div className="space-y-2">
         <h2 className="text-xl flex items-center gap-2">
           <Sparkles className="h-4 w-4" />
-          Choose Your Coding Agent
+          {t('onboarding.agentConfig.agentTitle')}
         </h2>
         <div className="space-y-2">
-          <Label htmlFor="profile">Default Agent</Label>
+          <Label htmlFor="profile">{t('onboarding.agentConfig.agentLabel')}</Label>
           <div className="flex gap-2">
             <Select
               value={profile.executor}
@@ -80,7 +82,7 @@ export function AgentConfigStep({
               }
             >
               <SelectTrigger id="profile" className="flex-1">
-                <SelectValue placeholder="Select your preferred coding agent" />
+                <SelectValue placeholder={t('onboarding.agentConfig.agentPlaceholder')} />
               </SelectTrigger>
               <SelectContent>
                 {profiles &&
@@ -140,17 +142,17 @@ export function AgentConfigStep({
       <div className="space-y-2">
         <h2 className="text-xl flex items-center gap-2">
           <Code className="h-4 w-4" />
-          Choose Your Code Editor
+          {t('onboarding.agentConfig.editorTitle')}
         </h2>
 
         <div className="space-y-2">
-          <Label htmlFor="editor">Preferred Editor</Label>
+          <Label htmlFor="editor">{t('onboarding.agentConfig.editorLabel')}</Label>
           <Select
             value={editorType}
             onValueChange={(value: EditorType) => onEditorChange(value)}
           >
             <SelectTrigger id="editor">
-              <SelectValue placeholder="Select your preferred editor" />
+              <SelectValue placeholder={t('onboarding.agentConfig.editorPlaceholder')} />
             </SelectTrigger>
             <SelectContent>
               {Object.values(EditorType).map((type) => (
@@ -161,21 +163,20 @@ export function AgentConfigStep({
             </SelectContent>
           </Select>
           <p className="text-sm text-muted-foreground">
-            This editor will be used to open task attempts and project files.
+            {t('onboarding.agentConfig.editorHelper')}
           </p>
 
           {editorType === EditorType.CUSTOM && (
             <div className="space-y-2">
-              <Label htmlFor="custom-command">Custom Command</Label>
+              <Label htmlFor="custom-command">{t('onboarding.agentConfig.customCommandLabel')}</Label>
               <Input
                 id="custom-command"
-                placeholder="e.g., code, subl, vim"
+                placeholder={t('onboarding.agentConfig.customCommandPlaceholder')}
                 value={customCommand}
                 onChange={(e) => onCustomCommandChange(e.target.value)}
               />
               <p className="text-sm text-muted-foreground">
-                Enter the command to run your custom editor. Use spaces for
-                arguments (e.g., "code --wait").
+                {t('onboarding.agentConfig.customCommandHelper')}
               </p>
             </div>
           )}
