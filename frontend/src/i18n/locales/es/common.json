@@ -56,6 +56,7 @@
       "description": "Configuremos todo en solo cuatro pasos rápidos."
     },
     "agentConfig": {
+      "title": "Configuración del Agente",
       "agentTitle": "Elige Tu Agente de Codificación",
       "agentLabel": "Agente Predeterminado",
       "agentPlaceholder": "Selecciona tu agente de codificación preferido",
