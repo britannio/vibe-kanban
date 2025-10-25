@@ -41,6 +41,7 @@ pub struct TaskAttempt {
     pub container_ref: Option<String>, // Path to a worktree (local), or cloud container id
     pub branch: String,                // Git branch name for this task attempt
     pub target_branch: String,         // Target branch for this attempt
+    pub base_commit: Option<String>,   // Git commit SHA representing the base for diffing
     pub executor: String, // Name of the base coding agent to use ("AMP", "CLAUDE_CODE",
     // "GEMINI", etc.)
     pub worktree_deleted: bool, // Flag indicating if worktree has been cleaned up
@@ -104,6 +105,7 @@ impl TaskAttempt {
                               container_ref,
                               branch,
                               target_branch,
+                              base_commit,
                               executor AS "executor!",
                               worktree_deleted AS "worktree_deleted!: bool",
                               setup_completed_at AS "setup_completed_at: DateTime<Utc>",
@@ -124,6 +126,7 @@ impl TaskAttempt {
                               container_ref,
                               branch,
                               target_branch,
+                              base_commit,
                               executor AS "executor!",
                               worktree_deleted AS "worktree_deleted!: bool",
                               setup_completed_at AS "setup_completed_at: DateTime<Utc>",
@@ -155,6 +158,7 @@ impl TaskAttempt {
                        ta.container_ref,
                        ta.branch,
                        ta.target_branch,
+                       ta.base_commit,
                        ta.executor AS "executor!",
                        ta.worktree_deleted  AS "worktree_deleted!: bool",
                        ta.setup_completed_at AS "setup_completed_at: DateTime<Utc>",
@@ -228,6 +232,7 @@ impl TaskAttempt {
                        container_ref,
                        branch,
                        target_branch,
+                       base_commit,
                        executor AS "executor!",
                        worktree_deleted  AS "worktree_deleted!: bool",
                        setup_completed_at AS "setup_completed_at: DateTime<Utc>",
@@ -249,6 +254,7 @@ impl TaskAttempt {
                        container_ref,
                        branch,
                        target_branch,
+                       base_commit,
                        executor AS "executor!",
                        worktree_deleted  AS "worktree_deleted!: bool",
                        setup_completed_at AS "setup_completed_at: DateTime<Utc>",
@@ -372,14 +378,15 @@ impl TaskAttempt {
         // Insert the record into the database
         Ok(sqlx::query_as!(
             TaskAttempt,
-            r#"INSERT INTO task_attempts (id, task_id, container_ref, branch, target_branch, executor, worktree_deleted, setup_completed_at)
-               VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-               RETURNING id as "id!: Uuid", task_id as "task_id!: Uuid", container_ref, branch, target_branch, executor as "executor!",  worktree_deleted as "worktree_deleted!: bool", setup_completed_at as "setup_completed_at: DateTime<Utc>", created_at as "created_at!: DateTime<Utc>", updated_at as "updated_at!: DateTime<Utc>""#,
+            r#"INSERT INTO task_attempts (id, task_id, container_ref, branch, target_branch, base_commit, executor, worktree_deleted, setup_completed_at)
+               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+               RETURNING id as "id!: Uuid", task_id as "task_id!: Uuid", container_ref, branch, target_branch, base_commit, executor as "executor!",  worktree_deleted as "worktree_deleted!: bool", setup_completed_at as "setup_completed_at: DateTime<Utc>", created_at as "created_at!: DateTime<Utc>", updated_at as "updated_at!: DateTime<Utc>""#,
             id,
             task_id,
             Option::<String>::None, // Container isn't known yet
             data.branch,
             data.base_branch, // Target branch is same as base branch during creation
+            Option::<String>::None, // base_commit is None during creation, will be set after worktree creation
             data.executor,
             false, // worktree_deleted is false during creation
             Option::<DateTime<Utc>>::None // setup_completed_at is None during creation
@@ -396,6 +403,22 @@ impl TaskAttempt {
         sqlx::query!(
             "UPDATE task_attempts SET target_branch = $1, updated_at = datetime('now') WHERE id = $2",
             new_target_branch,
+            attempt_id,
+        )
+        .execute(pool)
+        .await?;
+
+        Ok(())
+    }
+
+    pub async fn update_base_commit(
+        pool: &SqlitePool,
+        attempt_id: Uuid,
+        base_commit: &str,
+    ) -> Result<(), TaskAttemptError> {
+        sqlx::query!(
+            "UPDATE task_attempts SET base_commit = $1, updated_at = datetime('now') WHERE id = $2",
+            base_commit,
             attempt_id,
         )
         .execute(pool)

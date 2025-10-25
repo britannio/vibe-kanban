@@ -1166,6 +1166,37 @@ pub async fn rebase_task_attempt(
         };
     }
 
+    // After successful rebase, recalculate and update the base_commit
+    // This ensures diffs are calculated from the correct base after rebasing
+    match deployment.git().get_base_commit(
+        &ctx.project.git_repo_path,
+        &task_attempt.branch,
+        &new_base_branch,
+    ) {
+        Ok(base_commit) => {
+            if let Err(e) = TaskAttempt::update_base_commit(
+                pool,
+                task_attempt.id,
+                &base_commit.oid,
+            )
+            .await
+            {
+                tracing::warn!(
+                    "Failed to update base commit after rebase for task attempt {}: {}",
+                    task_attempt.id,
+                    e
+                );
+            }
+        }
+        Err(e) => {
+            tracing::warn!(
+                "Failed to calculate new base commit after rebase for task attempt {}: {}",
+                task_attempt.id,
+                e
+            );
+        }
+    }
+
     deployment
         .track_if_analytics_allowed(
             "task_attempt_rebased",

@@ -688,6 +688,37 @@ impl ContainerService for LocalContainerService {
         )
         .await?;
 
+        // Calculate and store the base commit for diffing
+        // This is the merge-base between the newly created branch and the target branch
+        match self.git().get_base_commit(
+            &project.git_repo_path,
+            &task_attempt.branch,
+            &task_attempt.target_branch,
+        ) {
+            Ok(base_commit) => {
+                if let Err(e) = TaskAttempt::update_base_commit(
+                    &self.db.pool,
+                    task_attempt.id,
+                    &base_commit.oid,
+                )
+                .await
+                {
+                    tracing::warn!(
+                        "Failed to store base commit for task attempt {}: {}",
+                        task_attempt.id,
+                        e
+                    );
+                }
+            }
+            Err(e) => {
+                tracing::warn!(
+                    "Failed to calculate base commit for task attempt {}: {}",
+                    task_attempt.id,
+                    e
+                );
+            }
+        }
+
         // Copy files specified in the project's copy_files field
         if let Some(copy_files) = &project.copy_files
             && !copy_files.trim().is_empty()
@@ -938,11 +969,28 @@ impl ContainerService for LocalContainerService {
 
         let container_ref = self.ensure_container_exists(task_attempt).await?;
         let worktree_path = PathBuf::from(container_ref);
-        let base_commit = self.git().get_base_commit(
-            &project_repo_path,
-            &task_attempt.branch,
-            &task_attempt.target_branch,
-        )?;
+
+        // Use stored base_commit if available, otherwise calculate it dynamically
+        // The stored base_commit represents the original base when the task was created
+        // or the new base after a rebase operation
+        let base_commit = if let Some(ref base_commit_oid) = task_attempt.base_commit {
+            Commit::new(
+                git2::Oid::from_str(base_commit_oid)
+                    .map_err(|e| ContainerError::Other(anyhow!("Invalid base commit OID: {}", e)))?,
+            )
+        } else {
+            // Fallback: calculate dynamically if base_commit is not set
+            // This can happen for old task attempts created before the base_commit field was added
+            tracing::debug!(
+                "Task attempt {} has no stored base_commit, calculating dynamically",
+                task_attempt.id
+            );
+            self.git().get_base_commit(
+                &project_repo_path,
+                &task_attempt.branch,
+                &task_attempt.target_branch,
+            )?
+        };
 
         let wrapper = self
             .create_live_diff_stream(&worktree_path, &base_commit, stats_only)
