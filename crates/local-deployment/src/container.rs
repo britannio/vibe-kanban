@@ -992,9 +992,19 @@ impl ContainerService for LocalContainerService {
             )?
         };
 
-        let wrapper = self
-            .create_live_diff_stream(&worktree_path, &base_commit, stats_only)
-            .await?;
+        // Use dynamic base commit checking for live diff streams
+        // This allows the stream to detect when base_commit changes (e.g., after rebase)
+        // and automatically recalculate the full diff
+        let wrapper = diff_stream::create_with_dynamic_base(
+            self.git().clone(),
+            worktree_path,
+            base_commit,
+            task_attempt.id,
+            self.db().pool.clone(),
+            stats_only,
+        )
+        .await
+        .map_err(|e| ContainerError::Other(anyhow!("{e}")))?;
         Ok(Box::pin(wrapper))
     }
 

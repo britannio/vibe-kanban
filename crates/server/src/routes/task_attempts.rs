@@ -1186,6 +1186,16 @@ pub async fn rebase_task_attempt(
                     task_attempt.id,
                     e
                 );
+            } else {
+                // Touch a marker file to trigger the file watcher
+                // This causes the diff stream to check for base_commit changes and recalculate
+                let marker_path = worktree_path.join(".vibe-base-commit-changed");
+                if let Err(e) = std::fs::write(&marker_path, base_commit.oid.as_bytes()) {
+                    tracing::warn!("Failed to create base commit marker file: {}", e);
+                } else {
+                    // Delete the marker immediately after creation
+                    let _ = std::fs::remove_file(&marker_path);
+                }
             }
         }
         Err(e) => {
