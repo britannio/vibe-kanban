@@ -23,6 +23,9 @@ export function PreviewPanel() {
   const [showHelp, setShowHelp] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [showLogs, setShowLogs] = useState(false);
+  const [currentIframeUrl, setCurrentIframeUrl] = useState<
+    string | undefined
+  >();
   const listenerRef = useRef<ClickToComponentListener | null>(null);
 
   const { t } = useTranslation('tasks');
@@ -54,6 +57,7 @@ export function PreviewPanel() {
   const handleRefresh = () => {
     setIframeError(false);
     setRefreshKey((prev) => prev + 1);
+    setCurrentIframeUrl(undefined);
   };
   const handleIframeError = () => {
     setIframeError(true);
@@ -62,9 +66,14 @@ export function PreviewPanel() {
   const { addElement } = useClickedElements();
 
   const handleCopyUrl = async () => {
-    if (previewState.url) {
-      await navigator.clipboard.writeText(previewState.url);
+    const urlToCopy = currentIframeUrl || previewState.url;
+    if (urlToCopy) {
+      await navigator.clipboard.writeText(urlToCopy);
     }
+  };
+
+  const handleUrlChange = (newUrl: string) => {
+    setCurrentIframeUrl(newUrl);
   };
 
   useEffect(() => {
@@ -103,6 +112,11 @@ export function PreviewPanel() {
     startTimer();
   }, []);
 
+  // Reset current URL when attempt changes
+  useEffect(() => {
+    setCurrentIframeUrl(undefined);
+  }, [attemptId]);
+
   useEffect(() => {
     if (
       loadingTimeFinished &&
@@ -135,6 +149,9 @@ export function PreviewPanel() {
   const toggleLogs = () => {
     setShowLogs((v) => !v);
   };
+
+  // Use current iframe URL if available, otherwise fall back to initial preview URL
+  const displayUrl = currentIframeUrl || previewState.url;
 
   const handleStartDevServer = () => {
     setLoadingTimeFinished(false);
@@ -170,7 +187,7 @@ export function PreviewPanel() {
           <>
             <PreviewToolbar
               mode={mode}
-              url={previewState.url}
+              url={displayUrl}
               onRefresh={handleRefresh}
               onCopyUrl={handleCopyUrl}
               onStop={stopDevServer}
@@ -180,6 +197,7 @@ export function PreviewPanel() {
               url={previewState.url}
               iframeKey={`${previewState.url}-${refreshKey}`}
               onIframeError={handleIframeError}
+              onUrlChange={handleUrlChange}
             />
           </>
         ) : (
