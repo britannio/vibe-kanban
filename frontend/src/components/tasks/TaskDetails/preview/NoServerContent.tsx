@@ -8,6 +8,7 @@ import {
   Save,
   X,
   ExternalLink,
+  Loader2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -149,9 +150,11 @@ export function NoServerContent({
               {t('preview.noServer.title')}
             </h3>
             <p className="text-sm text-muted-foreground">
-              {projectHasDevScript
-                ? t('preview.noServer.startPrompt')
-                : t('preview.noServer.setupPrompt')}
+              {isStartingDevServer || runningDevServer
+                ? 'Starting dev server and waiting for URL...'
+                : projectHasDevScript
+                  ? t('preview.noServer.startPrompt')
+                  : t('preview.noServer.setupPrompt')}
             </p>
           </div>
 
@@ -170,7 +173,12 @@ export function NoServerContent({
                 disabled={isStartingDevServer || !projectHasDevScript}
                 className="gap-1"
               >
-                {runningDevServer ? (
+                {isStartingDevServer ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Starting...
+                  </>
+                ) : runningDevServer ? (
                   <>
                     <Square className="h-4 w-4" />
                     {t('preview.toolbar.stopDevServer')}
@@ -183,7 +191,7 @@ export function NoServerContent({
                 )}
               </Button>
 
-              {!runningDevServer && (
+              {!runningDevServer && !isStartingDevServer && (
                 <Button
                   size="sm"
                   variant="outline"

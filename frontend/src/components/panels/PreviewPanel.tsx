@@ -129,7 +129,7 @@ export function PreviewPanel() {
     ? 'error'
     : isPreviewReady
       ? 'ready'
-      : runningDevServer
+      : runningDevServer || isStartingDevServer
         ? 'searching'
         : 'noServer';
   const toggleLogs = () => {

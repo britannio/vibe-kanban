@@ -44,9 +44,8 @@ export function useDevServer(
       await attemptsApi.startDevServer(attemptId);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ['executionProcesses', attemptId],
-      });
+      // Note: Execution processes are updated via WebSocket, not React Query
+      // So no need to invalidate queries here - the WebSocket will push updates
       options?.onStartSuccess?.();
     },
     onError: (err) => {
@@ -63,16 +62,13 @@ export function useDevServer(
       await executionProcessesApi.stopExecutionProcess(runningDevServer.id);
     },
     onSuccess: async () => {
-      await Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: ['executionProcesses', attemptId],
-        }),
-        runningDevServer
-          ? queryClient.invalidateQueries({
-              queryKey: ['processDetails', runningDevServer.id],
-            })
-          : Promise.resolve(),
-      ]);
+      // Invalidate process details query if it exists (used by setup scripts)
+      // Execution processes themselves are updated via WebSocket
+      if (runningDevServer) {
+        await queryClient.invalidateQueries({
+          queryKey: ['processDetails', runningDevServer.id],
+        });
+      }
       options?.onStopSuccess?.();
     },
     onError: (err) => {
